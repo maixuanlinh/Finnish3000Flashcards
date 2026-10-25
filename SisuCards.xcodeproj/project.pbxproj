@@ -1,0 +1,814 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 54;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		0415176C0E0FCF9B1FD24607 /* starter100.json in Resources */ = {isa = PBXBuildFile; fileRef = 9FCC52ADCAAF73C75A3E03D9 /* starter100.json */; };
+		071A645D3A80D0BEB58927B5 /* PremiumView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3BC729CE4CFE69CBB581D7F7 /* PremiumView.swift */; };
+		09E48BE61171C457B6E2FE01 /* PremiumStoreTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9F0E497C0F3318F25ABD866E /* PremiumStoreTests.swift */; };
+		17EE02E2AB660E4A26B0DDA0 /* WordLibraryView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 87A0EB63696A1629403DEE44 /* WordLibraryView.swift */; };
+		1919E1E07BC0FED0ECA34311 /* Theme.swift in Sources */ = {isa = PBXBuildFile; fileRef = CF65C3165AB720B06D15F046 /* Theme.swift */; };
+		1B748A3D8D5EB799DFF171AB /* SisuCardsApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4F070584A7E0FAE52C7DEFF /* SisuCardsApp.swift */; };
+		1CAFCF017202EE93B3644449 /* CommercialReleaseTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D2B48A140D5A276400CF8B06 /* CommercialReleaseTests.swift */; };
+		21EF03D51DC5B165741D47CC /* StudyStoreTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = AAAF2A8801C0A059C8717F2E /* StudyStoreTests.swift */; };
+		2334B42ED7EB4557A899AA61 /* StudyStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = AEA385BC8FAB14B483BCF3A6 /* StudyStore.swift */; };
+		304EC2EAC48F657AB9583170 /* WordReminders.swift in Sources */ = {isa = PBXBuildFile; fileRef = DF768CD253AA9EAA768C5433 /* WordReminders.swift */; };
+		34470C0D1E54D2A077C99D24 /* WordReminderPlan.swift in Sources */ = {isa = PBXBuildFile; fileRef = D1AEAC32BE0A6F2889B93BB2 /* WordReminderPlan.swift */; };
+		46F02D29E6880E9EED5038E8 /* ProgressViewScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8CA7B252F19AA3E762CE5E97 /* ProgressViewScreen.swift */; };
+		4EC72A9AA8A67A9224DD5246 /* Artwork.swift in Sources */ = {isa = PBXBuildFile; fileRef = 72C30E1E6AF799AA9171B01E /* Artwork.swift */; };
+		5595CC158C8FA95D3F06208F /* PrivacyInfo.xcprivacy in Resources */ = {isa = PBXBuildFile; fileRef = DB695F77D101E82E17959FA6 /* PrivacyInfo.xcprivacy */; };
+		5835975E9B972F3D6E8E071C /* SisuCards.storekit in Resources */ = {isa = PBXBuildFile; fileRef = DAAD077A76217B7EF73139F1 /* SisuCards.storekit */; };
+		5D1B58E198773F46D9D58499 /* artwork-test.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 9B4E67726F881F83A96839A5 /* artwork-test.jpg */; };
+		5F06C310A13A5C58358BBA9B /* SisuCards.storekit in Resources */ = {isa = PBXBuildFile; fileRef = DAAD077A76217B7EF73139F1 /* SisuCards.storekit */; };
+		67E8F546E6328A4B1ECDC876 /* BundledArtwork in Resources */ = {isa = PBXBuildFile; fileRef = FD7849E9A038C521797F056F /* BundledArtwork */; };
+		6E13D8471A9063800E7B7BAD /* SupportView.swift in Sources */ = {isa = PBXBuildFile; fileRef = FCD4CD40854B4EFCEB6337EF /* SupportView.swift */; };
+		772FA348CA28991B3913CF25 /* StudyView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 285E58F432660BAB272885DA /* StudyView.swift */; };
+		7F0A628DEAEB21F7100F9BD1 /* WordReminderTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2364ACC5CE164516D16C313A /* WordReminderTests.swift */; };
+		8499D013227FFEAD35C7CE30 /* Models.swift in Sources */ = {isa = PBXBuildFile; fileRef = 545DF023ED5930BD43C87BA9 /* Models.swift */; };
+		87E571F13BF4D74DD23A4DDF /* RootView.swift in Sources */ = {isa = PBXBuildFile; fileRef = EF692679557D0C6F5DCF6E97 /* RootView.swift */; };
+		8DA395131DF416DB88442397 /* PremiumFlowTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8D752442EF97B2F2DBCCD1B2 /* PremiumFlowTests.swift */; };
+		9FF33B84C639E30925B14D20 /* AutoStudyPlayerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A8D9D6DF9BA837B96836C738 /* AutoStudyPlayerTests.swift */; };
+		B2FC9A94A675B33C6EAE28AE /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 0064C37871F02B4100014310 /* Assets.xcassets */; };
+		B3527348243263C865C6203B /* PremiumStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = B4E767F383A3FD9BC13C1596 /* PremiumStore.swift */; };
+		B9F7A93D37798D48C473A39C /* AutoStudyOptions.swift in Sources */ = {isa = PBXBuildFile; fileRef = D9524191321F9EC0C627867D /* AutoStudyOptions.swift */; };
+		C9C2151A955FFE95106A3A2F /* catalog3000.json in Resources */ = {isa = PBXBuildFile; fileRef = C8F9B3AE8E6884CEC6E6F8EF /* catalog3000.json */; };
+		CDFEC5373A59AA1A03B12BBD /* EnglishAlphabet.swift in Sources */ = {isa = PBXBuildFile; fileRef = E7BC28E24A468837E629B299 /* EnglishAlphabet.swift */; };
+		D0F7FB171895FB599D66B50F /* WordReminderSettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A43335BD7C07BE99D58C8F66 /* WordReminderSettingsView.swift */; };
+		D2AA3844220F0CD3B46128FB /* FlashcardFlowTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8603C2FAE438FD42ABCA7F2B /* FlashcardFlowTests.swift */; };
+		D348A7B1B98328C4D3C432FB /* WordDetailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C672E5A53EA15207E24B1356 /* WordDetailView.swift */; };
+		D3A79BDAFDAA869243AAC4A9 /* artworkBriefs.json in Resources */ = {isa = PBXBuildFile; fileRef = 9AA023552C7042E38482904E /* artworkBriefs.json */; };
+		E120FD660532991B5D097055 /* AutoStudyPlayer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 65D8172616438B3BF7E51F37 /* AutoStudyPlayer.swift */; };
+		FCD385E62F992E78032C1E16 /* examples3000.json in Resources */ = {isa = PBXBuildFile; fileRef = 92661912BCB218235A5DA8BE /* examples3000.json */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXContainerItemProxy section */
+		3E840EACA71A2213BC4AB342 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = CCB20B7CA5B627B1BABD62AF /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = D002B3B1850375F6131EF900;
+			remoteInfo = SisuCards;
+		};
+		BE5AF856ACE61979FCAF5229 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = CCB20B7CA5B627B1BABD62AF /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = D002B3B1850375F6131EF900;
+			remoteInfo = SisuCards;
+		};
+/* End PBXContainerItemProxy section */
+
+/* Begin PBXFileReference section */
+		0064C37871F02B4100014310 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
+		2364ACC5CE164516D16C313A /* WordReminderTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WordReminderTests.swift; sourceTree = "<group>"; };
+		285E58F432660BAB272885DA /* StudyView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StudyView.swift; sourceTree = "<group>"; };
+		3BC729CE4CFE69CBB581D7F7 /* PremiumView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PremiumView.swift; sourceTree = "<group>"; };
+		3D5185AC14D15D7586BE8140 /* SisuCardsUITests.xctest */ = {isa = PBXFileReference; includeInIndex = 0; lastKnownFileType = wrapper.cfbundle; path = SisuCardsUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		545DF023ED5930BD43C87BA9 /* Models.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Models.swift; sourceTree = "<group>"; };
+		65D8172616438B3BF7E51F37 /* AutoStudyPlayer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AutoStudyPlayer.swift; sourceTree = "<group>"; };
+		72C30E1E6AF799AA9171B01E /* Artwork.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Artwork.swift; sourceTree = "<group>"; };
+		7B2FD027D792DCD7480BCE8B /* SisuCardsTests.xctest */ = {isa = PBXFileReference; includeInIndex = 0; lastKnownFileType = wrapper.cfbundle; path = SisuCardsTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		8603C2FAE438FD42ABCA7F2B /* FlashcardFlowTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FlashcardFlowTests.swift; sourceTree = "<group>"; };
+		87A0EB63696A1629403DEE44 /* WordLibraryView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WordLibraryView.swift; sourceTree = "<group>"; };
+		8CA7B252F19AA3E762CE5E97 /* ProgressViewScreen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProgressViewScreen.swift; sourceTree = "<group>"; };
+		8D752442EF97B2F2DBCCD1B2 /* PremiumFlowTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PremiumFlowTests.swift; sourceTree = "<group>"; };
+		92661912BCB218235A5DA8BE /* examples3000.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = examples3000.json; sourceTree = "<group>"; };
+		9AA023552C7042E38482904E /* artworkBriefs.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = artworkBriefs.json; sourceTree = "<group>"; };
+		9B4E67726F881F83A96839A5 /* artwork-test.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = "artwork-test.jpg"; sourceTree = "<group>"; };
+		9F0E497C0F3318F25ABD866E /* PremiumStoreTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PremiumStoreTests.swift; sourceTree = "<group>"; };
+		9FCC52ADCAAF73C75A3E03D9 /* starter100.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = starter100.json; sourceTree = "<group>"; };
+		A43335BD7C07BE99D58C8F66 /* WordReminderSettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WordReminderSettingsView.swift; sourceTree = "<group>"; };
+		A8D9D6DF9BA837B96836C738 /* AutoStudyPlayerTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AutoStudyPlayerTests.swift; sourceTree = "<group>"; };
+		AAAF2A8801C0A059C8717F2E /* StudyStoreTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StudyStoreTests.swift; sourceTree = "<group>"; };
+		AEA385BC8FAB14B483BCF3A6 /* StudyStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StudyStore.swift; sourceTree = "<group>"; };
+		B4E767F383A3FD9BC13C1596 /* PremiumStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PremiumStore.swift; sourceTree = "<group>"; };
+		B75419BCCB6CB7A5E530DA21 /* SisuCards.app */ = {isa = PBXFileReference; includeInIndex = 0; lastKnownFileType = wrapper.application; path = SisuCards.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		C672E5A53EA15207E24B1356 /* WordDetailView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WordDetailView.swift; sourceTree = "<group>"; };
+		C8F9B3AE8E6884CEC6E6F8EF /* catalog3000.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = catalog3000.json; sourceTree = "<group>"; };
+		CF65C3165AB720B06D15F046 /* Theme.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Theme.swift; sourceTree = "<group>"; };
+		D1AEAC32BE0A6F2889B93BB2 /* WordReminderPlan.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WordReminderPlan.swift; sourceTree = "<group>"; };
+		D2B48A140D5A276400CF8B06 /* CommercialReleaseTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CommercialReleaseTests.swift; sourceTree = "<group>"; };
+		D4F070584A7E0FAE52C7DEFF /* SisuCardsApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SisuCardsApp.swift; sourceTree = "<group>"; };
+		D9524191321F9EC0C627867D /* AutoStudyOptions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AutoStudyOptions.swift; sourceTree = "<group>"; };
+		DAAD077A76217B7EF73139F1 /* SisuCards.storekit */ = {isa = PBXFileReference; path = SisuCards.storekit; sourceTree = "<group>"; };
+		DB695F77D101E82E17959FA6 /* PrivacyInfo.xcprivacy */ = {isa = PBXFileReference; path = PrivacyInfo.xcprivacy; sourceTree = "<group>"; };
+		DF768CD253AA9EAA768C5433 /* WordReminders.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WordReminders.swift; sourceTree = "<group>"; };
+		E7BC28E24A468837E629B299 /* EnglishAlphabet.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EnglishAlphabet.swift; sourceTree = "<group>"; };
+		EF692679557D0C6F5DCF6E97 /* RootView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RootView.swift; sourceTree = "<group>"; };
+		FCD4CD40854B4EFCEB6337EF /* SupportView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SupportView.swift; sourceTree = "<group>"; };
+		FD7849E9A038C521797F056F /* BundledArtwork */ = {isa = PBXFileReference; lastKnownFileType = folder; name = BundledArtwork; path = Resources/BundledArtwork; sourceTree = SOURCE_ROOT; };
+/* End PBXFileReference section */
+
+/* Begin PBXGroup section */
+		3BD683B53B6F75710DDEA571 /* Resources */ = {
+			isa = PBXGroup;
+			children = (
+				9B4E67726F881F83A96839A5 /* artwork-test.jpg */,
+				9AA023552C7042E38482904E /* artworkBriefs.json */,
+				0064C37871F02B4100014310 /* Assets.xcassets */,
+				C8F9B3AE8E6884CEC6E6F8EF /* catalog3000.json */,
+				92661912BCB218235A5DA8BE /* examples3000.json */,
+				DB695F77D101E82E17959FA6 /* PrivacyInfo.xcprivacy */,
+				9FCC52ADCAAF73C75A3E03D9 /* starter100.json */,
+			);
+			path = Resources;
+			sourceTree = "<group>";
+		};
+		4289764E0608B1A62F383478 /* Tests */ = {
+			isa = PBXGroup;
+			children = (
+				A8D9D6DF9BA837B96836C738 /* AutoStudyPlayerTests.swift */,
+				9F0E497C0F3318F25ABD866E /* PremiumStoreTests.swift */,
+				AAAF2A8801C0A059C8717F2E /* StudyStoreTests.swift */,
+				2364ACC5CE164516D16C313A /* WordReminderTests.swift */,
+			);
+			path = Tests;
+			sourceTree = "<group>";
+		};
+		590BF27CF46353DFF86E3D44 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				B75419BCCB6CB7A5E530DA21 /* SisuCards.app */,
+				7B2FD027D792DCD7480BCE8B /* SisuCardsTests.xctest */,
+				3D5185AC14D15D7586BE8140 /* SisuCardsUITests.xctest */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		97D7E784393E7BB50BF08B51 /* UITests */ = {
+			isa = PBXGroup;
+			children = (
+				D2B48A140D5A276400CF8B06 /* CommercialReleaseTests.swift */,
+				8603C2FAE438FD42ABCA7F2B /* FlashcardFlowTests.swift */,
+				8D752442EF97B2F2DBCCD1B2 /* PremiumFlowTests.swift */,
+			);
+			path = UITests;
+			sourceTree = "<group>";
+		};
+		B713DB917F42E1E10652F2CC /* Sources */ = {
+			isa = PBXGroup;
+			children = (
+				72C30E1E6AF799AA9171B01E /* Artwork.swift */,
+				D9524191321F9EC0C627867D /* AutoStudyOptions.swift */,
+				65D8172616438B3BF7E51F37 /* AutoStudyPlayer.swift */,
+				E7BC28E24A468837E629B299 /* EnglishAlphabet.swift */,
+				545DF023ED5930BD43C87BA9 /* Models.swift */,
+				B4E767F383A3FD9BC13C1596 /* PremiumStore.swift */,
+				3BC729CE4CFE69CBB581D7F7 /* PremiumView.swift */,
+				8CA7B252F19AA3E762CE5E97 /* ProgressViewScreen.swift */,
+				EF692679557D0C6F5DCF6E97 /* RootView.swift */,
+				D4F070584A7E0FAE52C7DEFF /* SisuCardsApp.swift */,
+				AEA385BC8FAB14B483BCF3A6 /* StudyStore.swift */,
+				285E58F432660BAB272885DA /* StudyView.swift */,
+				FCD4CD40854B4EFCEB6337EF /* SupportView.swift */,
+				CF65C3165AB720B06D15F046 /* Theme.swift */,
+				C672E5A53EA15207E24B1356 /* WordDetailView.swift */,
+				87A0EB63696A1629403DEE44 /* WordLibraryView.swift */,
+				D1AEAC32BE0A6F2889B93BB2 /* WordReminderPlan.swift */,
+				DF768CD253AA9EAA768C5433 /* WordReminders.swift */,
+				A43335BD7C07BE99D58C8F66 /* WordReminderSettingsView.swift */,
+			);
+			path = Sources;
+			sourceTree = "<group>";
+		};
+		C9AA7DE7606208C54FEDD51B = {
+			isa = PBXGroup;
+			children = (
+				FD7849E9A038C521797F056F /* BundledArtwork */,
+				3BD683B53B6F75710DDEA571 /* Resources */,
+				B713DB917F42E1E10652F2CC /* Sources */,
+				FB9032AF951E317F1F69603C /* StoreKit */,
+				4289764E0608B1A62F383478 /* Tests */,
+				97D7E784393E7BB50BF08B51 /* UITests */,
+				590BF27CF46353DFF86E3D44 /* Products */,
+			);
+			sourceTree = "<group>";
+		};
+		FB9032AF951E317F1F69603C /* StoreKit */ = {
+			isa = PBXGroup;
+			children = (
+				DAAD077A76217B7EF73139F1 /* SisuCards.storekit */,
+			);
+			path = StoreKit;
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		43AECD70B9B6C7E3E072A30F /* SisuCardsTests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = F1AC94A9BABF07AC33329B3F /* Build configuration list for PBXNativeTarget "SisuCardsTests" */;
+			buildPhases = (
+				0F7B8612B4423674A36CCACE /* Sources */,
+				74F14BB99A16557477680E34 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				9119492E205364DD554A2F9C /* PBXTargetDependency */,
+			);
+			name = SisuCardsTests;
+			productName = SisuCardsTests;
+			productReference = 7B2FD027D792DCD7480BCE8B /* SisuCardsTests.xctest */;
+			productType = "com.apple.product-type.bundle.unit-test";
+		};
+		D002B3B1850375F6131EF900 /* SisuCards */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = F6BAAF40DA9B9CDCF5ED73FA /* Build configuration list for PBXNativeTarget "SisuCards" */;
+			buildPhases = (
+				8831547401147407EC0DB315 /* Sources */,
+				F69576A887952167C27CCE81 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = SisuCards;
+			productName = SisuCards;
+			productReference = B75419BCCB6CB7A5E530DA21 /* SisuCards.app */;
+			productType = "com.apple.product-type.application";
+		};
+		F16102F6A8F1DA39B8DB37E9 /* SisuCardsUITests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 7BCBCAA0D551D671CA8D914D /* Build configuration list for PBXNativeTarget "SisuCardsUITests" */;
+			buildPhases = (
+				1D6CE850CABC95173DC29DF6 /* Sources */,
+				75373A875A1AB2B5E27B75BE /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				78FC8DCFC16E766D52F82F93 /* PBXTargetDependency */,
+			);
+			name = SisuCardsUITests;
+			productName = SisuCardsUITests;
+			productReference = 3D5185AC14D15D7586BE8140 /* SisuCardsUITests.xctest */;
+			productType = "com.apple.product-type.bundle.ui-testing";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		CCB20B7CA5B627B1BABD62AF /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				BuildIndependentTargetsInParallel = YES;
+				LastUpgradeCheck = 1430;
+				TargetAttributes = {
+					43AECD70B9B6C7E3E072A30F = {
+						DevelopmentTeam = 2FN25VD7TR;
+						ProvisioningStyle = Automatic;
+					};
+					D002B3B1850375F6131EF900 = {
+						DevelopmentTeam = 2FN25VD7TR;
+						ProvisioningStyle = Automatic;
+					};
+					F16102F6A8F1DA39B8DB37E9 = {
+						DevelopmentTeam = 2FN25VD7TR;
+						ProvisioningStyle = Automatic;
+						TestTargetID = D002B3B1850375F6131EF900;
+					};
+				};
+			};
+			buildConfigurationList = 57C8991FCF0479B1E3A5EEAC /* Build configuration list for PBXProject "SisuCards" */;
+			compatibilityVersion = "Xcode 14.0";
+			developmentRegion = en;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				Base,
+				en,
+			);
+			mainGroup = C9AA7DE7606208C54FEDD51B;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				D002B3B1850375F6131EF900 /* SisuCards */,
+				43AECD70B9B6C7E3E072A30F /* SisuCardsTests */,
+				F16102F6A8F1DA39B8DB37E9 /* SisuCardsUITests */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXResourcesBuildPhase section */
+		74F14BB99A16557477680E34 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				5835975E9B972F3D6E8E071C /* SisuCards.storekit in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		75373A875A1AB2B5E27B75BE /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				5F06C310A13A5C58358BBA9B /* SisuCards.storekit in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		F69576A887952167C27CCE81 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				B2FC9A94A675B33C6EAE28AE /* Assets.xcassets in Resources */,
+				67E8F546E6328A4B1ECDC876 /* BundledArtwork in Resources */,
+				5595CC158C8FA95D3F06208F /* PrivacyInfo.xcprivacy in Resources */,
+				5D1B58E198773F46D9D58499 /* artwork-test.jpg in Resources */,
+				D3A79BDAFDAA869243AAC4A9 /* artworkBriefs.json in Resources */,
+				C9C2151A955FFE95106A3A2F /* catalog3000.json in Resources */,
+				FCD385E62F992E78032C1E16 /* examples3000.json in Resources */,
+				0415176C0E0FCF9B1FD24607 /* starter100.json in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		0F7B8612B4423674A36CCACE /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				9FF33B84C639E30925B14D20 /* AutoStudyPlayerTests.swift in Sources */,
+				09E48BE61171C457B6E2FE01 /* PremiumStoreTests.swift in Sources */,
+				21EF03D51DC5B165741D47CC /* StudyStoreTests.swift in Sources */,
+				7F0A628DEAEB21F7100F9BD1 /* WordReminderTests.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		1D6CE850CABC95173DC29DF6 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				1CAFCF017202EE93B3644449 /* CommercialReleaseTests.swift in Sources */,
+				D2AA3844220F0CD3B46128FB /* FlashcardFlowTests.swift in Sources */,
+				8DA395131DF416DB88442397 /* PremiumFlowTests.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		8831547401147407EC0DB315 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				4EC72A9AA8A67A9224DD5246 /* Artwork.swift in Sources */,
+				B9F7A93D37798D48C473A39C /* AutoStudyOptions.swift in Sources */,
+				E120FD660532991B5D097055 /* AutoStudyPlayer.swift in Sources */,
+				CDFEC5373A59AA1A03B12BBD /* EnglishAlphabet.swift in Sources */,
+				8499D013227FFEAD35C7CE30 /* Models.swift in Sources */,
+				B3527348243263C865C6203B /* PremiumStore.swift in Sources */,
+				071A645D3A80D0BEB58927B5 /* PremiumView.swift in Sources */,
+				46F02D29E6880E9EED5038E8 /* ProgressViewScreen.swift in Sources */,
+				87E571F13BF4D74DD23A4DDF /* RootView.swift in Sources */,
+				1B748A3D8D5EB799DFF171AB /* SisuCardsApp.swift in Sources */,
+				2334B42ED7EB4557A899AA61 /* StudyStore.swift in Sources */,
+				772FA348CA28991B3913CF25 /* StudyView.swift in Sources */,
+				6E13D8471A9063800E7B7BAD /* SupportView.swift in Sources */,
+				1919E1E07BC0FED0ECA34311 /* Theme.swift in Sources */,
+				D348A7B1B98328C4D3C432FB /* WordDetailView.swift in Sources */,
+				17EE02E2AB660E4A26B0DDA0 /* WordLibraryView.swift in Sources */,
+				34470C0D1E54D2A077C99D24 /* WordReminderPlan.swift in Sources */,
+				D0F7FB171895FB599D66B50F /* WordReminderSettingsView.swift in Sources */,
+				304EC2EAC48F657AB9583170 /* WordReminders.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin PBXTargetDependency section */
+		78FC8DCFC16E766D52F82F93 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = D002B3B1850375F6131EF900 /* SisuCards */;
+			targetProxy = BE5AF856ACE61979FCAF5229 /* PBXContainerItemProxy */;
+		};
+		9119492E205364DD554A2F9C /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = D002B3B1850375F6131EF900 /* SisuCards */;
+			targetProxy = 3E840EACA71A2213BC4AB342 /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
+
+/* Begin XCBuildConfiguration section */
+		284DD5B21242B957A943B432 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				INFOPLIST_KEY_CFBundleDisplayName = "3000 Finnish Words";
+				INFOPLIST_KEY_ITSAppUsesNonExemptEncryption = NO;
+				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.education";
+				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
+				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
+				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = UIInterfaceOrientationPortrait;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = com.linapps.ykiflashcards;
+				SDKROOT = iphoneos;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Debug;
+		};
+		6D0EB0DD1F6D67F022AA2EEA /* Personal */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@loader_path/Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = com.linapps.SisuCardsTests;
+				SDKROOT = iphoneos;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/SisuCards.app/SisuCards";
+			};
+			name = Personal;
+		};
+		717C005CEDEF147F930C45F7 /* Personal */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = PersonalIcon;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				CURRENT_PROJECT_VERSION = 22;
+				INFOPLIST_KEY_CFBundleDisplayName = "Sisu Cards";
+				INFOPLIST_KEY_ITSAppUsesNonExemptEncryption = NO;
+				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.education";
+				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
+				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
+				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = UIInterfaceOrientationPortrait;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				MARKETING_VERSION = 0.21.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.finnishcards.SisuCards;
+				SDKROOT = iphoneos;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Personal;
+		};
+		81370A61B32475139BE2780B /* Personal */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				CODE_SIGN_STYLE = Automatic;
+				COPY_PHASE_STRIP = NO;
+				CURRENT_PROJECT_VERSION = 29;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				DEVELOPMENT_TEAM = 2FN25VD7TR;
+				ENABLE_PREVIEWS = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_TESTABILITY = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"$(inherited)",
+					"DEBUG=1",
+				);
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				GENERATE_INFOPLIST_FILE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
+				MARKETING_VERSION = 1.0;
+				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
+				MTL_FAST_MATH = YES;
+				ONLY_ACTIVE_ARCH = YES;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = iphoneos;
+				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
+				SUPPORTS_MACCATALYST = NO;
+				SUPPORTS_MAC_DESIGNED_FOR_IPHONE_IPAD = NO;
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = "$(inherited) DEBUG SISUCARDS_PERSONAL";
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Personal;
+		};
+		8DA0A9F745822EE454E01C61 /* Personal */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@loader_path/Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = com.linapps.SisuCardsUITests;
+				SDKROOT = iphoneos;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_TARGET_NAME = SisuCards;
+			};
+			name = Personal;
+		};
+		94FF00E345BFBFC3EDD8378F /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				CODE_SIGN_STYLE = Automatic;
+				COPY_PHASE_STRIP = NO;
+				CURRENT_PROJECT_VERSION = 29;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				DEVELOPMENT_TEAM = 2FN25VD7TR;
+				ENABLE_NS_ASSERTIONS = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				GENERATE_INFOPLIST_FILE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
+				MARKETING_VERSION = 1.0;
+				MTL_ENABLE_DEBUG_INFO = NO;
+				MTL_FAST_MATH = YES;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = iphoneos;
+				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
+				SUPPORTS_MACCATALYST = NO;
+				SUPPORTS_MAC_DESIGNED_FOR_IPHONE_IPAD = NO;
+				SWIFT_COMPILATION_MODE = wholemodule;
+				SWIFT_OPTIMIZATION_LEVEL = "-O";
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Release;
+		};
+		A295F9A2F1F0F0BEB3E1C5C4 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@loader_path/Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = com.linapps.SisuCardsTests;
+				SDKROOT = iphoneos;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/SisuCards.app/SisuCards";
+			};
+			name = Release;
+		};
+		AB07FF92E6B487C1D1ABC1D2 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@loader_path/Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = com.linapps.SisuCardsUITests;
+				SDKROOT = iphoneos;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_TARGET_NAME = SisuCards;
+			};
+			name = Release;
+		};
+		D1A5872A2D600E600D996AA2 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				CODE_SIGN_STYLE = Automatic;
+				COPY_PHASE_STRIP = NO;
+				CURRENT_PROJECT_VERSION = 29;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				DEVELOPMENT_TEAM = 2FN25VD7TR;
+				ENABLE_PREVIEWS = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_TESTABILITY = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"$(inherited)",
+					"DEBUG=1",
+				);
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				GENERATE_INFOPLIST_FILE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
+				MARKETING_VERSION = 1.0;
+				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
+				MTL_FAST_MATH = YES;
+				ONLY_ACTIVE_ARCH = YES;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = iphoneos;
+				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
+				SUPPORTS_MACCATALYST = NO;
+				SUPPORTS_MAC_DESIGNED_FOR_IPHONE_IPAD = NO;
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = DEBUG;
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Debug;
+		};
+		E7A4BA896708DF40E5A408E7 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@loader_path/Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = com.linapps.SisuCardsUITests;
+				SDKROOT = iphoneos;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_TARGET_NAME = SisuCards;
+			};
+			name = Debug;
+		};
+		F6DE1AA03468444530FF3E0D /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				INFOPLIST_KEY_CFBundleDisplayName = "3000 Finnish Words";
+				INFOPLIST_KEY_ITSAppUsesNonExemptEncryption = NO;
+				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.education";
+				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
+				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
+				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = UIInterfaceOrientationPortrait;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = com.linapps.ykiflashcards;
+				SDKROOT = iphoneos;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Release;
+		};
+		FB96F822A4EC9C3AFBED436F /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@loader_path/Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = com.linapps.SisuCardsTests;
+				SDKROOT = iphoneos;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/SisuCards.app/SisuCards";
+			};
+			name = Debug;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		57C8991FCF0479B1E3A5EEAC /* Build configuration list for PBXProject "SisuCards" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				D1A5872A2D600E600D996AA2 /* Debug */,
+				81370A61B32475139BE2780B /* Personal */,
+				94FF00E345BFBFC3EDD8378F /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Debug;
+		};
+		7BCBCAA0D551D671CA8D914D /* Build configuration list for PBXNativeTarget "SisuCardsUITests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				E7A4BA896708DF40E5A408E7 /* Debug */,
+				8DA0A9F745822EE454E01C61 /* Personal */,
+				AB07FF92E6B487C1D1ABC1D2 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Debug;
+		};
+		F1AC94A9BABF07AC33329B3F /* Build configuration list for PBXNativeTarget "SisuCardsTests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				FB96F822A4EC9C3AFBED436F /* Debug */,
+				6D0EB0DD1F6D67F022AA2EEA /* Personal */,
+				A295F9A2F1F0F0BEB3E1C5C4 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Debug;
+		};
+		F6BAAF40DA9B9CDCF5ED73FA /* Build configuration list for PBXNativeTarget "SisuCards" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				284DD5B21242B957A943B432 /* Debug */,
+				717C005CEDEF147F930C45F7 /* Personal */,
+				F6DE1AA03468444530FF3E0D /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Debug;
+		};
+/* End XCConfigurationList section */
+	};
+	rootObject = CCB20B7CA5B627B1BABD62AF /* Project object */;
+}

@@ -1,0 +1,26 @@
+[
+  {
+    "wordID": "fi-1232",
+    "oldSentence": "Terveys on tärkeä.",
+    "newSentence": "Terveys on tärkeää.",
+    "reason": "Use the natural partitive predicate adjective with the abstract uncountable subject health."
+  },
+  {
+    "wordID": "fi-1235",
+    "oldSentence": "Kuulo heikkenee melussa.",
+    "newSentence": "Kuulo on tärkeä aisti.",
+    "reason": "Teach the hearing sense directly without a generalized medical claim about noise."
+  },
+  {
+    "wordID": "fi-1239",
+    "oldSentence": "Taivas on pilvetön.",
+    "newSentence": "Tarinassa taivas on rauhan paikka.",
+    "reason": "Match heaven in a fictional story rather than the separate sky sense of taivas."
+  },
+  {
+    "wordID": "fi-1304",
+    "oldSentence": "Metsästys vaatii luvan.",
+    "newSentence": "Metsästys on hänen harrastuksensa.",
+    "reason": "Give a simple hunting-noun example without making a universal legal claim about permits."
+  }
+]

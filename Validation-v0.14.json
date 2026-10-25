@@ -1,0 +1,123 @@
+{
+  "version": "0.14.0",
+  "build": 15,
+  "result": "Passed",
+  "testsRunThisUpdate": 18,
+  "databaseTestsPassed": 17,
+  "UITestsPassed": 1,
+  "UIValidation": "H hockey image visible on a fresh installation and opens full-screen without importing",
+  "bundledArtworkCount": 1308,
+  "AArtworkCount": 211,
+  "BArtworkCount": 152,
+  "CArtworkCount": 292,
+  "DArtworkCount": 163,
+  "EArtworkCount": 162,
+  "FArtworkCount": 155,
+  "GArtworkCount": 73,
+  "HArtworkCount": 100,
+  "physicalIPhoneBuild": "Succeeded without signing or installation",
+  "nativeBundleVerification": {
+    "version": "0.14.0",
+    "build": 15,
+    "bundledArtwork": 1308,
+    "bundledArtworkBytes": 266122304,
+    "totalUnsignedAppBytes": 281220955,
+    "checks": "All 2617 bundled artwork resource files, canonical prompts and vocabulary/example resources match final source SHA-256; version/build verified. Prior 1208 A–G selected assets are unchanged. Four H example corrections are synchronized.",
+    "installation": "Not attempted"
+  },
+  "artworkVerification": {
+    "letter": "H",
+    "expectedWords": 100,
+    "generatedImages": 100,
+    "visuallyCheckedImages": 100,
+    "importedRecords": 100,
+    "databaseIntegrity": "ok",
+    "allAssetRevisionsVerified": 1330,
+    "allJSONFilesParsed": 1360,
+    "optimizedJPEGBytes": 17895376,
+    "thumbnailBytes": 1261155,
+    "selectedOriginalPNGBytes": 217276923,
+    "importFileBytes": 24171052,
+    "checkedAt": "2026-10-17T12:50:17.793984+00:00",
+    "checks": "Complete letter coverage, unique IDs, approval status, exact prompts, base64/JPEG decoding, dimensions, SHA-256 files, SQLite integrity and JSON syntax.",
+    "note": "Visual review was performed by the agent. Independent Finnish editorial review and physical iPhone pack selection are separate."
+  },
+  "testResult": {
+    "devicesAndConfigurations": [
+      {
+        "device": {
+          "architecture": "arm64",
+          "deviceId": "5CC5F52D-EFAD-4CA6-8517-B3EC8AEF9C54",
+          "deviceName": "iPhone 17 Pro",
+          "modelName": "iPhone 17 Pro",
+          "osBuildNumber": "23F77",
+          "osVersion": "26.5",
+          "platform": "iOS Simulator"
+        },
+        "expectedFailures": 0,
+        "failedTests": 0,
+        "passedTests": 18,
+        "skippedTests": 0,
+        "testPlanConfiguration": {
+          "configurationId": "1",
+          "configurationName": "Test Scheme Action"
+        }
+      }
+    ],
+    "environmentDescription": "SisuCards · Built with macOS 26.5",
+    "expectedFailures": 0,
+    "failedTests": 0,
+    "finishTime": 1792241540.348,
+    "passedTests": 18,
+    "result": "Passed",
+    "skippedTests": 0,
+    "startTime": 1792241415.63,
+    "statistics": [],
+    "testFailures": [],
+    "title": "Test - SisuCards",
+    "topInsights": [
+      {
+        "category": "Longest Test Runs",
+        "impact": "60% of duration",
+        "text": "1 longest test run with outlier durations exceeding 7.72s (three standard deviations)"
+      }
+    ],
+    "totalTestCount": 18
+  },
+  "exampleCorrections": [
+    {
+      "wordID": "fi-1232",
+      "oldSentence": "Terveys on tärkeä.",
+      "newSentence": "Terveys on tärkeää.",
+      "reason": "Use the natural partitive predicate adjective with the abstract uncountable subject health."
+    },
+    {
+      "wordID": "fi-1235",
+      "oldSentence": "Kuulo heikkenee melussa.",
+      "newSentence": "Kuulo on tärkeä aisti.",
+      "reason": "Teach the hearing sense directly without a generalized medical claim about noise."
+    },
+    {
+      "wordID": "fi-1239",
+      "oldSentence": "Taivas on pilvetön.",
+      "newSentence": "Tarinassa taivas on rauhan paikka.",
+      "reason": "Match heaven in a fictional story rather than the separate sky sense of taivas."
+    },
+    {
+      "wordID": "fi-1304",
+      "oldSentence": "Metsästys vaatii luvan.",
+      "newSentence": "Metsästys on hänen harrastuksensa.",
+      "reason": "Give a simple hunting-noun example without making a universal legal claim about permits."
+    }
+  ],
+  "historicalVerification": [
+    "Validation-v0.7.json",
+    "Validation-v0.8.json",
+    "Validation-v0.9.json",
+    "Validation-v0.10.json",
+    "Validation-v0.11.json",
+    "Validation-v0.12.json",
+    "Validation-v0.13.json"
+  ],
+  "note": "All database tests, including decoding every bundled A–H image and thumbnail, and the H viewer smoke test passed. Full layout tests are unchanged and were verified in 0.7. Physical iPhone installation and native picker selection were not attempted."
+}

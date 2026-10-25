@@ -1,0 +1,404 @@
+{
+  "version": "0.19.0",
+  "build": 20,
+  "result": "Passed",
+  "testsRunThisUpdate": 54,
+  "uniqueTestsPassed": 33,
+  "databaseAndPlaybackTestsPassed": 26,
+  "UITestsPassed": 7,
+  "initialRegressionResult": {
+    "devicesAndConfigurations": [
+      {
+        "device": {
+          "architecture": "arm64",
+          "deviceId": "5CC5F52D-EFAD-4CA6-8517-B3EC8AEF9C54",
+          "deviceName": "iPhone 17 Pro",
+          "modelName": "iPhone 17 Pro",
+          "osBuildNumber": "23F77",
+          "osVersion": "26.5",
+          "platform": "iOS Simulator"
+        },
+        "expectedFailures": 0,
+        "failedTests": 0,
+        "passedTests": 32,
+        "skippedTests": 0,
+        "testPlanConfiguration": {
+          "configurationId": "1",
+          "configurationName": "Test Scheme Action"
+        }
+      }
+    ],
+    "environmentDescription": "SisuCards · Built with macOS 26.5",
+    "expectedFailures": 0,
+    "failedTests": 0,
+    "finishTime": 1792347637.867,
+    "passedTests": 32,
+    "result": "Passed",
+    "skippedTests": 0,
+    "startTime": 1792347333.801,
+    "statistics": [
+      {
+        "subtitle": "1 test run",
+        "title": "1 test collected performance metrics"
+      }
+    ],
+    "testFailures": [],
+    "title": "Test - SisuCards",
+    "topInsights": [
+      {
+        "category": "Longest Test Runs",
+        "impact": "75% of duration",
+        "text": "1 longest test run with outlier durations exceeding 18.50s (three standard deviations)"
+      }
+    ],
+    "totalTestCount": 32
+  },
+  "finalPlaybackRegressionResult": {
+    "devicesAndConfigurations": [
+      {
+        "device": {
+          "architecture": "arm64",
+          "deviceId": "5CC5F52D-EFAD-4CA6-8517-B3EC8AEF9C54",
+          "deviceName": "iPhone 17 Pro",
+          "modelName": "iPhone 17 Pro",
+          "osBuildNumber": "23F77",
+          "osVersion": "26.5",
+          "platform": "iOS Simulator"
+        },
+        "expectedFailures": 0,
+        "failedTests": 0,
+        "passedTests": 9,
+        "skippedTests": 0,
+        "testPlanConfiguration": {
+          "configurationId": "1",
+          "configurationName": "Test Scheme Action"
+        }
+      }
+    ],
+    "environmentDescription": "SisuCards · Built with macOS 26.5",
+    "expectedFailures": 0,
+    "failedTests": 0,
+    "finishTime": 1792347825.768,
+    "passedTests": 9,
+    "result": "Passed",
+    "skippedTests": 0,
+    "startTime": 1792347661.525,
+    "statistics": [],
+    "testFailures": [],
+    "title": "Test - SisuCards",
+    "topInsights": [],
+    "totalTestCount": 9
+  },
+  "compactLayoutResult": {
+    "devicesAndConfigurations": [
+      {
+        "device": {
+          "architecture": "arm64",
+          "deviceId": "2A7E3AFE-0AAE-4AD0-99B1-3CBC893F12D5",
+          "deviceName": "iPhone SE (3rd generation)",
+          "modelName": "iPhone SE (3rd generation)",
+          "osBuildNumber": "22D8075",
+          "osVersion": "18.3.1",
+          "platform": "iOS Simulator"
+        },
+        "expectedFailures": 0,
+        "failedTests": 0,
+        "passedTests": 1,
+        "skippedTests": 0,
+        "testPlanConfiguration": {
+          "configurationId": "1",
+          "configurationName": "Test Scheme Action"
+        }
+      }
+    ],
+    "environmentDescription": "SisuCards · Built with macOS 26.5",
+    "expectedFailures": 0,
+    "failedTests": 0,
+    "finishTime": 1792350338.739,
+    "passedTests": 1,
+    "result": "Passed",
+    "skippedTests": 0,
+    "startTime": 1792350280.222,
+    "statistics": [],
+    "testFailures": [],
+    "title": "Test - SisuCards",
+    "topInsights": [],
+    "totalTestCount": 1
+  },
+  "finalControlsResult": {
+    "devicesAndConfigurations": [
+      {
+        "device": {
+          "architecture": "arm64",
+          "deviceId": "5CC5F52D-EFAD-4CA6-8517-B3EC8AEF9C54",
+          "deviceName": "iPhone 17 Pro",
+          "modelName": "iPhone 17 Pro",
+          "osBuildNumber": "23F77",
+          "osVersion": "26.5",
+          "platform": "iOS Simulator"
+        },
+        "expectedFailures": 0,
+        "failedTests": 1,
+        "passedTests": 3,
+        "skippedTests": 0,
+        "testPlanConfiguration": {
+          "configurationId": "1",
+          "configurationName": "Test Scheme Action"
+        }
+      }
+    ],
+    "environmentDescription": "SisuCards · Built with macOS 26.5",
+    "expectedFailures": 0,
+    "failedTests": 1,
+    "finishTime": 1792350904.237,
+    "passedTests": 3,
+    "result": "Failed",
+    "skippedTests": 0,
+    "startTime": 1792350729.98,
+    "statistics": [],
+    "testFailures": [
+      {
+        "failureText": "Asynchronous wait failed: Exceeded timeout of 5 seconds, with unfulfilled expectations: \"Expect predicate `value == \"Off\"` for object \"playback.promptAudio\" Switch\".",
+        "targetName": "SisuCardsUITests",
+        "testIdentifier": 4,
+        "testIdentifierString": "FlashcardFlowTests/testPlaybackAudioSettingsCanBeChangedWithoutStartingPlayback()",
+        "testIdentifierURL": "test://com.apple.xcode/SisuCards/SisuCardsUITests/FlashcardFlowTests/testPlaybackAudioSettingsCanBeChangedWithoutStartingPlayback",
+        "testName": "testPlaybackAudioSettingsCanBeChangedWithoutStartingPlayback()"
+      }
+    ],
+    "title": "Test - SisuCards",
+    "topInsights": [],
+    "totalTestCount": 4
+  },
+  "finalAudioSettingsResult": {
+    "devicesAndConfigurations": [
+      {
+        "device": {
+          "architecture": "arm64",
+          "deviceId": "5CC5F52D-EFAD-4CA6-8517-B3EC8AEF9C54",
+          "deviceName": "iPhone 17 Pro",
+          "modelName": "iPhone 17 Pro",
+          "osBuildNumber": "23F77",
+          "osVersion": "26.5",
+          "platform": "iOS Simulator"
+        },
+        "expectedFailures": 0,
+        "failedTests": 0,
+        "passedTests": 1,
+        "skippedTests": 0,
+        "testPlanConfiguration": {
+          "configurationId": "1",
+          "configurationName": "Test Scheme Action"
+        }
+      }
+    ],
+    "environmentDescription": "SisuCards · Built with macOS 26.5",
+    "expectedFailures": 0,
+    "failedTests": 0,
+    "finishTime": 1792351470.505,
+    "passedTests": 1,
+    "result": "Passed",
+    "skippedTests": 0,
+    "startTime": 1792351407.486,
+    "statistics": [],
+    "testFailures": [],
+    "title": "Test - SisuCards",
+    "topInsights": [],
+    "totalTestCount": 1
+  },
+  "initialCompactResult": {
+    "devicesAndConfigurations": [
+      {
+        "device": {
+          "architecture": "arm64",
+          "deviceId": "2A7E3AFE-0AAE-4AD0-99B1-3CBC893F12D5",
+          "deviceName": "iPhone SE (3rd generation)",
+          "modelName": "iPhone SE (3rd generation)",
+          "osBuildNumber": "22D8075",
+          "osVersion": "18.3.1",
+          "platform": "iOS Simulator"
+        },
+        "expectedFailures": 0,
+        "failedTests": 1,
+        "passedTests": 1,
+        "skippedTests": 0,
+        "testPlanConfiguration": {
+          "configurationId": "1",
+          "configurationName": "Test Scheme Action"
+        }
+      }
+    ],
+    "environmentDescription": "SisuCards · Built with macOS 26.5",
+    "expectedFailures": 0,
+    "failedTests": 1,
+    "finishTime": 1792348270.143,
+    "passedTests": 1,
+    "result": "Failed",
+    "skippedTests": 0,
+    "startTime": 1792347779.03,
+    "statistics": [],
+    "testFailures": [
+      {
+        "failureText": "Failed to tap \"playback.start\" Button: No matches found for Elements matching predicate '\"playback.start\" IN identifiers' from input {(\n    Button, identifier: 'rectangle.on.rectangle.angled', label: 'Study', Selected,\n    Button, identifier: 'text.book.closed', label: 'Words',\n    Button, identifier: 'chart.bar.xaxis', label: 'Progress',\n    Button, identifier: 'study.filters', label: 'Filters: New & learning',\n    Button, identifier: 'review.undo', label: 'Undo last swipe', Disabled,\n    Button, identifier: 'study.autoplay', label: 'Play automatic study',\n    Button, identifier: 'study.options', label: 'Study options',\n    Button, identifier: 'playback.previous', label: 'Previous card',\n    Button, identifier: 'playback.pause', label: 'Play automatic study',\n    Button, identifier: 'playback.next', label: 'Next card',\n    Button, identifier: 'playback.stop', label: 'Return to manual study',\n    Button,\n    Button, identifier: 'card.reveal', label: 'Reveal Finnish',\n    Button, identifier: 'card.flip', label: 'Flip card'\n)}\nPossibly caused by runtime issues:\nAutomation type mismatch: computed Button from legacy attributes vs PopUpButton from modern attribute. Input attributes and values: {\n    \"XC_kAXXCAttributeAutomationType\" = 14;\n    \"XC_kAXXCAttributeElementBaseType\" = UIResponder;\n    \"XC_kAXXCAttributeElementType\" = \"SwiftUI.AccessibilityNode\";\n    \"XC_kAXXCAttributeTraits\" = 1108101562369;\n}\nSee test report attachments for more detail.",
+        "targetName": "SisuCardsUITests",
+        "testIdentifier": 1,
+        "testIdentifierString": "FlashcardFlowTests/testAutomaticPlaybackRevealsAdvancesAndStopsWithoutRating()",
+        "testIdentifierURL": "test://com.apple.xcode/SisuCards/SisuCardsUITests/FlashcardFlowTests/testAutomaticPlaybackRevealsAdvancesAndStopsWithoutRating",
+        "testName": "testAutomaticPlaybackRevealsAdvancesAndStopsWithoutRating()"
+      }
+    ],
+    "title": "Test - SisuCards",
+    "topInsights": [],
+    "totalTestCount": 2
+  },
+  "compactRetryResult": {
+    "devicesAndConfigurations": [
+      {
+        "device": {
+          "architecture": "arm64",
+          "deviceId": "2A7E3AFE-0AAE-4AD0-99B1-3CBC893F12D5",
+          "deviceName": "iPhone SE (3rd generation)",
+          "modelName": "iPhone SE (3rd generation)",
+          "osBuildNumber": "22D8075",
+          "osVersion": "18.3.1",
+          "platform": "iOS Simulator"
+        },
+        "expectedFailures": 0,
+        "failedTests": 1,
+        "passedTests": 1,
+        "skippedTests": 0,
+        "testPlanConfiguration": {
+          "configurationId": "1",
+          "configurationName": "Test Scheme Action"
+        }
+      }
+    ],
+    "environmentDescription": "SisuCards · Built with macOS 26.5",
+    "expectedFailures": 0,
+    "failedTests": 1,
+    "finishTime": 1792349386.436,
+    "passedTests": 1,
+    "result": "Failed",
+    "skippedTests": 0,
+    "startTime": 1792348439.769,
+    "statistics": [],
+    "testFailures": [
+      {
+        "failureText": "XCTAssertTrue failed",
+        "targetName": "SisuCardsUITests",
+        "testIdentifier": 1,
+        "testIdentifierString": "FlashcardFlowTests/testAutomaticPlaybackRevealsAdvancesAndStopsWithoutRating()",
+        "testIdentifierURL": "test://com.apple.xcode/SisuCards/SisuCardsUITests/FlashcardFlowTests/testAutomaticPlaybackRevealsAdvancesAndStopsWithoutRating",
+        "testName": "testAutomaticPlaybackRevealsAdvancesAndStopsWithoutRating()"
+      }
+    ],
+    "title": "Test - SisuCards",
+    "topInsights": [],
+    "totalTestCount": 2
+  },
+  "initialControlsResult": {
+    "devicesAndConfigurations": [
+      {
+        "device": {
+          "architecture": "arm64",
+          "deviceId": "5CC5F52D-EFAD-4CA6-8517-B3EC8AEF9C54",
+          "deviceName": "iPhone 17 Pro",
+          "modelName": "iPhone 17 Pro",
+          "osBuildNumber": "23F77",
+          "osVersion": "26.5",
+          "platform": "iOS Simulator"
+        },
+        "expectedFailures": 0,
+        "failedTests": 3,
+        "passedTests": 0,
+        "skippedTests": 0,
+        "testPlanConfiguration": {
+          "configurationId": "1",
+          "configurationName": "Test Scheme Action"
+        }
+      }
+    ],
+    "environmentDescription": "SisuCards · Built with macOS 26.5",
+    "expectedFailures": 0,
+    "failedTests": 3,
+    "finishTime": 1792349516.463,
+    "passedTests": 0,
+    "result": "Failed",
+    "skippedTests": 0,
+    "startTime": 1792348447.107,
+    "statistics": [],
+    "testFailures": [
+      {
+        "failureText": "Asynchronous wait failed: Exceeded timeout of 8 seconds, with unfulfilled expectations: \"Expect predicate `label == \"zone\"` for object \"card.prompt\" StaticText\".",
+        "targetName": "SisuCardsUITests",
+        "testIdentifier": 1,
+        "testIdentifierString": "FlashcardFlowTests/testAutomaticPlaybackFinishesFocusedWordWithoutChangingKnownCount()",
+        "testIdentifierURL": "test://com.apple.xcode/SisuCards/SisuCardsUITests/FlashcardFlowTests/testAutomaticPlaybackFinishesFocusedWordWithoutChangingKnownCount",
+        "testName": "testAutomaticPlaybackFinishesFocusedWordWithoutChangingKnownCount()"
+      },
+      {
+        "failureText": "Failed to get matching snapshots: Timed out while evaluating UI query.",
+        "targetName": "SisuCardsUITests",
+        "testIdentifier": 2,
+        "testIdentifierString": "FlashcardFlowTests/testAutomaticPlaybackPausesWhenChangingTabs()",
+        "testIdentifierURL": "test://com.apple.xcode/SisuCards/SisuCardsUITests/FlashcardFlowTests/testAutomaticPlaybackPausesWhenChangingTabs",
+        "testName": "testAutomaticPlaybackPausesWhenChangingTabs()"
+      },
+      {
+        "failureText": "XCTAssertTrue failed",
+        "targetName": "SisuCardsUITests",
+        "testIdentifier": 3,
+        "testIdentifierString": "FlashcardFlowTests/testAutomaticPlaybackRevealsAdvancesAndStopsWithoutRating()",
+        "testIdentifierURL": "test://com.apple.xcode/SisuCards/SisuCardsUITests/FlashcardFlowTests/testAutomaticPlaybackRevealsAdvancesAndStopsWithoutRating",
+        "testName": "testAutomaticPlaybackRevealsAdvancesAndStopsWithoutRating()"
+      }
+    ],
+    "title": "Test - SisuCards",
+    "topInsights": [],
+    "totalTestCount": 3
+  },
+  "bundledArtworkCount": 3000,
+  "EnglishSentenceTranslations": 3000,
+  "screenshotReview": {
+    "reviewed": true,
+    "checkedAt": "2026-10-18T19:25:56.779611+00:00",
+    "images": [
+      {
+        "path": "Preview/31-automatic-study-options.png",
+        "sha256": "2f00aeef2501872334e38f4fb3a6dc3cc0b4cf6d4ea247f4b9592fd43ae7f138"
+      },
+      {
+        "path": "Preview/32-automatic-study-paused.png",
+        "sha256": "5d764063da0817bd62ef5caf50554a301a52d260c06de1c3a42b43ae35676c7b"
+      },
+      {
+        "path": "Preview/35-playback-audio-controls.png",
+        "sha256": "95ea15f56528971ea71dae282ef7c101d9c1d24ab4494a773200354c05322582"
+      },
+      {
+        "path": "Preview/33-compact-automatic-options.png",
+        "sha256": "cae5ea54bf750923a3f3cc50ffedf79c9b5f2f74dbc6e66c77e835f8b2a574df"
+      },
+      {
+        "path": "Preview/34-compact-automatic-study.png",
+        "sha256": "510fed49d6d94efa7bf9321c92768d33408bbd96cb6605f72112e49695628c41"
+      }
+    ],
+    "findings": "Reviewed larger and smaller iPhones. Play is immediately before the three-dot menu; the filter label retains room, the card and subtitles fit the viewport, and playback controls replace the rating row. Settings have a pinned Start action and scrollable controls. Each pronunciation switch was independently changed and its actual state verified. Silent playback, pause/resume, previous/next, stop and unchanged Known status were verified."
+  },
+  "nativeBundleVerification": {
+    "version": "0.19.0",
+    "build": 20,
+    "bundledArtwork": 3000,
+    "bundledArtworkBytes": 594415931,
+    "totalUnsignedAppBytes": 615130555,
+    "verifiedArtworkResourceFiles": 6001,
+    "EnglishSentenceTranslations": 3000,
+    "allSourceAndBuiltResourceHashesMatched": true,
+    "allPreviousArtworkAndVocabularyPreserved": true,
+    "installation": "Not attempted"
+  },
+  "physicalIPhoneBuild": "Succeeded without signing or installation",
+  "scope": "Play-first release: one-tap Play before the three-dot menu, settings, automatic recall/reveal/audio/advance, foreground pause/resume and skip/stop controls. No login, payment activation, shared backend or Android implementation in this release.",
+  "note": "The initial 32 checks and the following 9 playback checks passed. Subsequent UI automation runs exposed off-screen settings taps and simulator speech/timing dependence (6 failed executions, retained in reports). The final test setup runs silent playback using standard launch preferences, with audio sequencing separately tested using controlled speech completion. The final smaller-phone playback test and 3 larger-phone playback checks and the corrected audio-switch check passed. Across this update: 54 test executions, 48 passed, 6 historical failures, 33 distinct checks passed. No physical-phone installation was attempted."
+}

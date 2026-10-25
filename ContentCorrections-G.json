@@ -1,0 +1,14 @@
+[
+  {
+    "wordID": "fi-1175",
+    "oldSentence": "Haluan hallita rauhallisesti.",
+    "newSentence": "Hallitus haluaa hallita maata oikeudenmukaisesti.",
+    "reason": "Make govern explicitly refer to governing a country rather than an unspecified act of control."
+  },
+  {
+    "wordID": "fi-1178",
+    "oldSentence": "Haluan tarttua tilaisuuteen.",
+    "newSentence": "Haluan tarttua köyteen.",
+    "reason": "Teach the concrete taking-hold sense of grab rather than the figurative seize-an-opportunity sense."
+  }
+]

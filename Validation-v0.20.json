@@ -1,0 +1,195 @@
+{
+  "version": "0.20.0",
+  "build": 21,
+  "result": "Passed",
+  "testsRunThisUpdate": 35,
+  "passedExecutions": 34,
+  "historicalFailedExecutions": 1,
+  "uniqueTestsPassed": 18,
+  "reminderUnitTestsPassed": 14,
+  "UITestsPassed": 4,
+  "unitResult": {
+    "devicesAndConfigurations": [
+      {
+        "device": {
+          "architecture": "arm64",
+          "deviceId": "15A1DF8E-3FB8-49CC-B5F7-A6E84EF1877C",
+          "deviceName": "iPhone 17 Pro Max",
+          "modelName": "iPhone 17 Pro Max",
+          "osBuildNumber": "23F77",
+          "osVersion": "26.5",
+          "platform": "iOS Simulator"
+        },
+        "expectedFailures": 0,
+        "failedTests": 0,
+        "passedTests": 13,
+        "skippedTests": 0,
+        "testPlanConfiguration": {
+          "configurationId": "1",
+          "configurationName": "Test Scheme Action"
+        }
+      }
+    ],
+    "environmentDescription": "SisuCards · Built with macOS 26.5",
+    "expectedFailures": 0,
+    "failedTests": 0,
+    "finishTime": 1792353648.593,
+    "passedTests": 13,
+    "result": "Passed",
+    "skippedTests": 0,
+    "startTime": 1792353590.537,
+    "statistics": [],
+    "testFailures": [],
+    "title": "Test - SisuCards",
+    "topInsights": [],
+    "totalTestCount": 13
+  },
+  "initialUIResult": {
+    "devicesAndConfigurations": [
+      {
+        "device": {
+          "architecture": "arm64",
+          "deviceId": "15A1DF8E-3FB8-49CC-B5F7-A6E84EF1877C",
+          "deviceName": "iPhone 17 Pro Max",
+          "modelName": "iPhone 17 Pro Max",
+          "osBuildNumber": "23F77",
+          "osVersion": "26.5",
+          "platform": "iOS Simulator"
+        },
+        "expectedFailures": 0,
+        "failedTests": 1,
+        "passedTests": 3,
+        "skippedTests": 0,
+        "testPlanConfiguration": {
+          "configurationId": "1",
+          "configurationName": "Test Scheme Action"
+        }
+      }
+    ],
+    "environmentDescription": "SisuCards · Built with macOS 26.5",
+    "expectedFailures": 0,
+    "failedTests": 1,
+    "finishTime": 1792353805.148,
+    "passedTests": 3,
+    "result": "Failed",
+    "skippedTests": 0,
+    "startTime": 1792353663.733,
+    "statistics": [],
+    "testFailures": [
+      {
+        "failureText": "XCTAssertEqual failed: (\"13\") is not equal to (\"0\")",
+        "targetName": "SisuCardsUITests",
+        "testIdentifier": 3,
+        "testIdentifierString": "FlashcardFlowTests/testLocalArtworkNotificationOpensExactWordAfterAppTerminates()",
+        "testIdentifierURL": "test://com.apple.xcode/SisuCards/SisuCardsUITests/FlashcardFlowTests/testLocalArtworkNotificationOpensExactWordAfterAppTerminates",
+        "testName": "testLocalArtworkNotificationOpensExactWordAfterAppTerminates()"
+      }
+    ],
+    "title": "Test - SisuCards",
+    "topInsights": [],
+    "totalTestCount": 4
+  },
+  "coldLaunchResult": {
+    "devicesAndConfigurations": [
+      {
+        "device": {
+          "architecture": "arm64",
+          "deviceId": "15A1DF8E-3FB8-49CC-B5F7-A6E84EF1877C",
+          "deviceName": "iPhone 17 Pro Max",
+          "modelName": "iPhone 17 Pro Max",
+          "osBuildNumber": "23F77",
+          "osVersion": "26.5",
+          "platform": "iOS Simulator"
+        },
+        "expectedFailures": 0,
+        "failedTests": 0,
+        "passedTests": 1,
+        "skippedTests": 0,
+        "testPlanConfiguration": {
+          "configurationId": "1",
+          "configurationName": "Test Scheme Action"
+        }
+      }
+    ],
+    "environmentDescription": "SisuCards · Built with macOS 26.5",
+    "expectedFailures": 0,
+    "failedTests": 0,
+    "finishTime": 1792353840.465,
+    "passedTests": 1,
+    "result": "Passed",
+    "skippedTests": 0,
+    "startTime": 1792353797.095,
+    "statistics": [],
+    "testFailures": [],
+    "title": "Test - SisuCards",
+    "topInsights": [],
+    "totalTestCount": 1
+  },
+  "attachmentIntegration": "Passed: one actual system attachment round-trip test, artwork bytes retained after staging cleanup.",
+  "expandedNotification": "Passed: one UI test expands the notification after app termination, then opens the exact card using Practise word and preserves existing Known count.",
+  "historicalFailure": "Initial UI test assumed zero Known words after a system cold launch, which correctly used the persistent simulator store containing 13 Known words. Corrected test compares before/after using the same persistent store. No learning data was reset.",
+  "screenshotReview": {
+    "images": [
+      {
+        "path": "Preview/36-word-reminder-schedule.png",
+        "sha256": "bf6195210fee64ad2c5a20df047fdd322d037eca59525d1b9f390fdcd44c80fc",
+        "note": "Four local times visible; Save remains fixed below the scrolling form."
+      },
+      {
+        "path": "Preview/37-word-reminder-preview.png",
+        "sha256": "88223e9c82ca215c24958fb2c2b0580cf59422d87b08925032b739e3553712b3",
+        "note": "Finnish question and artwork thumbnail visible; artwork and sound controls available."
+      },
+      {
+        "path": "Preview/38-local-notification-banner.png",
+        "sha256": "429bbc5bc42e2068331668d777d6a68eedc31885b27633ad3d5dd6619f9042b1",
+        "note": "OS banner delivered after app termination; iOS 26.5 collapsed layout shows app icon and question without inline artwork."
+      },
+      {
+        "path": "Preview/40-expanded-notification-artwork.png",
+        "sha256": "e82c29e4440876811250c0c693e17d744a89b286bf4eab318be3d2a6228e5dd9",
+        "note": "Readable larger artwork shown after long-pressing the notification; native practice action visible."
+      },
+      {
+        "path": "Preview/39-notification-opens-finnish-card.png",
+        "sha256": "7a9f97a3327ac8ed446f5c569c112d55b435522b103efabdc8eaf8c19e0fd38a",
+        "note": "Final native notification route opens the single Finnish-prompt card."
+      }
+    ],
+    "reviewed": [
+      "36-word-reminder-schedule.png",
+      "37-word-reminder-preview.png",
+      "38-local-notification-banner.png",
+      "39-notification-opens-finnish-card.png",
+      "40-expanded-notification-artwork.png"
+    ],
+    "expandedNotification": "Final expanded screenshot exported and visually reviewed: full artwork, mnemonic text and Finnish sentence are readable; Practise word opens the exact card. Initial export restriction resolved using a narrowly scoped export."
+  },
+  "nativeBundleVerification": {
+    "version": "0.20.0",
+    "build": 21,
+    "bundledArtwork": 3000,
+    "bundledArtworkBytes": 594415931,
+    "totalUnsignedAppBytes": 616273907,
+    "verifiedArtworkResourceFiles": 6001,
+    "EnglishSentenceTranslations": 3000,
+    "allSourceAndBuiltResourceHashesMatched": true,
+    "allPreviousArtworkAndVocabularyPreserved": true,
+    "installation": "Not attempted"
+  },
+  "scope": "iOS local word reminders with daily times, status/letter pools, randomized words, artwork attachment, sample notification and cold-start flashcard routing. No Firebase, Android implementation, active payments or Premium restrictions.",
+  "limitations": [
+    "Two-week rolling queue (up to 56 words plus final refresh invitation); refreshed on app foregrounding.",
+    "System notification permissions, Focus and presentation preferences apply.",
+    "Collapsed iOS 26.5 banner did not display the image inline; iOS controls attachment presentation.",
+    "No physical iPhone installation or delivery test performed."
+  ],
+  "finalVerification": {
+    "testsPassed": 15,
+    "reminderUnitTests": 14,
+    "UITests": 1,
+    "source": "work/reminders-v020/final.xcresult",
+    "result": "Passed",
+    "note": "Final source uses the existing larger picture for readable expanded notifications; system creates the thumbnail. All scheduling checks and the terminated-app artwork/action route were rerun."
+  }
+}

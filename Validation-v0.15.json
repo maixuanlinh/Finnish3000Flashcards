@@ -1,0 +1,137 @@
+{
+  "version": "0.15.0",
+  "build": 16,
+  "result": "Passed",
+  "testsRunThisUpdate": 18,
+  "databaseTestsPassed": 17,
+  "UITestsPassed": 1,
+  "UIValidation": "I ice cream image visible on a fresh installation and opens full-screen without importing",
+  "bundledArtworkCount": 1429,
+  "AArtworkCount": 211,
+  "BArtworkCount": 152,
+  "CArtworkCount": 292,
+  "DArtworkCount": 163,
+  "EArtworkCount": 162,
+  "FArtworkCount": 155,
+  "GArtworkCount": 73,
+  "HArtworkCount": 100,
+  "IArtworkCount": 121,
+  "physicalIPhoneBuild": "Succeeded without signing or installation",
+  "nativeBundleVerification": {
+    "version": "0.15.0",
+    "build": 16,
+    "bundledArtwork": 1429,
+    "bundledArtworkBytes": 289379421,
+    "totalUnsignedAppBytes": 304789080,
+    "checks": "All 2859 bundled artwork resource files, canonical prompts and vocabulary/example resources match final source SHA-256; version/build verified. Prior 1308 A–H selected assets are unchanged. Six I example corrections are synchronized.",
+    "installation": "Not attempted"
+  },
+  "artworkVerification": {
+    "letter": "I",
+    "expectedWords": 121,
+    "generatedImages": 121,
+    "visuallyCheckedImages": 121,
+    "importedRecords": 121,
+    "databaseIntegrity": "ok",
+    "allAssetRevisionsVerified": 1453,
+    "allJSONFilesParsed": 1487,
+    "optimizedJPEGBytes": 21378016,
+    "thumbnailBytes": 1556066,
+    "selectedOriginalPNGBytes": 257045548,
+    "importFileBytes": 28815136,
+    "checkedAt": "2026-10-17T14:48:58.300982+00:00",
+    "checks": "Complete letter coverage, unique IDs, approval status, exact prompts, base64/JPEG decoding, dimensions, SHA-256 files, SQLite integrity and JSON syntax.",
+    "note": "Visual review was performed by the agent. Independent Finnish editorial review and physical iPhone pack selection are separate."
+  },
+  "testResult": {
+    "devicesAndConfigurations": [
+      {
+        "device": {
+          "architecture": "arm64",
+          "deviceId": "5CC5F52D-EFAD-4CA6-8517-B3EC8AEF9C54",
+          "deviceName": "iPhone 17 Pro",
+          "modelName": "iPhone 17 Pro",
+          "osBuildNumber": "23F77",
+          "osVersion": "26.5",
+          "platform": "iOS Simulator"
+        },
+        "expectedFailures": 0,
+        "failedTests": 0,
+        "passedTests": 18,
+        "skippedTests": 0,
+        "testPlanConfiguration": {
+          "configurationId": "1",
+          "configurationName": "Test Scheme Action"
+        }
+      }
+    ],
+    "environmentDescription": "SisuCards · Built with macOS 26.5",
+    "expectedFailures": 0,
+    "failedTests": 0,
+    "finishTime": 1792248655.62,
+    "passedTests": 18,
+    "result": "Passed",
+    "skippedTests": 0,
+    "startTime": 1792248534.597,
+    "statistics": [],
+    "testFailures": [],
+    "title": "Test - SisuCards",
+    "topInsights": [
+      {
+        "category": "Longest Test Runs",
+        "impact": "69% of duration",
+        "text": "1 longest test run with outlier durations exceeding 11.72s (three standard deviations)"
+      }
+    ],
+    "totalTestCount": 18
+  },
+  "exampleCorrections": [
+    {
+      "wordID": "fi-1320",
+      "oldSentence": "Sairaus vaatii lepoa.",
+      "newSentence": "Sairaus muutti arkea.",
+      "reason": "Use a neutral example of illness changing everyday life."
+    },
+    {
+      "wordID": "fi-1338",
+      "oldSentence": "Haluan tehdä vaikutus yleisöön.",
+      "newSentence": "Haluan tehdä vaikutuksen yleisöön.",
+      "reason": "The object in tehdä vaikutuksen must be inflected in this affirmative sentence."
+    },
+    {
+      "wordID": "fi-1351",
+      "oldSentence": "Haluan kasvaa rauhassa.",
+      "newSentence": "Määrä voi kasvaa nopeasti.",
+      "reason": "Illustrate increase in quantity while retaining the dictionary-form verb kasvaa."
+    },
+    {
+      "wordID": "fi-1364",
+      "oldSentence": "Infektio hoidetaan nopeasti.",
+      "newSentence": "Infektio todettiin eilen.",
+      "reason": "Use a fictional diagnostic context rather than a generalized treatment claim."
+    },
+    {
+      "wordID": "fi-1373",
+      "oldSentence": "En halua vahingoittaa luontoa.",
+      "newSentence": "En halua vahingoittaa ketään.",
+      "reason": "Match injure a person rather than environmental damage."
+    },
+    {
+      "wordID": "fi-1393",
+      "oldSentence": "Vakuutus korvaa vahingon.",
+      "newSentence": "Vakuutus voi korvata vahingon.",
+      "reason": "Use conditional insurance coverage rather than a universal payment claim."
+    }
+  ],
+  "historicalVerification": [
+    "Validation-v0.7.json",
+    "Validation-v0.8.json",
+    "Validation-v0.9.json",
+    "Validation-v0.10.json",
+    "Validation-v0.11.json",
+    "Validation-v0.12.json",
+    "Validation-v0.13.json",
+    "Validation-v0.14.json"
+  ],
+  "note": "All database tests, including decoding every bundled A–I image and thumbnail, and the I viewer smoke test passed. Full layout tests are unchanged and were verified in 0.7. Physical iPhone installation and native picker selection were not attempted."
+}

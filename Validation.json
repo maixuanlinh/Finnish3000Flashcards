@@ -1,0 +1,102 @@
+{
+  "version": "0.21.0",
+  "build": 22,
+  "result": "Passed",
+  "uniqueTestsPassed": 23,
+  "completedTestExecutions": 33,
+  "passedExecutions": 32,
+  "historicalFailedExecutions": 1,
+  "unitAndIntegrationTestsPassed": 18,
+  "UITestsPassed": 5,
+  "initialWorkingRuntimeResult": {
+    "log": "ios18-unit.log",
+    "passed": 16,
+    "failed": 0,
+    "testSucceeded": true
+  },
+  "initialUIResult": {
+    "log": "ui.log",
+    "passed": 4,
+    "failed": 1,
+    "testSucceeded": false
+  },
+  "finalResult": {
+    "log": "final.log",
+    "passed": 11,
+    "failed": 0,
+    "testSucceeded": true
+  },
+  "nativeBundleVerification": {
+    "version": "0.21.0",
+    "build": 22,
+    "configuration": "Release",
+    "bundledArtwork": 3000,
+    "bundledArtworkBytes": 594415931,
+    "totalUnsignedAppBytes": 615002907,
+    "verifiedArtworkResourceFiles": 6001,
+    "EnglishSentenceTranslations": 3000,
+    "allSourceAndBuiltResourceHashesMatched": true,
+    "allPreviousArtworkAndVocabularyPreserved": true,
+    "localStoreKitConfigInApp": false,
+    "StoreKitTestFrameworkInApp": false,
+    "installation": "Not attempted"
+  },
+  "screenshotReview": {
+    "reviewed": true,
+    "device": "iPhone SE (3rd generation), iOS 18.3",
+    "images": [
+      {
+        "path": "Preview/41-free-word-detail.png",
+        "sha256": "130a0a66b457a562eaf78b752767422ea2ca795a7b0e2e5c60a90750c08b0d7c"
+      },
+      {
+        "path": "Preview/42-premium-offer.png",
+        "sha256": "fa42808d0ffcaeb610fb469170d4f91bbf26f5d4e943530d00de3de33f9e662f"
+      },
+      {
+        "path": "Preview/43-free-status-and-restore.png",
+        "sha256": "60d700158e2fc8e169116be5f9a7996213e6b2fab26206182be13a9a6fcef578"
+      },
+      {
+        "path": "Preview/44-premium-purchase-success.png",
+        "sha256": "f136aac585eb40c88e6534f326823ea93617515421979015c05743b0da875190"
+      },
+      {
+        "path": "Preview/45-unlocked-word-detail.png",
+        "sha256": "31c1c2bee565243eb3e6de019a7d72942a4ac05787a5df48c8c7e88d8b941917"
+      },
+      {
+        "path": "Preview/46-free-A-complete-lesson.png",
+        "sha256": "c6068f43ca39771e020c35474c61e796eeee5d9e9c835123b56580fb4b787b0f"
+      },
+      {
+        "path": "Preview/47-premium-notification-artwork.png",
+        "sha256": "40207ab76b21f5af235496b60743d3ecc5ed61899c296ba5228e0877fae9daa4"
+      },
+      {
+        "path": "Preview/48-premium-notification-card.png",
+        "sha256": "49a08d9af547c8a76aeb9f4dc9941a903452bc43e46c34de7b9e8456c81ab3b3"
+      }
+    ],
+    "findings": [
+      "Purchase and restore actions remain visible on the small screen.",
+      "Free B word retains translation, pronunciation and ratings, with a clear locked complete lesson.",
+      "StoreKit returns localized €11.99 test price; local test disclosure is visible.",
+      "Purchase unlocks complete lesson; fresh launch retains ownership; refund relocks.",
+      "Free A cards retain examples, translations, images and automatic playback.",
+      "Notification uppercase prompt and exact-card route verified; iOS 18.3 expanded screenshot shows text only. Separate actual system attachment round-trip retained identical image bytes."
+    ]
+  },
+  "storeKit": "Four actual SKTestSession integration tests: purchase/new instance/restore/refund, pending approval, failure/empty restore, cancellation. Six injected-client access-state tests. Automated system purchase dialogs disabled by SKTestSession only; app local demo leaves dialogs enabled.",
+  "runtimeIssue": "iOS 26.5 test attempt was stopped after SKInternalErrorDomain Code=3 (Apple-documented simulator issue); its incomplete result is not counted as passed purchase evidence. All completed purchase tests ran on iOS 18.3.",
+  "historicalFailure": "Initial notification UI automation tapped near the fixed Save bar on the small screen and dismissed settings. Test now scrolls the sample entirely above the fixed footer; final notification check passed. No production notification behavior was changed for this correction.",
+  "scope": "Local iOS Premium implementation only. Free basic vocabulary and A-set complete preview; verified one-time purchase, restore, live revocation, content gates and matching notification artwork access. No app login, shared backend, subscription, Android billing, App Store Connect product setup or live sale.",
+  "nativeReleaseBuild": "Succeeded unsigned; local .storekit and StoreKitTest framework absent from app.",
+  "limitations": [
+    "No physical iPhone purchase or installation performed.",
+    "Live App Store Connect/sandbox/TestFlight configuration is still required before production sales.",
+    "Use installed iOS 18.3 simulator for local purchase tests if iOS 26.5 hits the documented StoreKit issue.",
+    "iOS 18.3 simulator expanded notification rendered text only despite the native API retaining the image file; image rendering was previously observed on iOS 26.5."
+  ],
+  "notificationAttachmentIntegration": "Passed: testSystemRoundTripKeepsTheScheduledArtworkFile on iOS 18.3; identical stored image bytes after staging cleanup."
+}

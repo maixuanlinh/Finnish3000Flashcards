@@ -1,0 +1,9 @@
+{
+  "version": "0.15.0",
+  "build": 16,
+  "bundledArtwork": 1429,
+  "bundledArtworkBytes": 289379421,
+  "totalUnsignedAppBytes": 304789080,
+  "checks": "All 2859 bundled artwork resource files, canonical prompts and vocabulary/example resources match final source SHA-256; version/build verified. Prior 1308 A–H selected assets are unchanged. Six I example corrections are synchronized.",
+  "installation": "Not attempted"
+}

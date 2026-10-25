@@ -1,0 +1,119 @@
+{
+  "version": "0.12.0",
+  "build": 13,
+  "result": "Passed",
+  "testsRunThisUpdate": 18,
+  "databaseTestsPassed": 17,
+  "UITestsPassed": 1,
+  "UIValidation": "F February image visible on a fresh installation and opens full-screen without importing",
+  "bundledArtworkCount": 1135,
+  "AArtworkCount": 211,
+  "BArtworkCount": 152,
+  "CArtworkCount": 292,
+  "DArtworkCount": 163,
+  "EArtworkCount": 162,
+  "FArtworkCount": 155,
+  "physicalIPhoneBuild": "Succeeded without signing or installation",
+  "nativeBundleVerification": {
+    "version": "0.12.0",
+    "build": 13,
+    "bundledArtwork": 1135,
+    "bundledArtworkBytes": 231918097,
+    "totalUnsignedAppBytes": 246499352,
+    "checks": "All 2271 bundled artwork resource files, canonical prompts and vocabulary/example resources match final source SHA-256; version/build verified. Prior 980 A–E selected assets are unchanged. Four F example corrections are synchronized.",
+    "installation": "Not attempted"
+  },
+  "artworkVerification": {
+    "letter": "F",
+    "expectedWords": 155,
+    "generatedImages": 155,
+    "visuallyCheckedImages": 155,
+    "importedRecords": 155,
+    "databaseIntegrity": "ok",
+    "allAssetRevisionsVerified": 1153,
+    "allJSONFilesParsed": 1175,
+    "optimizedJPEGBytes": 27877306,
+    "thumbnailBytes": 1972203,
+    "selectedOriginalPNGBytes": 337511944,
+    "importFileBytes": 37566088,
+    "checkedAt": "2026-10-17T01:31:53.486346+00:00",
+    "checks": "Complete letter coverage, unique IDs, approval status, exact prompts, base64/JPEG decoding, dimensions, SHA-256 files, SQLite integrity and JSON syntax.",
+    "note": "Visual review was performed by the agent. Independent Finnish editorial review and physical iPhone pack selection are separate."
+  },
+  "testResult": {
+    "devicesAndConfigurations": [
+      {
+        "device": {
+          "architecture": "arm64",
+          "deviceId": "5CC5F52D-EFAD-4CA6-8517-B3EC8AEF9C54",
+          "deviceName": "iPhone 17 Pro",
+          "modelName": "iPhone 17 Pro",
+          "osBuildNumber": "23F77",
+          "osVersion": "26.5",
+          "platform": "iOS Simulator"
+        },
+        "expectedFailures": 0,
+        "failedTests": 0,
+        "passedTests": 18,
+        "skippedTests": 0,
+        "testPlanConfiguration": {
+          "configurationId": "1",
+          "configurationName": "Test Scheme Action"
+        }
+      }
+    ],
+    "environmentDescription": "SisuCards · Built with macOS 26.5",
+    "expectedFailures": 0,
+    "failedTests": 0,
+    "finishTime": 1792200836.382,
+    "passedTests": 18,
+    "result": "Passed",
+    "skippedTests": 0,
+    "startTime": 1792200713.433,
+    "statistics": [],
+    "testFailures": [],
+    "title": "Test - SisuCards",
+    "topInsights": [
+      {
+        "category": "Longest Test Runs",
+        "impact": "66% of duration",
+        "text": "1 longest test run with outlier durations exceeding 10.34s (three standard deviations)"
+      }
+    ],
+    "totalTestCount": 18
+  },
+  "exampleCorrections": [
+    {
+      "wordID": "fi-1021",
+      "oldSentence": "Haluan tuntea itseni paremmin.",
+      "newSentence": "Haluan tuntea iloa.",
+      "reason": "Illustrate feeling an emotion rather than getting to know oneself."
+    },
+    {
+      "wordID": "fi-1096",
+      "oldSentence": "Hän on neljäkymmentä vuotta.",
+      "newSentence": "Hän on neljäkymmentä vuotta vanha.",
+      "reason": "Make the age construction explicit for a beginner."
+    },
+    {
+      "wordID": "fi-1100",
+      "oldSentence": "Hän on neljätoista vuotta.",
+      "newSentence": "Hän on neljätoista vuotta vanha.",
+      "reason": "Make the age construction explicit for a beginner."
+    },
+    {
+      "wordID": "fi-1126",
+      "oldSentence": "Tehtävä on helppo ymmärtää.",
+      "newSentence": "Lukon tehtävä on pitää ovi kiinni.",
+      "reason": "Illustrate function as a purpose or role rather than a generic assignment."
+    }
+  ],
+  "historicalVerification": [
+    "Validation-v0.7.json",
+    "Validation-v0.8.json",
+    "Validation-v0.9.json",
+    "Validation-v0.10.json",
+    "Validation-v0.11.json"
+  ],
+  "note": "All database tests, including decoding every bundled A–F image and thumbnail, and the F viewer smoke test passed. Full layout tests are unchanged and were verified in 0.7. Physical iPhone installation and native picker selection were not attempted."
+}

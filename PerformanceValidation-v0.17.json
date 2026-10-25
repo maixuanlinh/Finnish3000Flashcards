@@ -1,0 +1,22 @@
+{
+  "version": "0.17.0",
+  "device": "iPhone 17 Pro / iOS 26.5 simulator",
+  "workload": "Resolve all 3000 word IDs and compute one full filter summary; index/store construction excluded.",
+  "unit": "seconds",
+  "samples": [
+    0.011767833,
+    0.005475583,
+    0.006321125,
+    0.006217125,
+    0.006040708,
+    0.00570375,
+    0.0059205,
+    0.005880833,
+    0.005400291,
+    0.005727916
+  ],
+  "mean": 0.006445566400000001,
+  "min": 0.005400291,
+  "max": 0.011767833,
+  "scope": "Processing benchmark, not end-to-end tab animation timing or a physical-iPhone measurement."
+}

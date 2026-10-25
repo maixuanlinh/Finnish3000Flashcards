@@ -1,0 +1,137 @@
+{
+  "version": "0.18.0",
+  "build": 19,
+  "result": "Passed",
+  "testsRunThisUpdate": 46,
+  "uniqueTestsPassed": 44,
+  "databaseTestsPassed": 20,
+  "UITestsPassed": 24,
+  "testResult": {
+    "devicesAndConfigurations": [
+      {
+        "device": {
+          "architecture": "arm64",
+          "deviceId": "5CC5F52D-EFAD-4CA6-8517-B3EC8AEF9C54",
+          "deviceName": "iPhone 17 Pro",
+          "modelName": "iPhone 17 Pro",
+          "osBuildNumber": "23F77",
+          "osVersion": "26.5",
+          "platform": "iOS Simulator"
+        },
+        "expectedFailures": 0,
+        "failedTests": 0,
+        "passedTests": 44,
+        "skippedTests": 0,
+        "testPlanConfiguration": {
+          "configurationId": "1",
+          "configurationName": "Test Scheme Action"
+        }
+      }
+    ],
+    "environmentDescription": "SisuCards · Built with macOS 26.5",
+    "expectedFailures": 0,
+    "failedTests": 0,
+    "finishTime": 1792334618.115,
+    "passedTests": 44,
+    "result": "Passed",
+    "skippedTests": 0,
+    "startTime": 1792333969.917,
+    "statistics": [
+      {
+        "subtitle": "1 test run",
+        "title": "1 test collected performance metrics"
+      }
+    ],
+    "testFailures": [],
+    "title": "Test - SisuCards",
+    "topInsights": [
+      {
+        "category": "Longest Test Runs",
+        "impact": "11% of duration",
+        "text": "1 longest test run with outlier durations exceeding 50.00s (three standard deviations)"
+      },
+      {
+        "category": "Longest Test Runs",
+        "impact": "75% of duration",
+        "text": "1 longest test run with outlier durations exceeding 21.91s (three standard deviations)"
+      }
+    ],
+    "totalTestCount": 44
+  },
+  "compactLayoutTestResult": {
+    "devicesAndConfigurations": [
+      {
+        "device": {
+          "architecture": "arm64",
+          "deviceId": "2A7E3AFE-0AAE-4AD0-99B1-3CBC893F12D5",
+          "deviceName": "iPhone SE (3rd generation)",
+          "modelName": "iPhone SE (3rd generation)",
+          "osBuildNumber": "22D8075",
+          "osVersion": "18.3.1",
+          "platform": "iOS Simulator"
+        },
+        "expectedFailures": 0,
+        "failedTests": 0,
+        "passedTests": 2,
+        "skippedTests": 0,
+        "testPlanConfiguration": {
+          "configurationId": "1",
+          "configurationName": "Test Scheme Action"
+        }
+      }
+    ],
+    "environmentDescription": "SisuCards · Built with macOS 26.5",
+    "expectedFailures": 0,
+    "failedTests": 0,
+    "finishTime": 1792334475.731,
+    "passedTests": 2,
+    "result": "Passed",
+    "skippedTests": 0,
+    "startTime": 1792334293.223,
+    "statistics": [],
+    "testFailures": [],
+    "title": "Test - SisuCards",
+    "topInsights": [],
+    "totalTestCount": 2
+  },
+  "bundledArtworkCount": 3000,
+  "EnglishSentenceTranslations": 3000,
+  "originalFinnishExamplesPreserved": 3000,
+  "screenshotReview": {
+    "reviewed": true,
+    "checkedAt": "2026-10-18T17:47:17.318947+00:00",
+    "images": [
+      {
+        "path": "Preview/27-study-sentence-translation.png",
+        "sha256": "facf9702357b66dd319f209a6596c4786082721954faa0164b7dfcef15676088"
+      },
+      {
+        "path": "Preview/28-detail-sentence-translation.png",
+        "sha256": "c48c4ff8ad3a01332d129f5c87457d1b32902846e5e17921ec2a2fcaf7ec3c78"
+      },
+      {
+        "path": "Preview/29-compact-study-translation.png",
+        "sha256": "a4f8682e8fe3d8ddb90afd7fd29b7225a2eb6b02dbf9ab002f6a4d434d39b108"
+      },
+      {
+        "path": "Preview/30-compact-detail-translation.png",
+        "sha256": "862ef1e2d8831d4149f1e20581bd0ad3850459370bb91367456e82e6bd252797"
+      }
+    ],
+    "findings": "Reviewed Study and Word detail on iPhone 17 Pro and iPhone SE. English subtitle appears directly below the complete Finnish sentence, smaller and muted. Both sentences wrap without truncation, the image remains separate, and the full-width flip and learning controls fit in the Study viewport. Word detail scrolls naturally; no translation toggle is needed."
+  },
+  "nativeBundleVerification": {
+    "version": "0.18.0",
+    "build": 19,
+    "bundledArtwork": 3000,
+    "bundledArtworkBytes": 594415931,
+    "totalUnsignedAppBytes": 614583331,
+    "verifiedArtworkResourceFiles": 6001,
+    "EnglishSentenceTranslations": 3000,
+    "allSourceAndBuiltResourceHashesMatched": true,
+    "allPreviousArtworkAndFinnishVocabularyPreserved": true,
+    "installation": "Not attempted"
+  },
+  "physicalIPhoneBuild": "Succeeded without signing or installation",
+  "note": "The full 44-test suite passed on iPhone 17 Pro. Two targeted card-layout and sentence-translation tests also passed on iPhone SE (3rd generation). No physical-phone installation was attempted."
+}

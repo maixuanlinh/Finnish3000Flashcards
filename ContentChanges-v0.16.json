@@ -1,0 +1,803 @@
+{
+  "checkedAt": "2026-10-18T09:29:41.991140+00:00",
+  "words": 3000,
+  "approvedSelectedArtworks": 3000,
+  "freshBriefs": 3000,
+  "previousSelectedArtworkPreserved": 1429,
+  "changes": {
+    "catalog": [
+      {
+        "wordID": "fi-2127",
+        "oldFinnish": "määrä; taso; hinta; arvioida",
+        "newFinnish": "tahti; määrä; taso; hinta; arvioida",
+        "reason": "For the selected per-unit-time sense of rate, tahti is clearer than the unqualified quantity määrä. Preserve the original alternative senses."
+      }
+    ],
+    "examples": [
+      {
+        "wordID": "fi-1501",
+        "old": "Asiantuntija on johtava.",
+        "new": "Hän on johtava asiantuntija.",
+        "clearedPreviousEnglish": ""
+      },
+      {
+        "wordID": "fi-1527",
+        "old": "Elämä on arvokas.",
+        "new": "Elämä on arvokasta.",
+        "clearedPreviousEnglish": ""
+      },
+      {
+        "wordID": "fi-1665",
+        "old": "Osa on puuttuva.",
+        "new": "Tässä on puuttuva osa.",
+        "clearedPreviousEnglish": ""
+      },
+      {
+        "wordID": "fi-1698",
+        "old": "Täällä on paljon ihmisiä.",
+        "new": "Vettä on paljon.",
+        "clearedPreviousEnglish": ""
+      },
+      {
+        "wordID": "fi-1718",
+        "old": "Juhlapäivä on kansallinen.",
+        "new": "Tämä on kansallinen juhlapäivä.",
+        "clearedPreviousEnglish": ""
+      },
+      {
+        "wordID": "fi-1719",
+        "old": "Asukas on syntyperäinen.",
+        "new": "Hän on syntyperäinen kaupunkilainen.",
+        "clearedPreviousEnglish": ""
+      },
+      {
+        "wordID": "fi-1750",
+        "old": "Hän on yhdeksäntoista vuotta.",
+        "new": "Hän on yhdeksäntoista vuotta vanha.",
+        "clearedPreviousEnglish": ""
+      },
+      {
+        "wordID": "fi-1758",
+        "old": "En juo kahvia eikä teetä.",
+        "new": "En juo kahvia enkä teetä.",
+        "clearedPreviousEnglish": ""
+      },
+      {
+        "wordID": "fi-1762",
+        "old": "Reitti on pohjoinen.",
+        "new": "Pohjoinen reitti näkyy kartassa.",
+        "clearedPreviousEnglish": ""
+      },
+      {
+        "wordID": "fi-1786",
+        "old": "Hän on ilmeisesti kotona.",
+        "new": "Hän on selvästi kotona.",
+        "clearedPreviousEnglish": ""
+      },
+      {
+        "wordID": "fi-1883",
+        "old": "Tämä on tietty valinta.",
+        "new": "Minulla on tietty tavoite.",
+        "clearedPreviousEnglish": ""
+      },
+      {
+        "wordID": "fi-1903",
+        "old": "Sentti on pieni rahayksikkö.",
+        "new": "Sentti on dollarin sadasosa.",
+        "clearedPreviousEnglish": ""
+      },
+      {
+        "wordID": "fi-1991",
+        "old": "Melu voi aiheuttaa stressiä.",
+        "new": "Tämä voi aiheuttaa ongelman.",
+        "clearedPreviousEnglish": ""
+      },
+      {
+        "wordID": "fi-2003",
+        "old": "Ostaja on mahdollinen.",
+        "new": "Tässä on mahdollinen ostaja.",
+        "clearedPreviousEnglish": ""
+      },
+      {
+        "wordID": "fi-2029",
+        "old": "En halua teeskennellä iloista.",
+        "new": "En halua teeskennellä olevani iloinen.",
+        "clearedPreviousEnglish": ""
+      },
+      {
+        "wordID": "fi-2100",
+        "old": "Haluan saada pätevyys tähän työhön.",
+        "new": "Haluan saada pätevyyden tähän työhön.",
+        "clearedPreviousEnglish": ""
+      },
+      {
+        "wordID": "fi-2127",
+        "old": "Määrä kasvaa.",
+        "new": "Tahti kiihtyy.",
+        "clearedPreviousEnglish": ""
+      },
+      {
+        "wordID": "fi-2175",
+        "old": "Haluan liittyä aiheeseen.",
+        "new": "Tämä voi liittyä aiheeseen.",
+        "clearedPreviousEnglish": ""
+      },
+      {
+        "wordID": "fi-2299",
+        "old": "Haluan sanoa kiitos.",
+        "new": "Haluan sanoa sinulle jotain.",
+        "clearedPreviousEnglish": ""
+      },
+      {
+        "wordID": "fi-2308",
+        "old": "Tutkimus on tieteellinen.",
+        "new": "Tämä on tieteellinen tutkimus.",
+        "clearedPreviousEnglish": ""
+      },
+      {
+        "wordID": "fi-2358",
+        "old": "Hän on seitsemäntoista vuotta.",
+        "new": "Hän on seitsemäntoista vuotta vanha.",
+        "clearedPreviousEnglish": ""
+      },
+      {
+        "wordID": "fi-2401",
+        "old": "Puoli kankaasta on sininen.",
+        "new": "Kankaan toinen puoli on sininen.",
+        "clearedPreviousEnglish": ""
+      },
+      {
+        "wordID": "fi-2404",
+        "old": "Merkki näkyy kauas.",
+        "new": "Signaali näkyy kauas.",
+        "clearedPreviousEnglish": ""
+      },
+      {
+        "wordID": "fi-2430",
+        "old": "Hän on kuusitoista vuotta.",
+        "new": "Hän on kuusitoista vuotta vanha.",
+        "clearedPreviousEnglish": ""
+      },
+      {
+        "wordID": "fi-2491",
+        "old": "Rannikko on eteläinen.",
+        "new": "Eteläinen rannikko näkyy kartassa.",
+        "clearedPreviousEnglish": ""
+      },
+      {
+        "wordID": "fi-2498",
+        "old": "Tarvitsen tietty työkalun.",
+        "new": "Tarvitsen tietyn työkalun.",
+        "clearedPreviousEnglish": ""
+      },
+      {
+        "wordID": "fi-2508",
+        "old": "Henki kulkee tarinassa.",
+        "new": "Henki esiintyy tarinassa.",
+        "clearedPreviousEnglish": ""
+      },
+      {
+        "wordID": "fi-2584",
+        "old": "Haluan sellainen laukun.",
+        "new": "Haluan sellaisen laukun.",
+        "clearedPreviousEnglish": ""
+      },
+      {
+        "wordID": "fi-2675",
+        "old": "Talo on heidän.",
+        "new": "Talo on heidän omansa.",
+        "clearedPreviousEnglish": ""
+      },
+      {
+        "wordID": "fi-2693",
+        "old": "Hän on kolmetoista vuotta.",
+        "new": "Hän on kolmetoista vuotta vanha.",
+        "clearedPreviousEnglish": ""
+      },
+      {
+        "wordID": "fi-2816",
+        "old": "Joukkue on yhdistynyt.",
+        "new": "Joukkue on yhtenäinen.",
+        "clearedPreviousEnglish": ""
+      },
+      {
+        "wordID": "fi-2830",
+        "old": "Kerros on ylempi.",
+        "new": "Tämä on ylempi kerros.",
+        "clearedPreviousEnglish": ""
+      },
+      {
+        "wordID": "fi-2869",
+        "old": "Virus leviää helposti.",
+        "new": "Virus voi levitä helposti.",
+        "clearedPreviousEnglish": ""
+      },
+      {
+        "wordID": "fi-2873",
+        "old": "Ilme on visuaalinen.",
+        "new": "Visuaalinen ilme on selkeä.",
+        "clearedPreviousEnglish": ""
+      },
+      {
+        "wordID": "fi-2918",
+        "old": "Reitti on läntinen.",
+        "new": "Läntinen reitti näkyy kartassa.",
+        "clearedPreviousEnglish": ""
+      },
+      {
+        "wordID": "fi-2943",
+        "old": "En voi vain aikoa, minun täytyy tehdä.",
+        "new": "Aion auttaa sinua.",
+        "clearedPreviousEnglish": ""
+      },
+      {
+        "wordID": "fi-2956",
+        "old": "Tulen sinun kanssa.",
+        "new": "Tulen sinun kanssasi.",
+        "clearedPreviousEnglish": ""
+      },
+      {
+        "wordID": "fi-2972",
+        "old": "Olen huolissaan sinusta.",
+        "new": "Hän on huolissaan sinusta.",
+        "clearedPreviousEnglish": ""
+      },
+      {
+        "wordID": "fi-2973",
+        "old": "Haluan huolehtia lapsesta.",
+        "new": "En halua huolestua turhaan.",
+        "clearedPreviousEnglish": ""
+      },
+      {
+        "wordID": "fi-2996",
+        "old": "Tämä kirja on sinun.",
+        "new": "Tämä kirja on sinun omasi.",
+        "clearedPreviousEnglish": ""
+      }
+    ],
+    "starter": [
+      {
+        "wordID": "fi-0002",
+        "old": "Hän hylkäsi vanhan talon.",
+        "new": "En halua hylätä tätä suunnitelmaa.",
+        "clearedPreviousEnglish": "He abandoned the old house."
+      },
+      {
+        "wordID": "fi-0136",
+        "old": "Syön omenan välipalaksi.",
+        "new": "Omena on punainen.",
+        "clearedPreviousEnglish": "I eat an apple as a snack."
+      },
+      {
+        "wordID": "fi-1454",
+        "old": "Avain on pöydällä.",
+        "new": "Avain on taskussa.",
+        "clearedPreviousEnglish": "The key is on the table."
+      },
+      {
+        "wordID": "fi-0279",
+        "old": "Menen töihin polkupyörällä.",
+        "new": "Polkupyörä on sininen.",
+        "clearedPreviousEnglish": "I go to work by bicycle."
+      },
+      {
+        "wordID": "fi-1246",
+        "old": "Hei, mitä sinulle kuuluu?",
+        "new": "Hei, mitä kuuluu?",
+        "clearedPreviousEnglish": "Hello, how are you?"
+      },
+      {
+        "wordID": "fi-1752",
+        "old": "Ei, en tarvitse apua.",
+        "new": "Ei kiitos.",
+        "clearedPreviousEnglish": "No, I do not need help."
+      },
+      {
+        "wordID": "fi-2993",
+        "old": "Sinä olet hyvä ystävä.",
+        "new": "Sinä osaat jo paljon.",
+        "clearedPreviousEnglish": "You are a good friend."
+      },
+      {
+        "wordID": "fi-1228",
+        "old": "Hän asuu Suomessa.",
+        "new": "Hän asuu täällä.",
+        "clearedPreviousEnglish": "He lives in Finland."
+      },
+      {
+        "wordID": "fi-2898",
+        "old": "Me menemme yhdessä kauppaan.",
+        "new": "Me opiskelemme yhdessä.",
+        "clearedPreviousEnglish": "We go to the shop together."
+      },
+      {
+        "wordID": "fi-1714",
+        "old": "Mikä sinun nimesi on?",
+        "new": "Nimi on tuttu.",
+        "clearedPreviousEnglish": "What is your name?"
+      },
+      {
+        "wordID": "fi-1110",
+        "old": "Ystäväni asuu lähellä.",
+        "new": "Ystävä auttaa minua.",
+        "clearedPreviousEnglish": "My friend lives nearby."
+      },
+      {
+        "wordID": "fi-0994",
+        "old": "Perheeni on minulle tärkeä.",
+        "new": "Perhe syö yhdessä.",
+        "clearedPreviousEnglish": "My family is important to me."
+      },
+      {
+        "wordID": "fi-0443",
+        "old": "Lapsi leikkii puistossa.",
+        "new": "Lapsi opettelee kävelemään.",
+        "clearedPreviousEnglish": "The child is playing in the park."
+      },
+      {
+        "wordID": "fi-1688",
+        "old": "Äiti soittaa minulle illalla.",
+        "new": "Äiti hymyilee lapselle.",
+        "clearedPreviousEnglish": "Mother calls me in the evening."
+      },
+      {
+        "wordID": "fi-1009",
+        "old": "Isä tekee ruokaa.",
+        "new": "Isä lukee kirjaa.",
+        "clearedPreviousEnglish": "Father is cooking."
+      },
+      {
+        "wordID": "fi-2960",
+        "old": "Nainen odottaa bussia.",
+        "new": "Nainen odottaa pysäkillä.",
+        "clearedPreviousEnglish": "The woman is waiting for the bus."
+      },
+      {
+        "wordID": "fi-1592",
+        "old": "Mies lukee kirjaa.",
+        "new": "Mies odottaa pysäkillä.",
+        "clearedPreviousEnglish": "The man is reading a book."
+      },
+      {
+        "wordID": "fi-1226",
+        "old": "Minulla on uusi puhelin.",
+        "new": "Minulla on polkupyörä.",
+        "clearedPreviousEnglish": "I have a new phone."
+      },
+      {
+        "wordID": "fi-1167",
+        "old": "Menen tänään kirjastoon.",
+        "new": "Haluan mennä kotiin.",
+        "clearedPreviousEnglish": "I am going to the library today."
+      },
+      {
+        "wordID": "fi-0502",
+        "old": "Voitko tulla tänne?",
+        "new": "Haluan tulla mukaan.",
+        "clearedPreviousEnglish": "Can you come here?"
+      },
+      {
+        "wordID": "fi-0829",
+        "old": "Haluan syödä lounasta.",
+        "new": "Haluan syödä keittoa.",
+        "clearedPreviousEnglish": "I want to eat lunch."
+      },
+      {
+        "wordID": "fi-0806",
+        "old": "Muista juoda vettä.",
+        "new": "Haluan juoda vettä.",
+        "clearedPreviousEnglish": "Remember to drink water."
+      },
+      {
+        "wordID": "fi-2572",
+        "old": "Opiskelen suomea joka päivä.",
+        "new": "Haluan opiskella suomea.",
+        "clearedPreviousEnglish": "I study Finnish every day."
+      },
+      {
+        "wordID": "fi-1505",
+        "old": "Haluan oppia uusia sanoja.",
+        "new": "Haluan oppia suomea.",
+        "clearedPreviousEnglish": "I want to learn new words."
+      },
+      {
+        "wordID": "fi-2493",
+        "old": "Voitko puhua hitaammin?",
+        "new": "Haluan puhua suomea.",
+        "clearedPreviousEnglish": "Can you speak more slowly?"
+      },
+      {
+        "wordID": "fi-2803",
+        "old": "Yritän ymmärtää tämän lauseen.",
+        "new": "Haluan ymmärtää asian.",
+        "clearedPreviousEnglish": "I am trying to understand this sentence."
+      },
+      {
+        "wordID": "fi-1469",
+        "old": "En tiedä vastausta.",
+        "new": "Haluan tietää totuuden.",
+        "clearedPreviousEnglish": "I do not know the answer."
+      },
+      {
+        "wordID": "fi-2886",
+        "old": "Mitä haluat tehdä tänään?",
+        "new": "Saat haluta enemmän elämältä.",
+        "clearedPreviousEnglish": "What do you want to do today?"
+      },
+      {
+        "wordID": "fi-1729",
+        "old": "Tarvitsen uuden takin.",
+        "new": "Saatan tarvita apua.",
+        "clearedPreviousEnglish": "I need a new coat."
+      },
+      {
+        "wordID": "fi-1247",
+        "old": "Voitko auttaa minua?",
+        "new": "Haluan auttaa sinua.",
+        "clearedPreviousEnglish": "Can you help me?"
+      },
+      {
+        "wordID": "fi-0361",
+        "old": "Haluan ostaa leipää.",
+        "new": "Haluan ostaa lipun.",
+        "clearedPreviousEnglish": "I want to buy bread."
+      },
+      {
+        "wordID": "fi-1897",
+        "old": "Voinko maksaa kortilla?",
+        "new": "Haluan maksaa laskun.",
+        "clearedPreviousEnglish": "Can I pay by card?"
+      },
+      {
+        "wordID": "fi-2133",
+        "old": "Luen kirjaa bussissa.",
+        "new": "Haluan lukea kirjan.",
+        "clearedPreviousEnglish": "I read a book on the bus."
+      },
+      {
+        "wordID": "fi-2981",
+        "old": "Kirjoitan nimeni tähän.",
+        "new": "Haluan kirjoittaa kirjeen.",
+        "clearedPreviousEnglish": "I write my name here."
+      },
+      {
+        "wordID": "fi-1543",
+        "old": "Kuuntelen suomalaista musiikkia.",
+        "new": "Haluan kuunnella musiikkia.",
+        "clearedPreviousEnglish": "I listen to Finnish music."
+      },
+      {
+        "wordID": "fi-2327",
+        "old": "Näen ystäväni huomenna.",
+        "new": "Haluan nähdä maiseman.",
+        "clearedPreviousEnglish": "I will see my friend tomorrow."
+      },
+      {
+        "wordID": "fi-1279",
+        "old": "Koti on lähellä asemaa.",
+        "new": "Koti on rauhallinen.",
+        "clearedPreviousEnglish": "Home is near the station."
+      },
+      {
+        "wordID": "fi-1292",
+        "old": "Tämä talo on vanha.",
+        "new": "Talo on puinen.",
+        "clearedPreviousEnglish": "This house is old."
+      },
+      {
+        "wordID": "fi-2259",
+        "old": "Huoneessa on kaksi ikkunaa.",
+        "new": "Huone on valoisa.",
+        "clearedPreviousEnglish": "There are two windows in the room."
+      },
+      {
+        "wordID": "fi-0788",
+        "old": "Sulje ovi, kiitos.",
+        "new": "Ovi on auki.",
+        "clearedPreviousEnglish": "Close the door, please."
+      },
+      {
+        "wordID": "fi-2948",
+        "old": "Avaan ikkunan aamulla.",
+        "new": "Ikkuna on auki.",
+        "clearedPreviousEnglish": "I open the window in the morning."
+      },
+      {
+        "wordID": "fi-2628",
+        "old": "Kirja on pöydällä.",
+        "new": "Pöytä on puinen.",
+        "clearedPreviousEnglish": "The book is on the table."
+      },
+      {
+        "wordID": "fi-0419",
+        "old": "Tämä tuoli on mukava.",
+        "new": "Tuoli on vapaa.",
+        "clearedPreviousEnglish": "This chair is comfortable."
+      },
+      {
+        "wordID": "fi-0252",
+        "old": "Sänky on makuuhuoneessa.",
+        "new": "Sänky on pehmeä.",
+        "clearedPreviousEnglish": "The bed is in the bedroom."
+      },
+      {
+        "wordID": "fi-1465",
+        "old": "Keittiössä on hyvä tuoksu.",
+        "new": "Keittiö on siisti.",
+        "clearedPreviousEnglish": "There is a nice smell in the kitchen."
+      },
+      {
+        "wordID": "fi-0489",
+        "old": "Juon kahvia aamulla.",
+        "new": "Kahvi on kuumaa.",
+        "clearedPreviousEnglish": "I drink coffee in the morning."
+      },
+      {
+        "wordID": "fi-2643",
+        "old": "Haluatko kupin teetä?",
+        "new": "Tee on kuumaa.",
+        "clearedPreviousEnglish": "Would you like a cup of tea?"
+      },
+      {
+        "wordID": "fi-1652",
+        "old": "Tarvitsen maitoa kahviin.",
+        "new": "Maito on kylmää.",
+        "clearedPreviousEnglish": "I need milk for my coffee."
+      },
+      {
+        "wordID": "fi-0326",
+        "old": "Ostan tuoretta leipää.",
+        "new": "Leipä on tuore.",
+        "clearedPreviousEnglish": "I buy fresh bread."
+      },
+      {
+        "wordID": "fi-2389",
+        "old": "Kauppa sulkeutuu yhdeksältä.",
+        "new": "Kauppa on auki.",
+        "clearedPreviousEnglish": "The shop closes at nine."
+      },
+      {
+        "wordID": "fi-2306",
+        "old": "Lapset menevät kouluun.",
+        "new": "Koulu alkaa kahdeksalta.",
+        "clearedPreviousEnglish": "The children go to school."
+      },
+      {
+        "wordID": "fi-1523",
+        "old": "Lainaan kirjoja kirjastosta.",
+        "new": "Kirjasto lainaa kirjoja.",
+        "clearedPreviousEnglish": "I borrow books from the library."
+      },
+      {
+        "wordID": "fi-1287",
+        "old": "Sairaala on keskustassa.",
+        "new": "Sairaala on lähellä.",
+        "clearedPreviousEnglish": "The hospital is in the city centre."
+      },
+      {
+        "wordID": "fi-0780",
+        "old": "Minulla on aika lääkärille.",
+        "new": "Lääkäri kuuntelee potilasta.",
+        "clearedPreviousEnglish": "I have an appointment with a doctor."
+      },
+      {
+        "wordID": "fi-0353",
+        "old": "Bussi tulee viiden minuutin kuluttua.",
+        "new": "Bussi saapuu pian.",
+        "clearedPreviousEnglish": "The bus arrives in five minutes."
+      },
+      {
+        "wordID": "fi-2751",
+        "old": "Juna lähtee asemalta.",
+        "new": "Juna saapuu asemalle.",
+        "clearedPreviousEnglish": "The train leaves the station."
+      },
+      {
+        "wordID": "fi-2532",
+        "old": "Odotan sinua asemalla.",
+        "new": "Asema on keskustassa.",
+        "clearedPreviousEnglish": "I am waiting for you at the station."
+      },
+      {
+        "wordID": "fi-2708",
+        "old": "Ostan lipun Helsinkiin.",
+        "new": "Lippu on taskussa.",
+        "clearedPreviousEnglish": "I buy a ticket to Helsinki."
+      },
+      {
+        "wordID": "fi-2559",
+        "old": "Tämä katu on hiljainen.",
+        "new": "Katu on hiljainen.",
+        "clearedPreviousEnglish": "This street is quiet."
+      },
+      {
+        "wordID": "fi-0455",
+        "old": "Helsinki on suuri kaupunki.",
+        "new": "Kaupunki kasvaa.",
+        "clearedPreviousEnglish": "Helsinki is a large city."
+      },
+      {
+        "wordID": "fi-0605",
+        "old": "Suomi on kaunis maa.",
+        "new": "Maa on kaunis.",
+        "clearedPreviousEnglish": "Finland is a beautiful country."
+      },
+      {
+        "wordID": "fi-0668",
+        "old": "Tänään on hyvä päivä.",
+        "new": "Päivä alkaa aurinkoisena.",
+        "clearedPreviousEnglish": "Today is a good day."
+      },
+      {
+        "wordID": "fi-2910",
+        "old": "Nähdään ensi viikolla.",
+        "new": "Viikko kuluu nopeasti.",
+        "clearedPreviousEnglish": "See you next week."
+      },
+      {
+        "wordID": "fi-1680",
+        "old": "Kuukaudessa on noin neljä viikkoa.",
+        "new": "Kuukausi vaihtuu pian.",
+        "clearedPreviousEnglish": "There are about four weeks in a month."
+      },
+      {
+        "wordID": "fi-2988",
+        "old": "Vuodessa on kaksitoista kuukautta.",
+        "new": "Vuosi kuluu nopeasti.",
+        "clearedPreviousEnglish": "There are twelve months in a year."
+      },
+      {
+        "wordID": "fi-2719",
+        "old": "Tänään opiskelen kotona.",
+        "new": "Opiskelen tänään suomea.",
+        "clearedPreviousEnglish": "Today I study at home."
+      },
+      {
+        "wordID": "fi-2724",
+        "old": "Huomenna menen töihin.",
+        "new": "Tulen huomenna.",
+        "clearedPreviousEnglish": "Tomorrow I am going to work."
+      },
+      {
+        "wordID": "fi-2991",
+        "old": "Eilen satoi vettä.",
+        "new": "Kävin kaupassa eilen.",
+        "clearedPreviousEnglish": "It rained yesterday."
+      },
+      {
+        "wordID": "fi-1685",
+        "old": "Aamu alkaa kahvilla.",
+        "new": "Aamu on hiljainen.",
+        "clearedPreviousEnglish": "The morning starts with coffee."
+      },
+      {
+        "wordID": "fi-0921",
+        "old": "Illalla katson elokuvaa.",
+        "new": "Ilta on lämmin.",
+        "clearedPreviousEnglish": "In the evening I watch a film."
+      },
+      {
+        "wordID": "fi-1747",
+        "old": "Yöllä on hiljaista.",
+        "new": "Yö on hiljainen.",
+        "clearedPreviousEnglish": "It is quiet at night."
+      },
+      {
+        "wordID": "fi-2712",
+        "old": "Minulla on aikaa huomenna.",
+        "new": "Aika kuluu nopeasti.",
+        "clearedPreviousEnglish": "I have time tomorrow."
+      },
+      {
+        "wordID": "fi-1172",
+        "old": "Tämä on hyvä kirja.",
+        "new": "Hyvä ruoka maistuu kaikille.",
+        "clearedPreviousEnglish": "This is a good book."
+      },
+      {
+        "wordID": "fi-0217",
+        "old": "Tänään on huono sää.",
+        "new": "Sää on huono.",
+        "clearedPreviousEnglish": "The weather is bad today."
+      },
+      {
+        "wordID": "fi-0280",
+        "old": "Meillä on iso keittiö.",
+        "new": "Talo on iso.",
+        "clearedPreviousEnglish": "We have a big kitchen."
+      },
+      {
+        "wordID": "fi-2449",
+        "old": "Asun pienessä asunnossa.",
+        "new": "Talo on pieni.",
+        "clearedPreviousEnglish": "I live in a small apartment."
+      },
+      {
+        "wordID": "fi-1741",
+        "old": "Minulla on uusi työpaikka.",
+        "new": "Puhelin on uusi.",
+        "clearedPreviousEnglish": "I have a new job."
+      },
+      {
+        "wordID": "fi-1807",
+        "old": "Tämä on vanha valokuva.",
+        "new": "Talo on vanha.",
+        "clearedPreviousEnglish": "This is an old photograph."
+      },
+      {
+        "wordID": "fi-1289",
+        "old": "Kahvi on kuumaa.",
+        "new": "Kuuma kahvi lämmittää.",
+        "clearedPreviousEnglish": "The coffee is hot."
+      },
+      {
+        "wordID": "fi-0491",
+        "old": "Ulkona on kylmä.",
+        "new": "Kylmä vesi virkistää.",
+        "clearedPreviousEnglish": "It is cold outside."
+      },
+      {
+        "wordID": "fi-1219",
+        "old": "Olen iloinen, että olet täällä.",
+        "new": "Lapsi on iloinen.",
+        "clearedPreviousEnglish": "I am happy that you are here."
+      },
+      {
+        "wordID": "fi-2716",
+        "old": "Olen väsynyt työpäivän jälkeen.",
+        "new": "Lapsi on väsynyt.",
+        "clearedPreviousEnglish": "I am tired after the working day."
+      },
+      {
+        "wordID": "fi-1302",
+        "old": "Olen nälkäinen.",
+        "new": "Lapsi on nälkäinen.",
+        "clearedPreviousEnglish": "I am hungry."
+      },
+      {
+        "wordID": "fi-1677",
+        "old": "Säästän rahaa uutta pyörää varten.",
+        "new": "Raha ei riitä kaikkeen.",
+        "clearedPreviousEnglish": "I am saving money for a new bicycle."
+      },
+      {
+        "wordID": "fi-1928",
+        "old": "Puhelimeni on laukussa.",
+        "new": "Puhelin soi.",
+        "clearedPreviousEnglish": "My phone is in the bag."
+      },
+      {
+        "wordID": "fi-2966",
+        "old": "Mitä tämä sana tarkoittaa?",
+        "new": "Sana on uusi minulle.",
+        "clearedPreviousEnglish": "What does this word mean?"
+      },
+      {
+        "wordID": "fi-2342",
+        "old": "Lue tämä lause ääneen.",
+        "new": "Lause alkaa isolla kirjaimella.",
+        "clearedPreviousEnglish": "Read this sentence aloud."
+      },
+      {
+        "wordID": "fi-1481",
+        "old": "Suomi on kaunis kieli.",
+        "new": "Kieli yhdistää ihmisiä.",
+        "clearedPreviousEnglish": "Finnish is a beautiful language."
+      },
+      {
+        "wordID": "fi-0306",
+        "old": "Tämä kirja on helppo lukea.",
+        "new": "Kirja on kiinnostava.",
+        "clearedPreviousEnglish": "This book is easy to read."
+      }
+    ]
+  },
+  "note": "Data synchronized only. Bundling, native tests, build and packaging remain separate final steps.",
+  "legacyArtworkDisabled": [
+    {
+      "wordID": "fi-0002",
+      "imageName": "abandon",
+      "reason": "Legacy embedded sentence differs from the refreshed example; approved bundled artwork supplies the current illustration."
+    }
+  ]
+}

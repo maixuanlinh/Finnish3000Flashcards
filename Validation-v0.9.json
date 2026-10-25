@@ -1,0 +1,87 @@
+{
+  "version": "0.9.0",
+  "build": 10,
+  "result": "Passed",
+  "testsRunThisUpdate": 18,
+  "databaseTestsPassed": 17,
+  "UITestsPassed": 1,
+  "UIValidation": "C image visible on a fresh installation and opens full-screen without importing",
+  "bundledArtworkCount": 655,
+  "AArtworkCount": 211,
+  "BArtworkCount": 152,
+  "CArtworkCount": 292,
+  "physicalIPhoneBuild": "Succeeded without signing or installation",
+  "nativeBundleVerification": {
+    "version": "0.9.0",
+    "build": 10,
+    "bundledArtwork": 655,
+    "bundledArtworkBytes": 135308595,
+    "totalUnsignedAppBytes": 148799927,
+    "checks": "All1311 bundled artwork resource files, canonical prompt file and vocabulary/example resources match source SHA-256; version/build verified.",
+    "installation": "Not attempted"
+  },
+  "artworkVerification": {
+    "letter": "C",
+    "expectedWords": 292,
+    "generatedImages": 292,
+    "visuallyCheckedImages": 292,
+    "importedRecords": 292,
+    "databaseIntegrity": "ok",
+    "allAssetRevisionsVerified": 666,
+    "allJSONFilesParsed": 679,
+    "optimizedJPEGBytes": 55689202,
+    "thumbnailBytes": 3936899,
+    "selectedOriginalPNGBytes": 648013989,
+    "importFileBytes": 74824832,
+    "checkedAt": "2026-10-16T19:06:50.494114+00:00",
+    "checks": "Complete letter coverage, unique IDs, approval status, exact prompts, base64/JPEG decoding, dimensions, SHA-256 files, SQLite integrity and JSON syntax.",
+    "note": "Visual review was performed by the agent. Independent Finnish editorial review and physical iPhone pack selection are separate."
+  },
+  "testResult": {
+    "devicesAndConfigurations": [
+      {
+        "device": {
+          "architecture": "arm64",
+          "deviceId": "5CC5F52D-EFAD-4CA6-8517-B3EC8AEF9C54",
+          "deviceName": "iPhone 17 Pro",
+          "modelName": "iPhone 17 Pro",
+          "osBuildNumber": "23F77",
+          "osVersion": "26.5",
+          "platform": "iOS Simulator"
+        },
+        "expectedFailures": 0,
+        "failedTests": 0,
+        "passedTests": 18,
+        "skippedTests": 0,
+        "testPlanConfiguration": {
+          "configurationId": "1",
+          "configurationName": "Test Scheme Action"
+        }
+      }
+    ],
+    "environmentDescription": "SisuCards · Built with macOS 26.5",
+    "expectedFailures": 0,
+    "failedTests": 0,
+    "finishTime": 1792177738.587,
+    "passedTests": 18,
+    "result": "Passed",
+    "skippedTests": 0,
+    "startTime": 1792177673.65,
+    "statistics": [],
+    "testFailures": [],
+    "title": "Test - SisuCards",
+    "topInsights": [
+      {
+        "category": "Longest Test Runs",
+        "impact": "52% of duration",
+        "text": "1 longest test run with outlier durations exceeding 5.59s (three standard deviations)"
+      }
+    ],
+    "totalTestCount": 18
+  },
+  "historicalVerification": [
+    "Validation-v0.7.json",
+    "Validation-v0.8.json"
+  ],
+  "note": "This resource update runs all database tests and the new C viewer smoke test. An initial successful run was repeated after the last reusable prompt update; this report describes the final resource state. Full UI layout tests remain unchanged and were verified in0.7. Physical iPhone installation and native picker selection were not attempted."
+}

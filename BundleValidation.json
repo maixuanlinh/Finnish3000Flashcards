@@ -1,0 +1,15 @@
+{
+  "version": "0.21.0",
+  "build": 22,
+  "configuration": "Release",
+  "bundledArtwork": 3000,
+  "bundledArtworkBytes": 594415931,
+  "totalUnsignedAppBytes": 615002907,
+  "verifiedArtworkResourceFiles": 6001,
+  "EnglishSentenceTranslations": 3000,
+  "allSourceAndBuiltResourceHashesMatched": true,
+  "allPreviousArtworkAndVocabularyPreserved": true,
+  "localStoreKitConfigInApp": false,
+  "StoreKitTestFrameworkInApp": false,
+  "installation": "Not attempted"
+}

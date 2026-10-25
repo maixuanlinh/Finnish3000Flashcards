@@ -1,0 +1,44 @@
+[
+  {
+    "wordID": "fi-0835",
+    "oldSentence": "Toimittaja kirjoittaa uutisen.",
+    "newSentence": "Toimittaja tarkistaa tekstin.",
+    "reason": "Use the editor sense, checking a text, rather than reporting news."
+  },
+  {
+    "wordID": "fi-0847",
+    "oldSentence": "Hän on kahdeksantoista vuotta.",
+    "newSentence": "Hän on kahdeksantoista vuotta vanha.",
+    "reason": "Make the age sentence complete for a beginner."
+  },
+  {
+    "wordID": "fi-0853",
+    "oldSentence": "Lomake on sähköinen.",
+    "newSentence": "Moottori on sähköinen.",
+    "reason": "Illustrate electric power rather than an electronic form."
+  },
+  {
+    "wordID": "fi-0932",
+    "oldSentence": "Haju on paha.",
+    "newSentence": "Paha velho asuu linnassa.",
+    "reason": "Use moral evil in a fictional story rather than a bad smell."
+  },
+  {
+    "wordID": "fi-0941",
+    "oldSentence": "Vaihto onnistuu asemalla.",
+    "newSentence": "Vaihto on reilu.",
+    "reason": "Illustrate a fair exchange rather than changing trains."
+  },
+  {
+    "wordID": "fi-0954",
+    "oldSentence": "Haluan odottaa täällä.",
+    "newSentence": "Voimme odottaa vieraita illalla.",
+    "reason": "Use expecting guests rather than waiting in a place."
+  },
+  {
+    "wordID": "fi-0955",
+    "oldSentence": "Odotus tuntui pitkältä.",
+    "newSentence": "Hyvän tuloksen odotus motivoi minua.",
+    "reason": "Use an expectation of a result rather than a long wait."
+  }
+]

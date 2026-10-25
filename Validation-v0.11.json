@@ -1,0 +1,135 @@
+{
+  "version": "0.11.0",
+  "build": 12,
+  "result": "Passed",
+  "testsRunThisUpdate": 18,
+  "databaseTestsPassed": 17,
+  "UITestsPassed": 1,
+  "UIValidation": "E elephant image visible on a fresh installation and opens full-screen without importing",
+  "bundledArtworkCount": 980,
+  "AArtworkCount": 211,
+  "BArtworkCount": 152,
+  "CArtworkCount": 292,
+  "DArtworkCount": 163,
+  "EArtworkCount": 162,
+  "physicalIPhoneBuild": "Succeeded without signing or installation",
+  "nativeBundleVerification": {
+    "version": "0.11.0",
+    "build": 12,
+    "bundledArtwork": 980,
+    "bundledArtworkBytes": 201656927,
+    "totalUnsignedAppBytes": 215840980,
+    "checks": "All 1961 bundled artwork resource files, canonical prompts and vocabulary/example resources match final source SHA-256; version/build verified. Prior 818 A–D selected assets are unchanged. Seven E example corrections are synchronized.",
+    "installation": "Not attempted"
+  },
+  "artworkVerification": {
+    "letter": "E",
+    "expectedWords": 162,
+    "generatedImages": 162,
+    "visuallyCheckedImages": 162,
+    "importedRecords": 162,
+    "databaseIntegrity": "ok",
+    "allAssetRevisionsVerified": 995,
+    "allJSONFilesParsed": 1014,
+    "optimizedJPEGBytes": 30438620,
+    "thumbnailBytes": 2142538,
+    "selectedOriginalPNGBytes": 355091329,
+    "importFileBytes": 40958634,
+    "checkedAt": "2026-10-16T23:59:03.091179+00:00",
+    "checks": "Complete letter coverage, unique IDs, approval status, exact prompts, base64/JPEG decoding, dimensions, SHA-256 files, SQLite integrity and JSON syntax.",
+    "note": "Visual review was performed by the agent. Independent Finnish editorial review and physical iPhone pack selection are separate."
+  },
+  "testResult": {
+    "devicesAndConfigurations": [
+      {
+        "device": {
+          "architecture": "arm64",
+          "deviceId": "5CC5F52D-EFAD-4CA6-8517-B3EC8AEF9C54",
+          "deviceName": "iPhone 17 Pro",
+          "modelName": "iPhone 17 Pro",
+          "osBuildNumber": "23F77",
+          "osVersion": "26.5",
+          "platform": "iOS Simulator"
+        },
+        "expectedFailures": 0,
+        "failedTests": 0,
+        "passedTests": 18,
+        "skippedTests": 0,
+        "testPlanConfiguration": {
+          "configurationId": "1",
+          "configurationName": "Test Scheme Action"
+        }
+      }
+    ],
+    "environmentDescription": "SisuCards · Built with macOS 26.5",
+    "expectedFailures": 0,
+    "failedTests": 0,
+    "finishTime": 1792195256.695,
+    "passedTests": 18,
+    "result": "Passed",
+    "skippedTests": 0,
+    "startTime": 1792195145.145,
+    "statistics": [],
+    "testFailures": [],
+    "title": "Test - SisuCards",
+    "topInsights": [
+      {
+        "category": "Longest Test Runs",
+        "impact": "62% of duration",
+        "text": "1 longest test run with outlier durations exceeding 7.62s (three standard deviations)"
+      }
+    ],
+    "totalTestCount": 18
+  },
+  "exampleCorrections": [
+    {
+      "wordID": "fi-0835",
+      "oldSentence": "Toimittaja kirjoittaa uutisen.",
+      "newSentence": "Toimittaja tarkistaa tekstin.",
+      "reason": "Use the editor sense, checking a text, rather than reporting news."
+    },
+    {
+      "wordID": "fi-0847",
+      "oldSentence": "Hän on kahdeksantoista vuotta.",
+      "newSentence": "Hän on kahdeksantoista vuotta vanha.",
+      "reason": "Make the age sentence complete for a beginner."
+    },
+    {
+      "wordID": "fi-0853",
+      "oldSentence": "Lomake on sähköinen.",
+      "newSentence": "Moottori on sähköinen.",
+      "reason": "Illustrate electric power rather than an electronic form."
+    },
+    {
+      "wordID": "fi-0932",
+      "oldSentence": "Haju on paha.",
+      "newSentence": "Paha velho asuu linnassa.",
+      "reason": "Use moral evil in a fictional story rather than a bad smell."
+    },
+    {
+      "wordID": "fi-0941",
+      "oldSentence": "Vaihto onnistuu asemalla.",
+      "newSentence": "Vaihto on reilu.",
+      "reason": "Illustrate a fair exchange rather than changing trains."
+    },
+    {
+      "wordID": "fi-0954",
+      "oldSentence": "Haluan odottaa täällä.",
+      "newSentence": "Voimme odottaa vieraita illalla.",
+      "reason": "Use expecting guests rather than waiting in a place."
+    },
+    {
+      "wordID": "fi-0955",
+      "oldSentence": "Odotus tuntui pitkältä.",
+      "newSentence": "Hyvän tuloksen odotus motivoi minua.",
+      "reason": "Use an expectation of a result rather than a long wait."
+    }
+  ],
+  "historicalVerification": [
+    "Validation-v0.7.json",
+    "Validation-v0.8.json",
+    "Validation-v0.9.json",
+    "Validation-v0.10.json"
+  ],
+  "note": "All database tests, including decoding every bundled A–E image and thumbnail, and the E viewer smoke test passed. Full layout tests are unchanged and were verified in 0.7. Physical iPhone installation and native picker selection were not attempted."
+}

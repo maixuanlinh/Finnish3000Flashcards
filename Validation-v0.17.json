@@ -1,0 +1,171 @@
+{
+  "version": "0.17.0",
+  "build": 18,
+  "result": "Passed",
+  "testsRunThisUpdate": 49,
+  "uniqueTestsPassed": 42,
+  "databaseTestsPassed": 19,
+  "UITestsPassed": 23,
+  "testResult": {
+    "devicesAndConfigurations": [
+      {
+        "device": {
+          "architecture": "arm64",
+          "deviceId": "5CC5F52D-EFAD-4CA6-8517-B3EC8AEF9C54",
+          "deviceName": "iPhone 17 Pro",
+          "modelName": "iPhone 17 Pro",
+          "osBuildNumber": "23F77",
+          "osVersion": "26.5",
+          "platform": "iOS Simulator"
+        },
+        "expectedFailures": 0,
+        "failedTests": 0,
+        "passedTests": 41,
+        "skippedTests": 0,
+        "testPlanConfiguration": {
+          "configurationId": "1",
+          "configurationName": "Test Scheme Action"
+        }
+      }
+    ],
+    "environmentDescription": "SisuCards · Built with macOS 26.5",
+    "expectedFailures": 0,
+    "failedTests": 0,
+    "finishTime": 1792331589.075,
+    "passedTests": 41,
+    "result": "Passed",
+    "skippedTests": 0,
+    "startTime": 1792331006.019,
+    "statistics": [
+      {
+        "subtitle": "1 test run",
+        "title": "1 test collected performance metrics"
+      }
+    ],
+    "testFailures": [],
+    "title": "Test - SisuCards",
+    "topInsights": [
+      {
+        "category": "Longest Test Runs",
+        "impact": "12% of duration",
+        "text": "1 longest test run with outlier durations exceeding 49.09s (three standard deviations)"
+      },
+      {
+        "category": "Longest Test Runs",
+        "impact": "75% of duration",
+        "text": "1 longest test run with outlier durations exceeding 18.68s (three standard deviations)"
+      }
+    ],
+    "totalTestCount": 41
+  },
+  "initialDetailRegressionResult": {
+    "devicesAndConfigurations": [
+      {
+        "device": {
+          "architecture": "arm64",
+          "deviceId": "5CC5F52D-EFAD-4CA6-8517-B3EC8AEF9C54",
+          "deviceName": "iPhone 17 Pro",
+          "modelName": "iPhone 17 Pro",
+          "osBuildNumber": "23F77",
+          "osVersion": "26.5",
+          "platform": "iOS Simulator"
+        },
+        "expectedFailures": 0,
+        "failedTests": 1,
+        "passedTests": 3,
+        "skippedTests": 0,
+        "testPlanConfiguration": {
+          "configurationId": "1",
+          "configurationName": "Test Scheme Action"
+        }
+      }
+    ],
+    "environmentDescription": "SisuCards · Built with macOS 26.5",
+    "expectedFailures": 0,
+    "failedTests": 1,
+    "finishTime": 1792331871.368,
+    "passedTests": 3,
+    "result": "Failed",
+    "skippedTests": 0,
+    "startTime": 1792331696.842,
+    "statistics": [],
+    "testFailures": [
+      {
+        "failureText": "XCTAssertEqual failed: (\"1 / 3 000\") is not equal to (\"1 / 3000\")",
+        "targetName": "SisuCardsUITests",
+        "testIdentifier": 2,
+        "testIdentifierString": "FlashcardFlowTests/testRatingInStudyDetailUpdatesRemainingQueue()",
+        "testIdentifierURL": "test://com.apple.xcode/SisuCards/SisuCardsUITests/FlashcardFlowTests/testRatingInStudyDetailUpdatesRemainingQueue",
+        "testName": "testRatingInStudyDetailUpdatesRemainingQueue()"
+      }
+    ],
+    "title": "Test - SisuCards",
+    "topInsights": [],
+    "totalTestCount": 4
+  },
+  "finalDetailRegressionResult": {
+    "devicesAndConfigurations": [
+      {
+        "device": {
+          "architecture": "arm64",
+          "deviceId": "5CC5F52D-EFAD-4CA6-8517-B3EC8AEF9C54",
+          "deviceName": "iPhone 17 Pro",
+          "modelName": "iPhone 17 Pro",
+          "osBuildNumber": "23F77",
+          "osVersion": "26.5",
+          "platform": "iOS Simulator"
+        },
+        "expectedFailures": 0,
+        "failedTests": 0,
+        "passedTests": 4,
+        "skippedTests": 0,
+        "testPlanConfiguration": {
+          "configurationId": "1",
+          "configurationName": "Test Scheme Action"
+        }
+      }
+    ],
+    "environmentDescription": "SisuCards · Built with macOS 26.5",
+    "expectedFailures": 0,
+    "failedTests": 0,
+    "finishTime": 1792332371.151,
+    "passedTests": 4,
+    "result": "Passed",
+    "skippedTests": 0,
+    "startTime": 1792332225.649,
+    "statistics": [],
+    "testFailures": [],
+    "title": "Test - SisuCards",
+    "topInsights": [],
+    "totalTestCount": 4
+  },
+  "bundledArtworkCount": 3000,
+  "screenshotReview": {
+    "reviewed": true,
+    "checkedAt": "2026-10-18T14:10:55.452929+00:00",
+    "images": [
+      {
+        "path": "Preview/25-study-detail-control.png",
+        "sha256": "1790c077a19f407da03a542681db5af9a303f3f960815ee294c0acd8c1c15b2f"
+      },
+      {
+        "path": "Preview/26-shared-word-detail.png",
+        "sha256": "fd62b57cef1e7b1b6fe2d8b292a45e00cde3b11a1582e4fdd544917e441e4dc2"
+      }
+    ],
+    "findings": "Study arrow sits in the word header beside pronunciation, clear of the illustration and complete sentence. It opens the shared Word detail. Detail zoom control is centered below the complete image. Card fits phone viewport; wide flip bar and rating controls remain visible. Image ready state confirmed before detail capture; automated geometry assertions verify no overlap."
+  },
+  "nativeBundleVerification": {
+    "version": "0.17.0",
+    "build": 18,
+    "bundledArtwork": 3000,
+    "bundledArtworkBytes": 594415931,
+    "totalUnsignedAppBytes": 614520731,
+    "verifiedArtworkResourceFiles": 6001,
+    "allSourceAndBuiltResourceHashesMatched": true,
+    "allPreviousArtworkAndVocabularyPreserved": true,
+    "installation": "Not attempted"
+  },
+  "physicalIPhoneBuild": "Succeeded without signing or installation",
+  "note": "The initial complete 41-test suite passed. After the final detail-dismissal and fixed-image-frame refinement, all four targeted Study/detail regressions passed; 42 distinct tests passed across 49 executions; the first new rating assertion was corrected to accept locale-specific thousands grouping, and the final four-test run passed. Physical-device responsiveness still requires testing on the user phone."
+}

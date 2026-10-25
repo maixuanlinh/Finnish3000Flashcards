@@ -1,0 +1,129 @@
+{
+  "version": "0.7.0",
+  "build": 8,
+  "result": "Passed across main and corrected filter runs",
+  "uniqueTestsVerified": 29,
+  "databaseTestsPassed": 17,
+  "UITestsPassed": 12,
+  "smallIPhoneTestsPassed": 4,
+  "bundledArtworkCount": 211,
+  "physicalIPhoneBuild": "Succeeded without signing or installation",
+  "mainRunBeforeOffscreenFilterTapCorrection": {
+    "devicesAndConfigurations": [
+      {
+        "device": {
+          "architecture": "arm64",
+          "deviceId": "5CC5F52D-EFAD-4CA6-8517-B3EC8AEF9C54",
+          "deviceName": "iPhone 17 Pro",
+          "modelName": "iPhone 17 Pro",
+          "osBuildNumber": "23F77",
+          "osVersion": "26.5",
+          "platform": "iOS Simulator"
+        },
+        "expectedFailures": 0,
+        "failedTests": 1,
+        "passedTests": 28,
+        "skippedTests": 0,
+        "testPlanConfiguration": {
+          "configurationId": "1",
+          "configurationName": "Test Scheme Action"
+        }
+      }
+    ],
+    "environmentDescription": "SisuCards · Built with macOS 26.5",
+    "expectedFailures": 0,
+    "failedTests": 1,
+    "finishTime": 1792158180.194,
+    "passedTests": 28,
+    "result": "Failed",
+    "skippedTests": 0,
+    "startTime": 1792157805.279,
+    "statistics": [],
+    "testFailures": [
+      {
+        "failureText": "Failed to tap \"filter.apply\" Button: No matches found for Elements matching predicate '\"filter.apply\" IN identifiers' from input {(\n    Button, identifier: 'rectangle.on.rectangle.angled', label: 'Study', Selected,\n    Button, identifier: 'text.book.closed', label: 'Words',\n    Button, identifier: 'chart.bar.xaxis', label: 'Progress',\n    Button, identifier: 'study.filters', label: 'Filters: New & learning',\n    Button, identifier: 'review.undo', label: 'Undo last swipe', Disabled,\n    Button, label: 'Study options',\n    Button, identifier: 'review.learning', label: 'Still learning',\n    Button, identifier: 'review.known', label: 'I know it', Selected,\n    Button,\n    Button, identifier: 'card.reveal', label: 'Reveal Finnish',\n    Button, identifier: 'card.flip', label: 'Flip card'\n)}\nPossibly caused by runtime issues:\nAutomation type mismatch: computed Button from legacy attributes vs PopUpButton from modern attribute. Input attributes and values: {\n    \"XC_kAXXCAttributeAutomationType\" = 14;\n    \"XC_kAXXCAttributeElementBaseType\" = UIResponder;\n    \"XC_kAXXCAttributeElementType\" = \"SwiftUI.AccessibilityNode\";\n    \"XC_kAXXCAttributeTraits\" = 1108101562369;\n}\nSee test report attachments for more detail.",
+        "targetName": "SisuCardsUITests",
+        "testIdentifier": 21,
+        "testIdentifierString": "FlashcardFlowTests/testEmptyLetterCanReturnToAllLetters()",
+        "testIdentifierURL": "test://com.apple.xcode/SisuCards/SisuCardsUITests/FlashcardFlowTests/testEmptyLetterCanReturnToAllLetters",
+        "testName": "testEmptyLetterCanReturnToAllLetters()"
+      }
+    ],
+    "title": "Test - SisuCards",
+    "topInsights": [],
+    "totalTestCount": 29
+  },
+  "correctedFilterRun": {
+    "devicesAndConfigurations": [
+      {
+        "device": {
+          "architecture": "arm64",
+          "deviceId": "5CC5F52D-EFAD-4CA6-8517-B3EC8AEF9C54",
+          "deviceName": "iPhone 17 Pro",
+          "modelName": "iPhone 17 Pro",
+          "osBuildNumber": "23F77",
+          "osVersion": "26.5",
+          "platform": "iOS Simulator"
+        },
+        "expectedFailures": 0,
+        "failedTests": 0,
+        "passedTests": 1,
+        "skippedTests": 0,
+        "testPlanConfiguration": {
+          "configurationId": "1",
+          "configurationName": "Test Scheme Action"
+        }
+      }
+    ],
+    "environmentDescription": "SisuCards · Built with macOS 26.5",
+    "expectedFailures": 0,
+    "failedTests": 0,
+    "finishTime": 1792158478.521,
+    "passedTests": 1,
+    "result": "Passed",
+    "skippedTests": 0,
+    "startTime": 1792158403.954,
+    "statistics": [],
+    "testFailures": [],
+    "title": "Test - SisuCards",
+    "topInsights": [],
+    "totalTestCount": 1
+  },
+  "smallIPhoneRun": {
+    "devicesAndConfigurations": [
+      {
+        "device": {
+          "architecture": "arm64",
+          "deviceId": "2A7E3AFE-0AAE-4AD0-99B1-3CBC893F12D5",
+          "deviceName": "iPhone SE (3rd generation)",
+          "modelName": "iPhone SE (3rd generation)",
+          "osBuildNumber": "22D8075",
+          "osVersion": "18.3.1",
+          "platform": "iOS Simulator"
+        },
+        "expectedFailures": 0,
+        "failedTests": 0,
+        "passedTests": 4,
+        "skippedTests": 0,
+        "testPlanConfiguration": {
+          "configurationId": "1",
+          "configurationName": "Test Scheme Action"
+        }
+      }
+    ],
+    "environmentDescription": "SisuCards · Built with macOS 26.5",
+    "expectedFailures": 0,
+    "failedTests": 0,
+    "finishTime": 1792158248.084,
+    "passedTests": 4,
+    "result": "Passed",
+    "skippedTests": 0,
+    "startTime": 1792158067.043,
+    "statistics": [],
+    "testFailures": [],
+    "title": "Test - SisuCards",
+    "topInsights": [],
+    "totalTestCount": 4
+  },
+  "note": "The original empty-letter test tapped an off-screen control through the Apply overlay. Its helper now scrolls the target inside the visible filter content before tapping. The corrected test passed on both simulators. Physical-device installation and Photos/Files picker selection were not automated."
+}

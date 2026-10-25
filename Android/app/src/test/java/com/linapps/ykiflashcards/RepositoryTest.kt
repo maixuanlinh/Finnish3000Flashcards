@@ -1,0 +1,51 @@
+package com.linapps.ykiflashcards
+
+import android.content.Context
+import androidx.test.core.app.ApplicationProvider
+import com.linapps.ykiflashcards.data.LocalStudyRepository
+import com.linapps.ykiflashcards.domain.*
+import kotlinx.coroutines.test.runTest
+import org.junit.*
+import org.junit.Assert.*
+import org.junit.runner.RunWith
+import org.robolectric.RobolectricTestRunner
+import org.robolectric.annotation.Config
+
+@RunWith(RobolectricTestRunner::class)
+@Config(sdk=[35],application=android.app.Application::class)
+class RepositoryTest {
+    private lateinit var context: Context
+    @Before fun setup() { context=ApplicationProvider.getApplicationContext();context.deleteDatabase("sisu-progress.db") }
+    @Test fun actualAssetsHaveCompleteStableContentAndFreeASet() = runTest {
+        val words=LocalStudyRepository(context).loadWords()
+        assertEquals(3000,words.size)
+        assertEquals(3000,words.map { it.id }.toSet().size)
+        assertEquals(211,words.count { it.initial=="A" })
+        assertTrue(words.all { it.sentence.isNotBlank() && it.sentenceEnglish.isNotBlank() })
+        assertEquals("a, an",words.first().english)
+        val apple=words.single { it.id=="fi-0136" }
+        assertEquals("Food",apple.topic)
+        assertEquals("omena",apple.finnish)
+        context.assets.open("BundledArtwork/${apple.image}").use { assertTrue(it.read()>0) }
+    }
+    @Test fun ratingsSurviveNewRepositoryAndUndoRemovesOnlyItsEvent() = runTest {
+        val repo=LocalStudyRepository(context)
+        repo.rate("fi-0136",LearningStatus.LEARNING)
+        val known=repo.rate("fi-0136",LearningStatus.KNOWN)
+        val fresh=LocalStudyRepository(context)
+        assertEquals(2,fresh.ratings().getValue("fi-0136").count)
+        assertEquals(LearningStatus.KNOWN,fresh.ratings().getValue("fi-0136").status)
+        fresh.undo(known)
+        assertEquals(LearningStatus.LEARNING,repo.ratings().getValue("fi-0136").status)
+        assertEquals(1,repo.events().size)
+        assertEquals(1,repo.ratings().getValue("fi-0136").count)
+    }
+    @Test fun staleUndoKeepsNewerRating() = runTest {
+        val repo=LocalStudyRepository(context)
+        val first=repo.rate("fi-0136",LearningStatus.KNOWN)
+        repo.rate("fi-0136",LearningStatus.LEARNING)
+        try { repo.undo(first);fail("Expected stale undo rejection") } catch(_: IllegalStateException) {}
+        assertEquals(LearningStatus.LEARNING,repo.ratings().getValue("fi-0136").status)
+        assertEquals(2,repo.events().size)
+    }
+}

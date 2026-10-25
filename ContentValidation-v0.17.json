@@ -1,0 +1,15 @@
+{
+  "version": "0.17.0",
+  "cards": 3000,
+  "FinnishExamples": 3000,
+  "missingExamples": 0,
+  "duplicateIDs": 0,
+  "emptyTranslations": 0,
+  "distinctExampleSentences": 2885,
+  "activeIllustrations": 3000,
+  "originalCompatibleIllustrations": 4,
+  "bundledIllustrations": 3000,
+  "bundledArtworkBytes": 594415931,
+  "checks": "ID coverage, required text, punctuation, accidental repeated words, and resource consistency",
+  "note": "Structural checks do not constitute independent Finnish linguistic review."
+}

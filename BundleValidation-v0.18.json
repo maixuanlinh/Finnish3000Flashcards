@@ -1,0 +1,12 @@
+{
+  "version": "0.18.0",
+  "build": 19,
+  "bundledArtwork": 3000,
+  "bundledArtworkBytes": 594415931,
+  "totalUnsignedAppBytes": 614583331,
+  "verifiedArtworkResourceFiles": 6001,
+  "EnglishSentenceTranslations": 3000,
+  "allSourceAndBuiltResourceHashesMatched": true,
+  "allPreviousArtworkAndFinnishVocabularyPreserved": true,
+  "installation": "Not attempted"
+}

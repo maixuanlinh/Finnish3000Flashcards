@@ -1,0 +1,26 @@
+[
+  {
+    "wordID": "fi-1021",
+    "oldSentence": "Haluan tuntea itseni paremmin.",
+    "newSentence": "Haluan tuntea iloa.",
+    "reason": "Illustrate feeling an emotion rather than getting to know oneself."
+  },
+  {
+    "wordID": "fi-1096",
+    "oldSentence": "Hän on neljäkymmentä vuotta.",
+    "newSentence": "Hän on neljäkymmentä vuotta vanha.",
+    "reason": "Make the age construction explicit for a beginner."
+  },
+  {
+    "wordID": "fi-1100",
+    "oldSentence": "Hän on neljätoista vuotta.",
+    "newSentence": "Hän on neljätoista vuotta vanha.",
+    "reason": "Make the age construction explicit for a beginner."
+  },
+  {
+    "wordID": "fi-1126",
+    "oldSentence": "Tehtävä on helppo ymmärtää.",
+    "newSentence": "Lukon tehtävä on pitää ovi kiinni.",
+    "reason": "Illustrate function as a purpose or role rather than a generic assignment."
+  }
+]

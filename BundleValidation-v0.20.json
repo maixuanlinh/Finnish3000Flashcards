@@ -1,0 +1,12 @@
+{
+  "version": "0.20.0",
+  "build": 21,
+  "bundledArtwork": 3000,
+  "bundledArtworkBytes": 594415931,
+  "totalUnsignedAppBytes": 616273907,
+  "verifiedArtworkResourceFiles": 6001,
+  "EnglishSentenceTranslations": 3000,
+  "allSourceAndBuiltResourceHashesMatched": true,
+  "allPreviousArtworkAndVocabularyPreserved": true,
+  "installation": "Not attempted"
+}

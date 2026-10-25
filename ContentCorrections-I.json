@@ -1,0 +1,38 @@
+[
+  {
+    "wordID": "fi-1320",
+    "oldSentence": "Sairaus vaatii lepoa.",
+    "newSentence": "Sairaus muutti arkea.",
+    "reason": "Use a neutral example of illness changing everyday life."
+  },
+  {
+    "wordID": "fi-1338",
+    "oldSentence": "Haluan tehdä vaikutus yleisöön.",
+    "newSentence": "Haluan tehdä vaikutuksen yleisöön.",
+    "reason": "The object in tehdä vaikutuksen must be inflected in this affirmative sentence."
+  },
+  {
+    "wordID": "fi-1351",
+    "oldSentence": "Haluan kasvaa rauhassa.",
+    "newSentence": "Määrä voi kasvaa nopeasti.",
+    "reason": "Illustrate increase in quantity while retaining the dictionary-form verb kasvaa."
+  },
+  {
+    "wordID": "fi-1364",
+    "oldSentence": "Infektio hoidetaan nopeasti.",
+    "newSentence": "Infektio todettiin eilen.",
+    "reason": "Use a fictional diagnostic context rather than a generalized treatment claim."
+  },
+  {
+    "wordID": "fi-1373",
+    "oldSentence": "En halua vahingoittaa luontoa.",
+    "newSentence": "En halua vahingoittaa ketään.",
+    "reason": "Match injure a person rather than environmental damage."
+  },
+  {
+    "wordID": "fi-1393",
+    "oldSentence": "Vakuutus korvaa vahingon.",
+    "newSentence": "Vakuutus voi korvata vahingon.",
+    "reason": "Use conditional insurance coverage rather than a universal payment claim."
+  }
+]

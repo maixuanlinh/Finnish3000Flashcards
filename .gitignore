@@ -1,0 +1,43 @@
+DerivedData/
+build/
+*.xcuserstate
+xcuserdata/
+.DS_Store
+
+PersonalValidation/PhoneDataBackup*/
+
+# The Swedish prototype is a separate project and repository.
+/Swedish3000/
+
+# Local device/account evidence and release credentials stay on this Mac.
+/PersonalValidation/
+/CommercialValidation/*
+!/CommercialValidation/Screenshots/
+/Android/release-preparation/*
+!/Android/release-preparation/README.md
+!/Android/release-preparation/graphics/
+!/Android/release-preparation/store-listing/
+!/Android/release-preparation/privacy-policy-android-draft.html
+
+# Build caches, workstation configuration, and signing material.
+.gradle/
+.kotlin/
+.idea/
+**/build/
+local.properties
+*.iml
+*.jks
+*.keystore
+keystore.properties
+*.p8
+*.p12
+*.mobileprovision
+.env
+.env.*
+!.env.example
+__pycache__/
+*.pyc
+
+# Android's asset-pack copy is regenerated from Resources/BundledArtwork.
+/Android/illustrations/src/main/assets/
+*.log

@@ -1,0 +1,109 @@
+{
+  "version": "0.13.0",
+  "build": 14,
+  "result": "Passed",
+  "testsRunThisUpdate": 18,
+  "databaseTestsPassed": 17,
+  "UITestsPassed": 1,
+  "UIValidation": "G garage image visible on a fresh installation and opens full-screen without importing",
+  "bundledArtworkCount": 1208,
+  "AArtworkCount": 211,
+  "BArtworkCount": 152,
+  "CArtworkCount": 292,
+  "DArtworkCount": 163,
+  "EArtworkCount": 162,
+  "FArtworkCount": 155,
+  "GArtworkCount": 73,
+  "physicalIPhoneBuild": "Succeeded without signing or installation",
+  "nativeBundleVerification": {
+    "version": "0.13.0",
+    "build": 14,
+    "bundledArtwork": 1208,
+    "bundledArtworkBytes": 246645375,
+    "totalUnsignedAppBytes": 261436800,
+    "checks": "All 2417 bundled artwork resource files, canonical prompts and vocabulary/example resources match final source SHA-256; version/build verified. Prior 1135 A–F selected assets are unchanged. Two G example corrections are synchronized.",
+    "installation": "Not attempted"
+  },
+  "artworkVerification": {
+    "letter": "G",
+    "expectedWords": 73,
+    "generatedImages": 73,
+    "visuallyCheckedImages": 73,
+    "importedRecords": 73,
+    "databaseIntegrity": "ok",
+    "allAssetRevisionsVerified": 1230,
+    "allJSONFilesParsed": 1254,
+    "optimizedJPEGBytes": 13563063,
+    "thumbnailBytes": 952839,
+    "selectedOriginalPNGBytes": 159718589,
+    "importFileBytes": 18288307,
+    "checkedAt": "2026-10-17T09:03:34.130844+00:00",
+    "checks": "Complete letter coverage, unique IDs, approval status, exact prompts, base64/JPEG decoding, dimensions, SHA-256 files, SQLite integrity and JSON syntax.",
+    "note": "Visual review was performed by the agent. Independent Finnish editorial review and physical iPhone pack selection are separate."
+  },
+  "testResult": {
+    "devicesAndConfigurations": [
+      {
+        "device": {
+          "architecture": "arm64",
+          "deviceId": "5CC5F52D-EFAD-4CA6-8517-B3EC8AEF9C54",
+          "deviceName": "iPhone 17 Pro",
+          "modelName": "iPhone 17 Pro",
+          "osBuildNumber": "23F77",
+          "osVersion": "26.5",
+          "platform": "iOS Simulator"
+        },
+        "expectedFailures": 0,
+        "failedTests": 0,
+        "passedTests": 18,
+        "skippedTests": 0,
+        "testPlanConfiguration": {
+          "configurationId": "1",
+          "configurationName": "Test Scheme Action"
+        }
+      }
+    ],
+    "environmentDescription": "SisuCards · Built with macOS 26.5",
+    "expectedFailures": 0,
+    "failedTests": 0,
+    "finishTime": 1792227924.922,
+    "passedTests": 18,
+    "result": "Passed",
+    "skippedTests": 0,
+    "startTime": 1792227807.966,
+    "statistics": [],
+    "testFailures": [],
+    "title": "Test - SisuCards",
+    "topInsights": [
+      {
+        "category": "Longest Test Runs",
+        "impact": "66% of duration",
+        "text": "1 longest test run with outlier durations exceeding 9.55s (three standard deviations)"
+      }
+    ],
+    "totalTestCount": 18
+  },
+  "exampleCorrections": [
+    {
+      "wordID": "fi-1175",
+      "oldSentence": "Haluan hallita rauhallisesti.",
+      "newSentence": "Hallitus haluaa hallita maata oikeudenmukaisesti.",
+      "reason": "Make govern explicitly refer to governing a country rather than an unspecified act of control."
+    },
+    {
+      "wordID": "fi-1178",
+      "oldSentence": "Haluan tarttua tilaisuuteen.",
+      "newSentence": "Haluan tarttua köyteen.",
+      "reason": "Teach the concrete taking-hold sense of grab rather than the figurative seize-an-opportunity sense."
+    }
+  ],
+  "historicalVerification": [
+    "Validation-v0.7.json",
+    "Validation-v0.8.json",
+    "Validation-v0.9.json",
+    "Validation-v0.10.json",
+    "Validation-v0.11.json",
+    "Validation-v0.12.json"
+  ],
+  "note": "All database tests, including decoding every bundled A–G image and thumbnail, and the G viewer smoke test passed. Full layout tests are unchanged and were verified in 0.7. Physical iPhone installation and native picker selection were not attempted."
+}
