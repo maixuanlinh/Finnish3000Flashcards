@@ -1,5 +1,22 @@
 # Release notes and version policy
 
+## ios-v1.1.0-dev.3 — 7 November 2026
+
+Status: iOS development checkpoint for owner testing. Customer target **1.1.0 (33)**; Personal **0.23.0 (25)**. No store submission. Android remains at the previous checkpoint.
+
+- Save the active study list, remaining order, filters and position across relaunch. Progress shows **Continue your last session** and **Currently learning**, with quick access to saved learning words. Reminder deep links do not replace the main saved session.
+- Add **Settings** as a fourth tab. Move membership/purchases, offline downloads, word reminders and help there; Progress focuses on learning.
+- Require verified Premium access to enable or sample reminders. Revocation disables and cancels reminders, including in-flight scheduling, while preserving learning data. The personal owner build retains Premium access.
+- Free offline downloads save only images and recordings for the **211 A-set lessons**, using per-asset verified byte ranges. Premium retains full-pack downloads for all lessons. The free path cannot fetch paid assets or mixed full packs.
+- Support every **30 minutes**, hourly, every 2/3/4 hours, or custom times, with local sleep/wake hours. Daily repeating triggers have no end date; assigned words repeat until the app reshuffles them on foregrounding. No remote push backend or guaranteed changing content while terminated is claimed. Samples are explicit five-second test alerts.
+- Preserve legacy reminder settings, word IDs, review history, imported artwork and installed bundle identities. New schedules default to hourly with sleep from 22:00 to 08:00.
+
+Validation: **67 checks passed** on the physical iPhone 16 Plus: 63 offline app tests, one live A-set asset download/reopen-without-network test, and three UI flows covering Settings/sleep hours, exact study-list recovery after relaunch, and the free reminder paywall/A-set download screen. Development tests use temporary learning stores and isolated reminder preferences. Live purchase/restore and real scheduled-notification delivery were not exercised in this checkpoint; scheduling, cancellation, quiet hours and Premium gates were tested against an isolated notification center.
+
+After reopening the installed Personal app normally, all 3,000 learning records and all prior review events matched the pre-update backup exactly. No learning history, artwork or installed identity was reset. Private database snapshots remain local.
+
+Reviewed phone screenshots use temporary test data: [Progress and saved session](CommercialValidation/Screenshots/settings-progress-session-iphone.png), [Settings tab](CommercialValidation/Screenshots/settings-tab-iphone.png), [sleep-hour schedule](CommercialValidation/Screenshots/settings-reminders-sleep-iphone.png), [free A-set download](CommercialValidation/Screenshots/settings-free-a-set-iphone.png), and [Premium reminder upgrade](CommercialValidation/Screenshots/settings-free-reminder-upgrade-iphone.png).
+
 ## ios-v1.1.0-dev.2 — 7 November 2026
 
 Status: development checkpoint for owner testing. iOS target **1.1.0 (32)**; Personal **0.22.1 (24)**. No store submission.

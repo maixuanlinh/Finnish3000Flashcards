@@ -35,7 +35,8 @@ final class FlashcardFlowTests: XCTestCase {
 
     func testWordReminderSettingsPreviewAndSaveWithoutEnabling() {
         app.tabBars.buttons["Progress"].tap()
-        let reminders = app.buttons["progress.reminders"]
+        app.buttons["Settings"].firstMatch.tap()
+        let reminders = app.buttons["settings.reminders"]
         XCTAssertTrue(reminders.waitForExistence(timeout: 5))
         reminders.tap()
         let save = app.buttons["reminders.save"]
@@ -73,7 +74,8 @@ final class FlashcardFlowTests: XCTestCase {
         XCTAssertTrue(app.buttons["review.known"].waitForExistence(timeout: 30))
         app.tabBars.buttons["Progress"].tap()
         let knownBefore = app.staticTexts["progress.known"].label
-        app.buttons["progress.reminders"].tap()
+        app.buttons["Settings"].firstMatch.tap()
+        app.buttons["settings.reminders"].tap()
         XCTAssertTrue(app.buttons["reminders.save"].waitForExistence(timeout: 5))
         let form = app.descendants(matching: .any).matching(identifier: "reminders.form").firstMatch
         for _ in 0..<12 {

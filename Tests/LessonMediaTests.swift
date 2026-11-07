@@ -4,6 +4,29 @@ import UIKit
 @testable import SisuCards
 
 final class LessonMediaTests: XCTestCase {
+    @MainActor
+    func testFreeOfflineAssetsCoverOnlyThe211ASetLessons() async throws {
+        let root = URL.temporaryDirectory.appending(path: "PreviewAccess-" + UUID().uuidString)
+        defer { try? FileManager.default.removeItem(at: root) }
+        let repository = try LessonMediaRepository(bundle: .main, baseURL: URL(string: "https://example.invalid/")!, storageRoot: root)
+        let keys = await repository.previewKeys
+        let aIDs = Set(try StudyStore.readSeeds().filter { PremiumAccess.isPreview($0.english) }.map(\.id))
+        XCTAssertEqual(aIDs.count, 211)
+        let imageKeys = keys.filter { $0.hasPrefix("image/") }
+        XCTAssertEqual(imageKeys.count, 422)
+        XCTAssertTrue(imageKeys.allSatisfy { key in aIDs.contains(String(key.dropFirst(6).prefix(7))) })
+        let preview = await repository.status(previewOnly: true)
+        let full = await repository.status()
+        XCTAssertGreaterThan(preview.totalBytes, 0)
+        XCTAssertLessThan(preview.totalBytes, full.totalBytes)
+        do {
+            try await repository.downloadPreviewAsset("image/fi-1454-r001.jpg", allowsCellular: false)
+            XCTFail("Paid assets must not be downloaded by the free offline path")
+        } catch LessonMediaError.unavailable { }
+        let after = await repository.status(previewOnly: true)
+        XCTAssertEqual(after.downloadedBytes, preview.downloadedBytes)
+    }
+
     func testRecordingKeyMatchesPublishedManifestConvention() {
         XCTAssertEqual(lessonMediaHash(Data("apple".utf8)),
                        "3a7bd3e2360a3d29eea436fcfb7e44c735d117c42d1c1835420b6b9942dd4f1b")
@@ -71,6 +94,24 @@ final class LessonMediaTests: XCTestCase {
 
 // Run explicitly when validating a release; this suite uses the live Bluehost service.
 final class HostedLessonMediaTests: XCTestCase {
+    func testFreeASetAssetDownloadPersistsAndReopensWithoutNetwork() async throws {
+        let directory = URL.temporaryDirectory.appending(path: "FreeOffline-" + UUID().uuidString)
+        defer { try? FileManager.default.removeItem(at: directory) }
+        let online = try LessonMediaRepository(bundle: .main, baseURL: URL(string: "https://essaykingapp.com/finnish3000/v1/")!, storageRoot: directory)
+        let candidates = await online.previewMissingKeys()
+        let key = try XCTUnwrap(candidates.first)
+        try await online.downloadPreviewAsset(key, allowsCellular: true)
+        let data = try await online.data(for: key)
+        XCTAssertFalse(data.isEmpty)
+        let offline = try LessonMediaRepository(bundle: .main, baseURL: URL(string: "https://example.invalid/")!, storageRoot: directory)
+        let stored = try await offline.data(for: key)
+        XCTAssertEqual(stored, data)
+        let remaining = await offline.previewMissingKeys()
+        XCTAssertFalse(remaining.contains(key))
+        let status = await offline.status(previewOnly: true)
+        XCTAssertGreaterThan(status.downloadedBytes, 0)
+    }
+
     func testHostedImageAudioCacheAndDurableOfflinePack() async throws {
         let directory = URL.temporaryDirectory.appending(path: "HostedMedia-\(UUID().uuidString)")
         defer { try? FileManager.default.removeItem(at: directory) }

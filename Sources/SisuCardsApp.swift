@@ -44,7 +44,10 @@ struct SisuCardsApp: App {
         } else if let testURL {
             artworkDirectory = URL.applicationSupportDirectory.appending(path: "TestArtwork/" + testURL.lastPathComponent)
         } else { artworkDirectory = nil }
-        return try StudyStore(container: container, seeds: StudyStore.readSeeds(), artworkDirectory: artworkDirectory)
+        let sessionDefaults: UserDefaults? = args.contains("-ui-testing") ? nil :
+            testURL.flatMap { UserDefaults(suiteName: "study-session-" + $0.lastPathComponent) } ?? .standard
+        return try StudyStore(container: container, seeds: StudyStore.readSeeds(), artworkDirectory: artworkDirectory,
+                              sessionDefaults: sessionDefaults)
     }
 
     var body: some Scene {

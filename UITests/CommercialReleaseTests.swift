@@ -24,21 +24,23 @@ final class CommercialReleaseTests: XCTestCase {
         capture(app, "commercial-free-complete-lesson")
         app.buttons["detail.done"].tap()
         app.buttons["Progress"].firstMatch.tap()
-        XCTAssertTrue(app.buttons["progress.support"].waitForExistence(timeout: 5))
+        XCTAssertTrue(app.buttons["settings.support"].waitForExistence(timeout: 5))
         capture(app, "commercial-progress")
-        app.buttons["progress.offlineStudy"].tap()
+        app.buttons["Settings"].firstMatch.tap()
+        app.buttons["settings.offlineStudy"].tap()
         XCTAssertTrue(app.buttons["offline.download"].waitForExistence(timeout: 5))
         XCTAssertTrue(app.switches["offline.wifiOnly"].exists)
         capture(app, "commercial-offline-study")
         app.buttons["Done"].tap()
-        app.buttons["progress.support"].tap()
+        app.buttons["settings.support"].tap()
         XCTAssertTrue(app.buttons["support.done"].waitForExistence(timeout: 5))
         XCTAssertTrue(app.descendants(matching: .any)["support.privacy"].exists)
         XCTAssertTrue(app.descendants(matching: .any)["support.website"].exists)
         XCTAssertTrue(app.descendants(matching: .any)["support.email"].exists)
         capture(app, "commercial-help-and-privacy")
         app.buttons["support.done"].tap()
-        app.buttons["progress.premium"].tap()
+        app.buttons["Settings"].firstMatch.tap()
+        app.buttons["settings.premium"].tap()
         let buy = app.buttons["premium.buy"]
         let loaded = buy.waitForExistence(timeout: 30)
         capture(app, "commercial-premium-offer")
@@ -129,5 +131,102 @@ final class VocabularyTopicFlowTests: XCTestCase {
         attachment.name = name
         attachment.lifetime = .keepAlways
         add(attachment)
+    }
+}
+
+@MainActor
+final class SettingsAndResumeFlowTests: XCTestCase {
+    private func openTab(_ name: String, in app: XCUIApplication) {
+        let buttons = app.tabBars.buttons.matching(NSPredicate(format: "label == %@", name))
+        guard let button = buttons.allElementsBoundByIndex.first(where: { $0.isHittable }) else {
+            XCTFail("No visible \(name) tab: \(app.debugDescription)"); return
+        }
+        button.coordinate(withNormalizedOffset: CGVector(dx: 0.5, dy: 0.5)).tap()
+    }
+
+    private func capture(_ app: XCUIApplication, _ name: String) {
+        let attachment = XCTAttachment(screenshot: app.screenshot())
+        attachment.name = name; attachment.lifetime = .keepAlways; add(attachment)
+    }
+
+    private func launch(_ arguments: [String] = ["-ui-testing"]) -> XCUIApplication {
+        continueAfterFailure = false
+        let app = XCUIApplication()
+        app.launchArguments = arguments + ["-englishFirst", "YES", "-readPrompt", "NO", "-readAnswer", "NO", "-readSentence", "NO"]
+        app.launch()
+        XCTAssertTrue(app.buttons["review.known"].waitForExistence(timeout: 30), app.debugDescription)
+        return app
+    }
+
+    func testProgressAndSettingsAreSeparateAndSleepScheduleIsEditable() throws {
+        let app = launch()
+        openTab("Progress", in: app)
+        XCTAssertTrue(app.staticTexts["Currently learning"].waitForExistence(timeout: 5))
+        XCTAssertTrue(app.buttons["progress.resume"].exists)
+        XCTAssertFalse(app.buttons["settings.reminders"].isHittable)
+        capture(app, "progress-learning-and-resume")
+        openTab("Settings", in: app)
+        XCTAssertTrue(app.buttons["settings.reminders"].waitForExistence(timeout: 5))
+        XCTAssertTrue(app.buttons["settings.offlineStudy"].exists)
+        capture(app, "settings-fourth-tab")
+        let membership = app.staticTexts["settings.membership"].label
+        guard membership.contains("Personal") || membership.contains("Premium") else { throw XCTSkip("Requires the personal or purchased build") }
+        app.buttons["settings.reminders"].tap()
+        XCTAssertTrue(app.buttons["reminders.save"].waitForExistence(timeout: 5))
+        app.buttons["reminders.frequency"].tap()
+        app.buttons["Every 30 minutes"].tap()
+        XCTAssertTrue(app.datePickers["reminders.sleepStart"].exists)
+        XCTAssertTrue(app.datePickers["reminders.sleepEnd"].exists)
+        XCTAssertEqual(app.staticTexts["reminders.dailyCount"].label, "28 reminders per day · repeats daily")
+        capture(app, "reminders-half-hourly-sleep-hours")
+        app.buttons["Cancel"].tap()
+    }
+
+    func testSelectedStudyListAndLearningWordsSurviveRelaunch() {
+        let app = launch(["-test-store", "resume-ui-" + UUID().uuidString])
+        openTab("Words", in: app)
+        let search = app.textFields["words.search"]
+        XCTAssertTrue(search.waitForExistence(timeout: 5))
+        app.buttons["words.allVocabulary"].tap()
+        search.tap(); search.typeText("ab\n")
+        app.buttons["words.practice"].tap()
+        XCTAssertTrue(app.staticTexts["card.prompt"].waitForExistence(timeout: 5))
+        let first = app.staticTexts["card.prompt"].label
+        app.buttons["review.learning"].tap()
+        let changed = XCTNSPredicateExpectation(predicate: NSPredicate(format: "label != %@", first), object: app.staticTexts["card.prompt"])
+        XCTAssertEqual(XCTWaiter.wait(for: [changed], timeout: 5), .completed)
+        let next = app.staticTexts["card.prompt"].label
+        let count = app.staticTexts["session.count"].label
+        app.terminate(); app.launch()
+        XCTAssertTrue(app.staticTexts["card.prompt"].waitForExistence(timeout: 30))
+        XCTAssertEqual(app.staticTexts["card.prompt"].label, next)
+        XCTAssertEqual(app.staticTexts["session.count"].label, count)
+        openTab("Progress", in: app)
+        XCTAssertTrue(app.buttons["progress.resume"].waitForExistence(timeout: 5))
+        let learning = app.buttons["progress.learningWords"]
+        for _ in 0..<3 { if learning.isHittable { break }; app.swipeUp() }
+        XCTAssertTrue(learning.isHittable)
+        capture(app, "progress-saved-learning-list")
+        learning.tap()
+        XCTAssertTrue(app.staticTexts["card.prompt"].waitForExistence(timeout: 5))
+        XCTAssertEqual(app.staticTexts["card.prompt"].label, first)
+    }
+
+    func testFreeSettingsLocksRemindersAndOffersOnlyASetOffline() throws {
+        let app = launch()
+        openTab("Settings", in: app)
+        XCTAssertTrue(app.staticTexts["settings.membership"].waitForExistence(timeout: 5))
+        guard app.staticTexts["settings.membership"].label.contains("Free") else { throw XCTSkip("Requires the customer build without a purchase") }
+        app.buttons["settings.reminders"].tap()
+        XCTAssertTrue(app.buttons["premium.done"].waitForExistence(timeout: 5))
+        XCTAssertFalse(app.buttons["reminders.save"].exists)
+        capture(app, "free-reminders-premium-upgrade")
+        app.buttons["premium.done"].tap()
+        app.buttons["settings.offlineStudy"].tap()
+        XCTAssertTrue(app.buttons["offline.download"].waitForExistence(timeout: 5))
+        XCTAssertTrue(app.buttons["offline.download"].label.contains("free A set"))
+        XCTAssertTrue(app.staticTexts["Free A-set lessons"].exists)
+        capture(app, "free-a-set-offline-download")
+        app.buttons["Done"].tap()
     }
 }

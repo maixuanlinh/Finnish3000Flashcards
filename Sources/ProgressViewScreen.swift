@@ -1,14 +1,10 @@
 import SwiftUI
 
 struct ProgressViewScreen: View {
-    @Environment(WordReminders.self) private var reminders
-    @Environment(PremiumStore.self) private var premium
-    @State private var showingPremium = false
-    @State private var showingReminders = false
-    @State private var showingSupport = false
-    @State private var showingOfflineStudy = false
     @Environment(StudyStore.self) private var store
     @Environment(AppNavigation.self) private var navigation
+
+    @State private var selectedWord: VocabularyWord?
 
     private var days: [Date] {
         let start = Calendar.current.startOfDay(for: .now)
@@ -27,14 +23,9 @@ struct ProgressViewScreen: View {
                                 .foregroundStyle(Palette.ink)
                         }
                         Spacer()
-                        Button { showingSupport = true } label: {
-                            Label("Help", systemImage: "questionmark.circle")
-                                .font(.subheadline.weight(.medium)).padding(.vertical, 8)
-                        }.accessibilityIdentifier("progress.support")
                     }
-                    premiumCard
-                    OfflineStudyRow { showingOfflineStudy = true }
-                    reminderCard
+                    resumeCard
+                    learningCard
                     masteryCard
                     HStack(spacing: 12) {
                         metric("Learning", value: store.count(.learning), icon: "arrow.triangle.2.circlepath", color: Palette.clay, background: Palette.peach)
@@ -53,7 +44,11 @@ struct ProgressViewScreen: View {
                     }
                     .padding(20).background(.white, in: RoundedRectangle(cornerRadius: 23))
                     Button {
-                        navigation.review(store.count(.learning) > 0 ? .learning : .remaining)
+                        if store.count(.learning) > 0 { navigation.studyLearningWords() }
+                        else {
+                            navigation.applyFilters(scope: .remaining, letter: nil, topic: nil)
+                            navigation.review(.remaining)
+                        }
                     } label: {
                         Label("Keep practising", systemImage: "arrow.right")
                     }
@@ -62,72 +57,57 @@ struct ProgressViewScreen: View {
                 .frame(maxWidth: 580).padding(22).frame(maxWidth: .infinity)
             }
             .background(Palette.background).toolbar(.hidden, for: .navigationBar)
-            .sheet(isPresented: $showingReminders) { WordReminderSettingsView(settings: reminders.settings) }
-            .sheet(isPresented: $showingPremium) { PremiumView() }
-            .sheet(isPresented: $showingSupport) { SupportView() }
-            .sheet(isPresented: $showingOfflineStudy) { OfflineStudyView() }
-            .onChange(of: navigation.request) { _, _ in
-                showingReminders = false; showingPremium = false; showingSupport = false; showingOfflineStudy = false
-            }
+            .sheet(item: $selectedWord) { WordDetailView(word: $0) }
+            .onChange(of: navigation.request) { _, _ in selectedWord = nil }
         }
     }
 
-    private var premiumCard: some View {
-        VStack(alignment: .leading, spacing: 12) {
-            Button { showingPremium = true } label: {
-                HStack(spacing: 14) {
-                    Image(systemName: premium.isPremium ? "checkmark.seal.fill" : "sparkles")
-                        .font(.title2).frame(width: 44, height: 44).background(Palette.sage, in: Circle())
-                    VStack(alignment: .leading, spacing: 4) {
-                        Text(premium.isPersonal ? "3000 Finnish Words Personal" : premium.isPremium ? "3000 Finnish Words Premium" : "3000 Finnish Words Free").font(.headline)
-                            .accessibilityIdentifier("progress.membership")
-                        Text(!premium.checked ? "Checking purchase…" : premium.isPremium ? "All 3,000 complete lessons unlocked" : "211 complete A-set lessons included")
-                            .font(.caption).foregroundStyle(Palette.muted)
-                    }
-                    Spacer(minLength: 0)
-                    Image(systemName: "chevron.right").font(.caption.weight(.semibold))
-                }.foregroundStyle(Palette.forest)
-            }.buttonStyle(.plain).accessibilityIdentifier("progress.premium")
-            if !premium.isPersonal {
-                VStack(spacing: 12) {
-                    if !premium.isPremium {
-                        Button { showingPremium = true } label: {
-                            Label("Go Premium", systemImage: "sparkles").frame(maxWidth: .infinity)
-                        }
-                        .buttonStyle(FilledActionStyle()).accessibilityIdentifier("progress.upgrade")
-                    }
-                    Button("Restore Purchases") { Task { await premium.restore() } }
-                        .font(.caption.weight(.medium)).disabled(premium.busy)
-                        .accessibilityIdentifier("progress.restore")
-                }
-            }
-            if let message = premium.message {
-                Text(message).font(.caption).foregroundStyle(Palette.muted)
-                    .accessibilityIdentifier("progress.purchaseMessage")
-            }
-        }.padding(18).background(.white, in: RoundedRectangle(cornerRadius: 23))
+    @ViewBuilder private var resumeCard: some View {
+        if let session = store.savedSession, !session.remainingIDs.isEmpty {
+            VStack(alignment: .leading, spacing: 12) {
+                Label("Continue your last session", systemImage: "bookmark.fill")
+                    .font(.headline).foregroundStyle(Palette.forest)
+                Text(session.topic ?? session.scope.title).font(.subheadline).foregroundStyle(Palette.ink)
+                Text("\(session.remainingIDs.count) words remaining · your place is saved")
+                    .font(.caption).foregroundStyle(Palette.muted)
+                Button { navigation.resumeStudy() } label: {
+                    Label("Resume studying", systemImage: "play.fill")
+                }.buttonStyle(FilledActionStyle()).accessibilityIdentifier("progress.resume")
+            }.padding(18).background(Palette.sage.opacity(0.6), in: RoundedRectangle(cornerRadius: 23))
+        }
     }
 
-    private var reminderCard: some View {
-        Button { showingReminders = true } label: {
-            HStack(spacing: 14) {
-                Image(systemName: "bell.badge").font(.title3)
-                    .frame(width: 44, height: 44).background(Palette.sage, in: Circle())
-                VStack(alignment: .leading, spacing: 4) {
-                    Text("Word reminders").font(.headline)
-                    if reminders.settings.enabled, let date = reminders.nextDate {
-                        Text("Next: \(date.formatted(date: .abbreviated, time: .shortened))")
-                            .font(.caption).foregroundStyle(Palette.muted)
-                    } else {
-                        Text(reminders.settings.enabled ? "Check notification settings" : "A little Finnish, throughout your day")
-                            .font(.caption).foregroundStyle(Palette.muted)
-                    }
+    private var learningCard: some View {
+        let words = store.words.filter { $0.status == .learning }
+        return VStack(alignment: .leading, spacing: 14) {
+            HStack {
+                Text("Currently learning").font(.system(size: 23, weight: .semibold, design: .serif))
+                Spacer()
+                Text("\(words.count)").font(.title2.weight(.semibold))
+            }.foregroundStyle(Palette.ink)
+            if words.isEmpty {
+                Text("Words marked Still learning stay here for your next practice.")
+                    .font(.subheadline).foregroundStyle(Palette.muted)
+            } else {
+                Text("Saved on this device, ready next time.").font(.caption).foregroundStyle(Palette.muted)
+                ForEach(words.prefix(5)) { word in
+                    Button { selectedWord = word } label: {
+                        HStack {
+                            VStack(alignment: .leading, spacing: 3) {
+                                Text(word.finnish).font(.headline).foregroundStyle(Palette.ink)
+                                Text(word.english).font(.caption).foregroundStyle(Palette.muted)
+                            }
+                            Spacer()
+                            Image(systemName: "chevron.right").font(.caption).foregroundStyle(Palette.forest)
+                        }
+                    }.buttonStyle(.plain)
                 }
-                Spacer(minLength: 0)
-                Image(systemName: "chevron.right").font(.caption.weight(.semibold))
-            }.foregroundStyle(Palette.forest).padding(16)
-                .background(.white, in: RoundedRectangle(cornerRadius: 23))
-        }.buttonStyle(.plain).accessibilityIdentifier("progress.reminders")
+                Button { navigation.studyLearningWords() } label: {
+                    Text(words.count == 1 ? "Practise this learning word" : "Practise all \(words.count) learning words").frame(maxWidth: .infinity)
+                }.buttonStyle(FilledActionStyle()).accessibilityIdentifier("progress.learningWords")
+            }
+        }.padding(18).background(.white, in: RoundedRectangle(cornerRadius: 23))
+
     }
 
     private var masteryCard: some View {
@@ -201,4 +181,107 @@ struct ProgressViewScreen: View {
     private func reviewLabel(_ count: Int) -> String {
         "\(count) \(count == 1 ? "review" : "reviews")"
     }
+}
+
+struct SettingsView: View {
+    @Environment(StudyStore.self) private var store
+    @Environment(PremiumStore.self) private var premium
+    @Environment(WordReminders.self) private var reminders
+    @Environment(AppNavigation.self) private var navigation
+    @State private var showingPremium = false
+    @State private var showingReminders = false
+    @State private var showingSupport = false
+    @State private var showingOfflineStudy = false
+
+    var body: some View {
+        NavigationStack {
+            ScrollView {
+                VStack(alignment: .leading, spacing: 20) {
+                    Eyebrow(text: "Make it yours")
+                    Text("Settings").font(.system(size: 31, weight: .semibold, design: .serif)).foregroundStyle(Palette.ink)
+                    premiumCard
+                    OfflineStudyRow { showingOfflineStudy = true }
+                    reminderCard
+                    Button { showingSupport = true } label: {
+                        HStack(spacing: 14) {
+                            Image(systemName: "questionmark.circle").font(.title3)
+                                .frame(width: 44, height: 44).background(Palette.sage, in: Circle())
+                            Text("Help & support").font(.headline)
+                            Spacer()
+                            Image(systemName: "chevron.right").font(.caption)
+                        }.foregroundStyle(Palette.forest).padding(16)
+                            .background(.white, in: RoundedRectangle(cornerRadius: 23))
+                    }.buttonStyle(.plain).accessibilityIdentifier("settings.support")
+                }.frame(maxWidth: 580).padding(22).frame(maxWidth: .infinity)
+            }.background(Palette.background).toolbar(.hidden, for: .navigationBar)
+            .sheet(isPresented: $showingPremium) { PremiumView() }
+            .sheet(isPresented: $showingReminders) { WordReminderSettingsView(settings: reminders.settings) }
+            .sheet(isPresented: $showingSupport) { SupportView() }
+            .sheet(isPresented: $showingOfflineStudy) { OfflineStudyView() }
+            .onChange(of: navigation.request) { _, _ in
+                showingPremium = false; showingReminders = false; showingSupport = false; showingOfflineStudy = false
+            }
+        }
+    }
+
+    private var premiumCard: some View {
+        VStack(alignment: .leading, spacing: 12) {
+            Button { showingPremium = true } label: {
+                HStack(spacing: 14) {
+                    Image(systemName: premium.isPremium ? "checkmark.seal.fill" : "sparkles")
+                        .font(.title2).frame(width: 44, height: 44).background(Palette.sage, in: Circle())
+                    VStack(alignment: .leading, spacing: 4) {
+                        Text(premium.isPersonal ? "3000 Finnish Words Personal" : premium.isPremium ? "3000 Finnish Words Premium" : "3000 Finnish Words Free").font(.headline)
+                            .accessibilityIdentifier("settings.membership")
+                        Text(!premium.checked ? "Checking purchase…" : premium.isPremium ? "All 3,000 complete lessons unlocked" : "211 complete A-set lessons included")
+                            .font(.caption).foregroundStyle(Palette.muted)
+                    }
+                    Spacer(minLength: 0)
+                    Image(systemName: "chevron.right").font(.caption.weight(.semibold))
+                }.foregroundStyle(Palette.forest)
+            }.buttonStyle(.plain).accessibilityIdentifier("settings.premium")
+            if !premium.isPersonal {
+                VStack(spacing: 12) {
+                    if !premium.isPremium {
+                        Button { showingPremium = true } label: {
+                            Label("Go Premium", systemImage: "sparkles").frame(maxWidth: .infinity)
+                        }
+                        .buttonStyle(FilledActionStyle()).accessibilityIdentifier("settings.upgrade")
+                    }
+                    Button("Restore Purchases") { Task { await premium.restore() } }
+                        .font(.caption.weight(.medium)).disabled(premium.busy)
+                        .accessibilityIdentifier("settings.restore")
+                }
+            }
+            if let message = premium.message {
+                Text(message).font(.caption).foregroundStyle(Palette.muted)
+                    .accessibilityIdentifier("settings.purchaseMessage")
+            }
+        }.padding(18).background(.white, in: RoundedRectangle(cornerRadius: 23))
+    }
+
+    private var reminderCard: some View {
+        Button {
+            if premium.isPremium { showingReminders = true } else { showingPremium = true }
+        } label: {
+            HStack(spacing: 14) {
+                Image(systemName: "bell.badge").font(.title3)
+                    .frame(width: 44, height: 44).background(Palette.sage, in: Circle())
+                VStack(alignment: .leading, spacing: 4) {
+                    HStack { Text("Word reminders").font(.headline); if !premium.isPremium { Text("Premium").font(.caption.weight(.semibold)) } }
+                    if reminders.settings.enabled, let date = reminders.nextDate {
+                        Text("Next: \(date.formatted(date: .abbreviated, time: .shortened))")
+                            .font(.caption).foregroundStyle(Palette.muted)
+                    } else {
+                        Text(reminders.settings.enabled ? "Check notification settings" : "A little Finnish, throughout your day")
+                            .font(.caption).foregroundStyle(Palette.muted)
+                    }
+                }
+                Spacer(minLength: 0)
+                Image(systemName: "chevron.right").font(.caption.weight(.semibold))
+            }.foregroundStyle(Palette.forest).padding(16)
+                .background(.white, in: RoundedRectangle(cornerRadius: 23))
+        }.buttonStyle(.plain).accessibilityIdentifier("settings.reminders")
+    }
+
 }

@@ -105,6 +105,7 @@ private extension String {
 
 actor LessonMediaRepository {
     let catalog: LessonMediaCatalog
+    let previewKeys: Set<String>
     private let bundle: Bundle
     private let baseURL: URL
     private let fullDirectory: URL
@@ -120,7 +121,11 @@ actor LessonMediaRepository {
             throw LessonMediaError.missingManifest
         }
         let manifest = try JSONDecoder().decode(LessonMediaManifest.self, from: Data(contentsOf: manifestURL))
-        catalog = try manifest.validated()
+        let loadedCatalog = try manifest.validated()
+        catalog = loadedCatalog
+        let freeKeys = try Self.freeAssetKeys(bundle: bundle)
+        previewKeys = freeKeys
+        guard !freeKeys.isEmpty, freeKeys.allSatisfy({ loadedCatalog.itemByKey[$0] != nil }) else { throw LessonMediaError.invalidManifest }
         self.bundle = bundle
         self.baseURL = baseURL
         fullDirectory = (storageRoot?.appending(path: "Saved") ?? URL.applicationSupportDirectory)
@@ -141,7 +146,86 @@ actor LessonMediaRepository {
         var cache = cacheDirectory; try? cache.setResourceValues(values)
     }
 
-    func status() -> LessonMediaStatus {
+    private struct PreviewArtwork: Decodable {
+        let wordID: String
+        let filename: String
+        let thumbnailFilename: String
+    }
+
+    static func freeAssetKeys(bundle: Bundle) throws -> Set<String> {
+        let decoder = JSONDecoder()
+        func data(_ name: String) throws -> Data {
+            guard let url = bundle.url(forResource: name, withExtension: "json") else { throw LessonMediaError.missingManifest }
+            return try Data(contentsOf: url)
+        }
+        let starters = try decoder.decode([WordSeed].self, from: data("starter100"))
+        let catalog = try decoder.decode(VocabularyCatalog.self, from: data("catalog3000"))
+        let examples = try decoder.decode([SentenceSeed].self, from: data("examples3000"))
+        let artwork = try decoder.decode([PreviewArtwork].self, from: data("manifest"))
+        let overrides = Dictionary(uniqueKeysWithValues: starters.map { ($0.id, $0) })
+        let sentences = Dictionary(uniqueKeysWithValues: examples.map { ($0.id, $0.sentence) })
+        var ids: Set<String> = []
+        var keys: Set<String> = []
+        for entry in catalog.entries {
+            let english = overrides[entry.id]?.english ?? entry.english
+            guard PremiumAccess.isPreview(english) else { continue }
+            ids.insert(entry.id)
+            let finnish = overrides[entry.id]?.finnish ?? entry.finnish
+            keys.insert(lessonRecordingKey(language: "en-US", text: english))
+            keys.insert(lessonRecordingKey(language: "fi-FI", text: finnish))
+            if let sentence = sentences[entry.id] { keys.insert(lessonRecordingKey(language: "fi-FI", text: sentence)) }
+        }
+        guard ids.count == 211 else { throw LessonMediaError.invalidManifest }
+        for picture in artwork where ids.contains(picture.wordID) {
+            keys.insert("image/" + picture.filename)
+            keys.insert("image/" + picture.thumbnailFilename)
+        }
+        return keys
+    }
+
+    private func previewURL(_ item: LessonMediaItem) -> URL {
+        fullDirectory.appending(path: "Preview").appending(path: item.sha256)
+    }
+
+    private func savedPreviewData(_ item: LessonMediaItem) -> Data? {
+        guard let data = try? Data(contentsOf: previewURL(item)), data.count == item.bytes,
+              lessonMediaHash(data) == item.sha256 else { return nil }
+        return data
+    }
+
+    func previewMissingKeys() -> [String] {
+        previewKeys.sorted().filter { key in
+            guard let item = catalog.itemByKey[key], let pack = catalog.packByFile[item.pack] else { return true }
+            return bundledURL(pack) == nil && verifiedFullURL(pack) == nil && savedPreviewData(item) == nil
+        }
+    }
+
+    func downloadPreviewAsset(_ key: String, allowsCellular: Bool) async throws {
+        // Never download a mixed whole pack for a free offline request.
+        guard previewKeys.contains(key), let item = catalog.itemByKey[key] else { throw LessonMediaError.unavailable }
+        let data = try await data(for: key, allowsCellular: allowsCellular)
+        try Task.checkCancellation()
+        let destination = previewURL(item)
+        try FileManager.default.createDirectory(at: destination.deletingLastPathComponent(), withIntermediateDirectories: true)
+        try data.write(to: destination, options: [.atomic])
+    }
+
+    private func previewStatus() -> LessonMediaStatus {
+        var result = LessonMediaStatus(packCount: previewKeys.count, loading: false)
+        for key in previewKeys {
+            guard let item = catalog.itemByKey[key], let pack = catalog.packByFile[item.pack] else { continue }
+            result.totalBytes += Int64(item.bytes)
+            if bundledURL(pack) != nil {
+                result.bundledBytes += Int64(item.bytes); result.readyPacks += 1
+            } else if verifiedFullURL(pack) != nil || savedPreviewData(item) != nil {
+                result.downloadedBytes += Int64(item.bytes); result.readyPacks += 1
+            }
+        }
+        return result
+    }
+
+    func status(previewOnly: Bool = false) -> LessonMediaStatus {
+        if previewOnly { return previewStatus() }
         var result = LessonMediaStatus(totalBytes: catalog.packs.reduce(0) { $0 + $1.bytes },
                                        packCount: catalog.packs.count, loading: false)
         for pack in catalog.packs {
@@ -168,6 +252,7 @@ actor LessonMediaRepository {
         if let local = bundledURL(pack) ?? verifiedFullURL(pack) {
             return try read(item, from: local)
         }
+        if let data = savedPreviewData(item) { return data }
         let cached = cacheDirectory.appending(path: item.sha256)
         if let data = try? Data(contentsOf: cached), lessonMediaHash(data) == item.sha256 { return data }
         try? FileManager.default.removeItem(at: cached)
@@ -308,6 +393,7 @@ final class LessonMedia {
     static let shared = LessonMedia()
 
     private(set) var status = LessonMediaStatus()
+    private(set) var premiumAccess = false
     private(set) var isDownloading = false
     private(set) var message: String?
     @ObservationIgnored private var repository: LessonMediaRepository?
@@ -319,15 +405,21 @@ final class LessonMedia {
         catch { status = LessonMediaStatus(loading: false, error: error.localizedDescription) }
     }
 
+    func setPremium(_ value: Bool) async {
+        if value != premiumAccess { pauseDownload() }
+        premiumAccess = value
+        await refresh()
+    }
+
     func refresh() async {
         guard let repository else { return }
-        status = await repository.status()
+        status = await repository.status(previewOnly: !premiumAccess)
     }
 
     func data(for key: String) async throws -> Data {
         guard let repository else { throw LessonMediaError.missingManifest }
         let data = try await repository.data(for: key)
-        status = await repository.status()
+        status = await repository.status(previewOnly: !premiumAccess)
         return data
     }
 
@@ -339,23 +431,33 @@ final class LessonMedia {
         downloadTask = Task { [weak self] in
             guard let self else { return }
             do {
-                let current = await repository.status()
+                let current = await repository.status(previewOnly: !premiumAccess)
                 let capacity = await repository.availableCapacity()
                 if capacity > 0 && capacity < current.remainingBytes + 50_000_000 { throw LessonMediaError.insufficientStorage }
-                for pack in await repository.missingPacks() {
-                    try Task.checkCancellation()
-                    try await repository.download(pack, allowsCellular: !wifiOnly)
-                    guard generation == downloadGeneration else { return }
-                    status = await repository.status()
+                if premiumAccess {
+                    for pack in await repository.missingPacks() {
+                        try Task.checkCancellation()
+                        guard premiumAccess else { throw CancellationError() }
+                        try await repository.download(pack, allowsCellular: !wifiOnly)
+                        guard generation == downloadGeneration else { return }
+                        status = await repository.status(previewOnly: !premiumAccess)
+                    }
+                } else {
+                    for (index, key) in await repository.previewMissingKeys().enumerated() {
+                        try Task.checkCancellation()
+                        try await repository.downloadPreviewAsset(key, allowsCellular: !wifiOnly)
+                        guard generation == downloadGeneration else { return }
+                        if index % 20 == 0 { status = await repository.status(previewOnly: true) }
+                    }
                 }
                 guard generation == downloadGeneration else { return }
-                status = await repository.status()
+                status = await repository.status(previewOnly: !premiumAccess)
                 message = "Offline lessons are ready."
             } catch is CancellationError {
-                if generation == downloadGeneration { status = await repository.status() }
+                if generation == downloadGeneration { status = await repository.status(previewOnly: !premiumAccess) }
             } catch {
                 guard generation == downloadGeneration else { return }
-                status = await repository.status()
+                status = await repository.status(previewOnly: !premiumAccess)
                 message = error.localizedDescription
             }
             if generation == downloadGeneration { isDownloading = false; downloadTask = nil }
@@ -373,7 +475,7 @@ final class LessonMedia {
         guard let repository else { return }
         do {
             try await repository.removeDownloadedMedia()
-            status = await repository.status()
+            status = await repository.status(previewOnly: !premiumAccess)
             message = "Downloaded lessons were removed."
         } catch { message = error.localizedDescription }
     }

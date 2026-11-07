@@ -8,7 +8,6 @@ struct AutoStudyOptions: View {
     @AppStorage("readAnswer") private var readAnswer = true
     @AppStorage("readSentence") private var readSentence = true
     @AppStorage("speechRate") private var rate = 0.42
-    @State private var showingOfflineStudy = false
     let start: () -> Void
     var body: some View {
         NavigationStack {
@@ -34,13 +33,7 @@ struct AutoStudyOptions: View {
                     Text("Uses ready-made pronunciation recordings. Recordings load as needed and are cached for later study.")
                         .font(.footnote).foregroundStyle(.secondary)
                 }
-                Section("Offline study") {
-                    Button("Download images and audio", systemImage: "arrow.down.circle") {
-                        showingOfflineStudy = true
-                    }
-                    Text("Optional. The complete collection works without internet but occupies storage on this device.")
-                        .font(.footnote).foregroundStyle(.secondary)
-                }
+
 
             }
             .scrollContentBackground(.hidden).background(Palette.background)
@@ -53,7 +46,6 @@ struct AutoStudyOptions: View {
             }
             .navigationTitle("Automatic study").navigationBarTitleDisplayMode(.inline)
             .toolbar { ToolbarItem(placement: .cancellationAction) { Button("Done") { dismiss() } } }
-            .sheet(isPresented: $showingOfflineStudy) { OfflineStudyView() }
         }.tint(Palette.forest)
     }
 }

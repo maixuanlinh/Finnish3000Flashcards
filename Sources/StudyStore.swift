@@ -3,9 +3,22 @@ import Observation
 import SwiftData
 import UIKit
 
+struct SavedStudySession: Codable, Equatable {
+    let remainingIDs: [String]
+    let initialCount: Int
+    let scopeRaw: String
+    let letter: String?
+    let topic: String?
+    let savedAt: Date
+    var scope: ReviewScope { ReviewScope(rawValue: scopeRaw) ?? .remaining }
+}
+
 @MainActor
 @Observable
 final class StudyStore {
+    private(set) var savedSession: SavedStudySession?
+    @ObservationIgnored private let sessionDefaults: UserDefaults?
+    private static let sessionKey = "savedStudySession.v1"
     let container: ModelContainer
     let context: ModelContext
     private(set) var words: [VocabularyWord] = []
@@ -17,7 +30,9 @@ final class StudyStore {
     @ObservationIgnored private var cachedSearch: String?
     @ObservationIgnored private var cachedSearchWords: [VocabularyWord] = []
 
-    init(container: ModelContainer, seeds: [WordSeed], artworkDirectory: URL? = nil) throws {
+    init(container: ModelContainer, seeds: [WordSeed], artworkDirectory: URL? = nil, sessionDefaults: UserDefaults? = nil) throws {
+        self.sessionDefaults = sessionDefaults
+        self.savedSession = sessionDefaults?.data(forKey: Self.sessionKey).flatMap { try? JSONDecoder().decode(SavedStudySession.self, from: $0) }
         self.container = container
         self.artworkDirectory = artworkDirectory ?? URL.applicationSupportDirectory.appending(path: "Artwork", directoryHint: .isDirectory)
         context = container.mainContext
@@ -125,6 +140,17 @@ final class StudyStore {
         cachedSearchWords = []
         events = try context.fetch(FetchDescriptor<ReviewEvent>(sortBy: [SortDescriptor(\.date)]))
         artworks = try context.fetch(FetchDescriptor<ArtworkRevision>(sortBy: [SortDescriptor(\.createdAt, order: .reverse)]))
+    }
+
+    func saveSession(ids: [String], initialCount: Int, scope: ReviewScope, letter: String?, topic: String?) {
+        var seen: Set<String> = []
+        let valid = ids.filter { wordsByID[$0] != nil && seen.insert($0).inserted }
+        let snapshot = SavedStudySession(remainingIDs: valid, initialCount: max(initialCount, valid.count),
+            scopeRaw: scope.rawValue, letter: letter, topic: topic, savedAt: .now)
+        savedSession = snapshot
+        if let sessionDefaults, let data = try? JSONEncoder().encode(snapshot) {
+            sessionDefaults.set(data, forKey: Self.sessionKey)
+        }
     }
 
     func word(withID id: String) -> VocabularyWord? { wordsByID[id] }

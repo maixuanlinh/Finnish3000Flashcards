@@ -67,14 +67,17 @@ struct StudyView: View {
             .onAppear {
                 if !started { startSession() }
                 else { reconcileQueue() }
+                persistSession()
             }
             .onReceive(NotificationCenter.default.publisher(for: AVAudioSession.interruptionNotification)) { notification in
                 if let type = notification.userInfo?[AVAudioSessionInterruptionTypeKey] as? UInt,
                    type == AVAudioSession.InterruptionType.began.rawValue { playback.pause() }
             }
-            .onDisappear { playback.pause(); speech?.stop() }
+            .onDisappear { playback.pause(); speech?.stop(); persistSession() }
             .onChange(of: navigation.tab) { _, tab in if tab != 0 { playback.pause() } }
-            .onChange(of: scenePhase) { _, phase in if phase != .active { playback.pause() } }
+            .onChange(of: scenePhase) { _, phase in if phase != .active { playback.pause(); persistSession() } }
+            .onChange(of: queue) { _, _ in persistSession() }
+            .onChange(of: playback.currentID) { _, _ in persistSession() }
             .onChange(of: navigation.request) { _, _ in
                 detailWord = nil; showingPlayback = false; showingFilters = false; showingPremium = false
                 speech?.stop(); startSession()
@@ -286,10 +289,24 @@ struct StudyView: View {
 
     private func startSession() {
         playback.stop()
-        let selectedIDs = navigation.requestedIDs.map { Set($0) }
-        queue = store.reviewWords(in: navigation.scope, startingWith: navigation.startingLetter)
-            .filter { $0.matchesTopic(navigation.topic) && (selectedIDs?.contains($0.id) ?? true) }.map(\.id)
-        initialCount = queue.count
+        let shouldResume = (!started && navigation.request == 0) || navigation.resumeSessionRequested
+        navigation.resumeSessionRequested = false
+        if shouldResume, let saved = store.savedSession, !saved.remainingIDs.isEmpty {
+            navigation.scope = saved.scope
+            navigation.startingLetter = saved.letter
+            navigation.topic = saved.topic
+            navigation.requestedIDs = nil
+            queue = saved.remainingIDs.filter { id in
+                guard let word = store.word(withID: id) else { return false }
+                return saved.scope.includes(word) && word.matchesTopic(saved.topic)
+            }
+            initialCount = max(saved.initialCount, queue.count)
+        } else {
+            let selectedIDs = navigation.requestedIDs.map { Set($0) }
+            queue = store.reviewWords(in: navigation.scope, startingWith: navigation.startingLetter)
+                .filter { $0.matchesTopic(navigation.topic) && (selectedIDs?.contains($0.id) ?? true) }.map(\.id)
+            initialCount = queue.count
+        }
         history = []
         revealed = false
         drag = 0
@@ -297,6 +314,17 @@ struct StudyView: View {
         draggingCard = false
         suppressTapsUntil = .distantPast
         started = true
+        persistSession()
+    }
+
+    private func persistSession() {
+        guard started, navigation.tab == 0, !navigation.isReminderSession else { return }
+        var remaining = advancing ? queue.filter { $0 != history.last?.wordID } : queue
+        if playback.isActive, let current = playback.currentID, let index = remaining.firstIndex(of: current) {
+            remaining = Array(remaining[index...])
+        }
+        store.saveSession(ids: remaining, initialCount: initialCount, scope: navigation.scope,
+                          letter: navigation.startingLetter, topic: navigation.topic)
     }
 
     private func rate(_ status: LearningStatus) {
@@ -306,6 +334,7 @@ struct StudyView: View {
             let snapshot = try store.rate(word, as: status)
             history.append(snapshot)
             advancing = true
+            persistSession()
             let request = navigation.request
             UISelectionFeedbackGenerator().selectionChanged()
             withAnimation(.easeIn(duration: 0.18)) { drag = status == .known ? 600 : -600 }

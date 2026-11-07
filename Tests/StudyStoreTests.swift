@@ -87,6 +87,35 @@ final class StudyStoreTests: XCTestCase {
         XCTAssertTrue(store.words.filter { $0.matchesTopic(VocabularyTopic.shopping.rawValue) }.contains { $0.english == "reservation" })
     }
 
+    func testSavedStudySessionKeepsExactSelectionOrderFiltersAndProgressAcrossReopening() throws {
+        let name = "saved-session-" + UUID().uuidString
+        let defaults = try XCTUnwrap(UserDefaults(suiteName: name))
+        defer { defaults.removePersistentDomain(forName: name) }
+        let container = try StudyStore.makeContainer(inMemory: true)
+        let seeds = try StudyStore.readSeeds()
+        let store = try StudyStore(container: container, seeds: seeds, sessionDefaults: defaults)
+        let home = store.words.filter { $0.matchesTopic(VocabularyTopic.home.rawValue) }
+        let selected = Array(home.suffix(3).reversed())
+        try store.rate(selected[0], as: .learning)
+        store.saveSession(ids: selected.map(\.id) + [selected[0].id, "missing"], initialCount: 5,
+            scope: .all, letter: nil, topic: VocabularyTopic.home.rawValue)
+        let reopened = try StudyStore(container: container, seeds: seeds, sessionDefaults: defaults)
+        XCTAssertEqual(reopened.savedSession?.remainingIDs, selected.map(\.id))
+        XCTAssertEqual(reopened.savedSession?.initialCount, 5)
+        XCTAssertEqual(reopened.savedSession?.topic, VocabularyTopic.home.rawValue)
+        XCTAssertEqual(reopened.word(withID: selected[0].id)?.status, .learning)
+        XCTAssertEqual(reopened.events.count, 1)
+        let navigation = AppNavigation()
+        navigation.resumeStudy()
+        XCTAssertTrue(navigation.resumeSessionRequested)
+        navigation.openReminder(wordID: selected[1].id, englishFirst: true)
+        XCTAssertTrue(navigation.isReminderSession)
+        XCTAssertFalse(navigation.resumeSessionRequested)
+        navigation.studyLearningWords()
+        XCTAssertEqual(navigation.scope, .learning)
+        XCTAssertNil(navigation.topic); XCTAssertNil(navigation.startingLetter)
+    }
+
     func testIndexedLookupAndFilterCountsFollowRatingsAndUndo() throws {
         let store = try StudyStore(container: StudyStore.makeContainer(inMemory: true), seeds: StudyStore.readSeeds())
         let first = try XCTUnwrap(store.word(withID: "fi-0001"))

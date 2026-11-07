@@ -12,6 +12,10 @@ struct SupportView: View {
     var body: some View {
         NavigationStack {
             List {
+                Section("Study and settings") {
+                    Text("Progress keeps your current study session and words marked Still learning. Choose Resume studying to continue from your saved place.")
+                    Text("Open Settings for offline downloads, word reminders, purchases and help. The free offline collection covers the 211 A-set lessons. Full offline downloads and word reminders require Premium.")
+                }.font(.subheadline).foregroundStyle(Palette.muted)
                 Section("Help") {
                     Link(destination: AppSupport.supportURL) {
                         Label("Support and frequently asked questions", systemImage: "questionmark.circle")

@@ -36,7 +36,82 @@ final class WordReminderTests: XCTestCase {
         (0..<100).map { ReminderWord(id: "word-\($0)", english: $0 % 2 == 0 ? "apple\($0)" : "book\($0)",
             finnish: "sana\($0)", status: $0 % 3 == 0 ? "learning" : ($0 % 3 == 1 ? "known" : "new"), thumbnail: nil) }
     }
-    private var enabled: WordReminderSettings { var value = WordReminderSettings(); value.enabled = true; return value }
+    private var enabled: WordReminderSettings { var value = WordReminderSettings(); value.enabled = true; value.intervalMinutes = nil; value.sleepStart = nil; value.sleepEnd = nil; return value }
+
+    func testFrequentRemindersRespectOvernightAndDaytimeSleepHours() {
+        var settings = WordReminderSettings()
+        settings.enabled = true; settings.intervalMinutes = 30
+        XCTAssertEqual(settings.scheduledMinutes.count, 28)
+        XCTAssertEqual(settings.scheduledMinutes.first, 8 * 60)
+        XCTAssertEqual(settings.scheduledMinutes.last, 21 * 60 + 30)
+        XCTAssertTrue(settings.scheduledMinutes.allSatisfy { !settings.isSleeping(at: $0) })
+        settings.intervalMinutes = 60
+        XCTAssertEqual(settings.scheduledMinutes.count, 14)
+        settings.sleepStart = 8 * 60; settings.sleepEnd = 16 * 60
+        XCTAssertEqual(settings.scheduledMinutes.count, 16)
+        XCTAssertTrue(settings.scheduledMinutes.allSatisfy { $0 < 480 || $0 >= 960 })
+        settings.intervalMinutes = 30; settings.sleepStart = nil; settings.sleepEnd = nil
+        XCTAssertEqual(settings.scheduledMinutes.count, 48)
+        settings.sleepStart = 0; settings.sleepEnd = 0
+        XCTAssertTrue(settings.scheduledMinutes.isEmpty)
+    }
+
+    func testLegacyReminderPreferencesDecodeWithoutLosingTheirTimes() throws {
+        let data = Data(#"{"enabled":true,"times":[540,1020],"pool":"learning","prompt":"finnish","sound":false,"showArtwork":true}"#.utf8)
+        let restored = try JSONDecoder().decode(WordReminderSettings.self, from: data)
+        XCTAssertEqual(restored.scheduledMinutes, [540,1020])
+        XCTAssertNil(restored.intervalMinutes)
+        XCTAssertNil(restored.sleepStart)
+    }
+
+    func testHalfHourlySchedulesRepeatIndefinitelyAndStayOutsideSleepHours() async throws {
+        var settings = WordReminderSettings(); settings.enabled = true; settings.intervalMinutes = 30
+        let center = TestReminderCenter()
+        let result = await WordReminderScheduler(center: center).replace(words: words, settings: settings, now: now, calendar: calendar)
+        XCTAssertEqual(result.count, 28)
+        let requests = await center.pending()
+        XCTAssertEqual(requests.count, 28)
+        for request in requests {
+            let trigger = try XCTUnwrap(request.trigger as? UNCalendarNotificationTrigger)
+            XCTAssertTrue(trigger.repeats)
+            XCTAssertNil(trigger.dateComponents.day)
+            XCTAssertNil(trigger.dateComponents.year)
+            let minute = (trigger.dateComponents.hour ?? 0) * 60 + (trigger.dateComponents.minute ?? 0)
+            XCTAssertFalse(settings.isSleeping(at: minute))
+        }
+    }
+
+    @MainActor
+    func testFreeUsersCannotEnableOrSampleRemindersAndRevocationCancelsThem() async throws {
+        let defaults = try XCTUnwrap(UserDefaults(suiteName: "premium-reminders-" + UUID().uuidString))
+        let center = TestReminderCenter()
+        let store = try StudyStore(container: StudyStore.makeContainer(inMemory: true), seeds: StudyStore.readSeeds())
+        let reminders = WordReminders(defaults: defaults, center: center)
+        let freeSave = await reminders.save(enabled, store: store)
+        XCTAssertFalse(freeSave)
+        await reminders.sendSample(store: store, draft: enabled)
+        let blocked = await center.pending(); let prompts = await center.promptCount()
+        XCTAssertTrue(blocked.isEmpty); XCTAssertEqual(prompts, 0)
+        await reminders.setPremium(true, store: store)
+        let paidSave = await reminders.save(enabled, store: store)
+        XCTAssertTrue(paidSave)
+        let scheduled = await center.pending(); XCTAssertEqual(scheduled.count, 4)
+        await reminders.setPremium(false, store: store)
+        let revoked = await center.pending(); XCTAssertTrue(revoked.isEmpty)
+        XCTAssertFalse(reminders.settings.enabled)
+        XCTAssertTrue(store.events.isEmpty)
+    }
+
+    func testRevocationDuringSampleCreationDoesNotLeaveAPendingSample() async throws {
+        let center = TestReminderCenter(); await center.setDelay()
+        let scheduler = WordReminderScheduler(center: center)
+        let task = Task { try await scheduler.sample(word: words[0], settings: enabled) }
+        try await Task.sleep(for: .milliseconds(10))
+        _ = await scheduler.replace(words: words, settings: WordReminderSettings(), now: now, calendar: calendar)
+        _ = try? await task.value
+        let remaining = await center.pending()
+        XCTAssertTrue(remaining.isEmpty)
+    }
 
     func testFourDailyTimesAreFutureUniqueAndBoundedAcrossAutumnDST() {
         let dates = WordReminderPlan.dates(settings: enabled, now: now, calendar: calendar)
@@ -145,14 +220,14 @@ final class WordReminderTests: XCTestCase {
         try await center.add(unrelated)
         let scheduler = WordReminderScheduler(center: center)
         let first = await scheduler.replace(words: words, settings: enabled, now: now, calendar: calendar)
-        XCTAssertEqual(first.count, 56)
+        XCTAssertEqual(first.count, 4)
         let pending = await center.pending()
-        XCTAssertEqual(pending.count, 58)
-        XCTAssertTrue(pending.allSatisfy { !$0.identifier.hasPrefix(ReminderNotification.prefix) || $0.trigger?.repeats == false })
+        XCTAssertEqual(pending.count, 5)
+        XCTAssertTrue(pending.allSatisfy { !$0.identifier.hasPrefix(ReminderNotification.prefix) || $0.trigger?.repeats == true })
         let second = await scheduler.replace(words: words, settings: enabled, now: now, calendar: calendar)
-        XCTAssertEqual(second.count, 56)
+        XCTAssertEqual(second.count, 4)
         let replacements = await center.pending()
-        XCTAssertEqual(replacements.count, 58)
+        XCTAssertEqual(replacements.count, 5)
         XCTAssertTrue(Set(pending.map(\.identifier)).intersection(replacements.map(\.identifier)) == ["unrelated"])
         _ = await scheduler.replace(words: words, settings: WordReminderSettings(), now: now, calendar: calendar)
         let final = await center.pending()
@@ -189,7 +264,7 @@ final class WordReminderTests: XCTestCase {
             try await crowded.add(UNNotificationRequest(identifier: "other-\(number)", content: UNMutableNotificationContent(), trigger: nil))
         }
         let limited = await WordReminderScheduler(center: crowded).replace(words: words, settings: enabled, now: now, calendar: calendar)
-        XCTAssertEqual(limited.count, 3)
+        XCTAssertEqual(limited.count, 4)
         let pending = await crowded.pending()
         XCTAssertEqual(pending.count, 64)
     }
@@ -208,6 +283,7 @@ final class WordReminderTests: XCTestCase {
         await reminders.refresh(store: store)
         let promptCount = await center.promptCount()
         XCTAssertEqual(promptCount, 0)
+        await reminders.setPremium(true, store: store)
         var settings = enabled; settings.prompt = .english; settings.times = [700]; settings.letter = "A"
         let saved = await reminders.save(settings, store: store)
         XCTAssertTrue(saved)
