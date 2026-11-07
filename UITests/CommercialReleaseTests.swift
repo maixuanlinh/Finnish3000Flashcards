@@ -236,7 +236,7 @@ final class StudyToolbarPrototypeTests: XCTestCase {
     private func launch() -> XCUIApplication {
         continueAfterFailure = false
         let app = XCUIApplication()
-        app.launchArguments = ["-ui-testing", "-englishFirst", "YES", "-readPrompt", "NO", "-readAnswer", "NO", "-readSentence", "NO", "-recallSeconds", "3", "-answerSeconds", "2"]
+        app.launchArguments = ["-ui-testing", "-englishFirst", "YES", "-readPrompt", "NO", "-readAnswer", "NO", "-readSentence", "NO", "-recallSeconds", "3", "-answerSeconds", "2", "-showStudySubtitles", "NO"]
         app.launch()
         XCTAssertTrue(app.buttons["card.flip"].waitForExistence(timeout: 30), app.debugDescription)
         return app
@@ -255,7 +255,7 @@ final class StudyToolbarPrototypeTests: XCTestCase {
         XCTAssertLessThanOrEqual(header.frame.maxY, card.frame.minY)
         XCTAssertLessThanOrEqual(card.frame.maxY, toolbar.frame.minY)
         XCTAssertLessThanOrEqual(toolbar.frame.maxY, app.tabBars.firstMatch.frame.minY)
-        for id in ["study.autoplay", "study.playbackSettings", "study.subtitles", "study.options"] {
+        for id in ["study.autoplay", "study.playbackSettings", "study.options"] {
             let button = app.buttons[id]
             XCTAssertTrue(button.isHittable, id)
             XCTAssertGreaterThanOrEqual(button.frame.height, 44, id)
@@ -283,20 +283,23 @@ final class StudyToolbarPrototypeTests: XCTestCase {
         XCTAssertTrue(app.buttons["playback.start"].waitForExistence(timeout: 5))
         app.buttons["Done"].tap()
         XCTAssertTrue(app.buttons["card.flip"].waitForExistence(timeout: 5))
+        app.buttons["study.filters"].tap()
+        XCTAssertTrue(app.buttons["filter.apply"].waitForExistence(timeout: 5))
+        let topic = app.staticTexts["TOPIC"]
+        let letters = app.staticTexts["ENGLISH STARTS WITH"]
+        XCTAssertTrue(topic.exists && letters.exists, app.debugDescription)
+        XCTAssertLessThan(topic.frame.minY, letters.frame.minY)
+        capture(app, "filters-topic-before-letter")
+        app.buttons["Cancel"].coordinate(withNormalizedOffset: CGVector(dx: 0.5, dy: 0.5)).tap()
     }
 
-    func testSubtitlesAndAutomaticToolbar() {
+    func testAlwaysVisibleTranslationAndAutomaticToolbar() {
         let app = launch()
-        let subtitles = app.buttons["study.subtitles"]
-        if (subtitles.value as? String) == "Off" { subtitles.tap() }
+        XCTAssertFalse(app.buttons["study.subtitles"].exists)
         app.buttons["card.flip"].tap()
         XCTAssertTrue(app.staticTexts["card.translation"].waitForExistence(timeout: 5))
-        subtitles.tap()
-        XCTAssertFalse(app.staticTexts["card.translation"].exists)
-        subtitles.tap()
-        XCTAssertTrue(app.staticTexts["card.translation"].waitForExistence(timeout: 5))
         assertNoOverlap(app)
-        capture(app, "study-toolbar-prototype-answer")
+        capture(app, "study-toolbar-always-english")
         app.buttons["study.autoplay"].tap()
         XCTAssertTrue(app.buttons["playback.next"].waitForExistence(timeout: 5))
         XCTAssertTrue(app.buttons["playback.previous"].isHittable)

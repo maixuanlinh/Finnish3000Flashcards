@@ -7,7 +7,6 @@ struct StudyView: View {
     @Environment(\.scenePhase) private var scenePhase
     @Environment(AppNavigation.self) private var navigation
     @AppStorage("englishFirst") private var englishFirst = true
-    @AppStorage("showStudySubtitles") private var showSubtitles = true
     @State private var queue: [String] = []
     @State private var history: [ReviewSnapshot] = []
     @State private var initialCount = 0
@@ -187,15 +186,6 @@ struct StudyView: View {
                 Button { playback.pause(); showingPlayback = true } label: {
                     toolbarIcon("slider.horizontal.3")
                 }.accessibilityLabel("Playback settings").accessibilityIdentifier("study.playbackSettings")
-                Button { showSubtitles.toggle() } label: {
-                    Image(systemName: showSubtitles ? "captions.bubble.fill" : "captions.bubble")
-                        .font(.system(size: 20, weight: .medium))
-                        .foregroundStyle(showSubtitles ? Palette.forest : Palette.muted)
-                        .frame(maxWidth: .infinity, minHeight: 50).contentShape(Rectangle())
-                }
-                .accessibilityLabel(showSubtitles ? "Hide English subtitles" : "Show English subtitles")
-                .accessibilityValue(showSubtitles ? "On" : "Off")
-                .accessibilityIdentifier("study.subtitles").disabled(current == nil)
                 Menu {
                     Button("Playback settings", systemImage: "slider.horizontal.3") { playback.pause(); showingPlayback = true }
                     if playback.isActive {
@@ -235,7 +225,7 @@ struct StudyView: View {
                 .padding(.horizontal, 10).offset(y: 7)
             FlashcardView(word: word, revealed: Binding(
                             get: { playback.isActive ? playback.revealed : revealed },
-                            set: { value in if playback.isActive { playback.flip() } else { revealed = value } }), englishFirst: showsEnglishFirst, showSubtitles: showSubtitles,
+                            set: { value in if playback.isActive { playback.flip() } else { revealed = value } }), englishFirst: showsEnglishFirst,
                           canInteract: { canTapCard },
                           openDetail: {
                               guard canTapCard else { return }
@@ -425,7 +415,6 @@ private struct FlashcardView: View {
     let word: VocabularyWord
     @Binding var revealed: Bool
     let englishFirst: Bool
-    let showSubtitles: Bool
     let canInteract: () -> Bool
     let openDetail: () -> Void
     let play: () -> Void
@@ -458,7 +447,7 @@ private struct FlashcardView: View {
                                 Text(word.sentence).font(.system(size: compact ? 16 : 18, weight: .medium))
                                     .foregroundStyle(Palette.ink)
                                     .accessibilityIdentifier("card.sentence")
-                                if showSubtitles, !word.sentenceEnglish.isEmpty {
+                                if !word.sentenceEnglish.isEmpty {
                                     Text(word.sentenceEnglish).font(.system(size: compact ? 13 : 15))
                                         .foregroundStyle(Palette.muted)
                                         .accessibilityIdentifier("card.translation")

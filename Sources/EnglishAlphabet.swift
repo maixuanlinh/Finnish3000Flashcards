@@ -72,6 +72,26 @@ struct VocabularyFilterSheet: View {
                         }
                     }
                     VStack(alignment: .leading, spacing: 12) {
+                        Eyebrow(text: "Topic")
+                        Button { topic = nil } label: {
+                            HStack {
+                                Text("All topics")
+                                Spacer()
+                                if topic == nil { Image(systemName: "checkmark.circle.fill") }
+                            }
+                            .font(.subheadline.weight(.medium)).padding(14)
+                            .foregroundStyle(Palette.forest)
+                            .background(topic == nil ? Palette.sage : .white, in: RoundedRectangle(cornerRadius: 14))
+                        }
+                        .accessibilityIdentifier("filter.topic.all")
+                        TopicCardGrid(progress: store.topicProgress(words: words), selected: topic) { value in
+                            topic = value.rawValue
+                        }
+                        .accessibilityIdentifier("filter.topic")
+                        Text("A word can belong to several topics. Its learning progress is shared everywhere.")
+                            .font(.caption).foregroundStyle(Palette.muted)
+                    }
+                    VStack(alignment: .leading, spacing: 12) {
                         Eyebrow(text: "English starts with")
                         Button { letter = nil } label: {
                             HStack {
@@ -100,26 +120,6 @@ struct VocabularyFilterSheet: View {
                                 .accessibilityIdentifier("letter.\(value)")
                             }
                         }
-                    }
-                    VStack(alignment: .leading, spacing: 12) {
-                        Eyebrow(text: "Topic")
-                        Button { topic = nil } label: {
-                            HStack {
-                                Text("All topics")
-                                Spacer()
-                                if topic == nil { Image(systemName: "checkmark.circle.fill") }
-                            }
-                            .font(.subheadline.weight(.medium)).padding(14)
-                            .foregroundStyle(Palette.forest)
-                            .background(topic == nil ? Palette.sage : .white, in: RoundedRectangle(cornerRadius: 14))
-                        }
-                        .accessibilityIdentifier("filter.topic.all")
-                        TopicCardGrid(progress: store.topicProgress(words: words), selected: topic) { value in
-                            topic = value.rawValue
-                        }
-                        .accessibilityIdentifier("filter.topic")
-                        Text("A word can belong to several topics. Its learning progress is shared everywhere.")
-                            .font(.caption).foregroundStyle(Palette.muted)
                     }
                 }
                 .padding(20)

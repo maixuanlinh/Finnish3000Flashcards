@@ -1,5 +1,15 @@
 # Release notes and version policy
 
+## ios-v1.1.0-dev.5 — 7 November 2026
+
+Study prototype refinement for owner review. iOS target **1.1.0 (35)**; Personal **0.23.2 (27)**. No store submission.
+
+- Remove the English-subtitle button from the bottom Study toolbar. Available English example translations are always shown on the answer card, including when the obsolete subtitle preference was previously off. Premium lesson access remains unchanged.
+- Reorder the shared Study/Words filter sheet to Learning status → Topic → English starts with. Filter selections and result-count logic are unchanged.
+- Keep the list header, counter, swipe ratings, Undo and playback controls from the prototype.
+
+Validation: both focused physical-iPhone UI flows passed. They verify that the subtitle toggle is absent and English translations remain visible even with the obsolete preference set to off, plus swipe/Undo, playback, toolbar safe areas and Topic appearing above English starts with. [Answer and toolbar](CommercialValidation/Screenshots/study-toolbar-always-english.png), [filter layout](CommercialValidation/Screenshots/filters-topic-before-letter.png).
+
 ## ios-v1.1.0-dev.4 — 7 November 2026
 
 Status: **Study controls prototype for owner review**, not a store submission. iOS target **1.1.0 (34)**; Personal **0.23.1 (26)**.
