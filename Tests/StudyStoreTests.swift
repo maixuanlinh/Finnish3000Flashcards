@@ -10,18 +10,18 @@ final class StudyStoreTests: XCTestCase {
         let seeds = try StudyStore.readSeeds()
         let container = try StudyStore.makeContainer(inMemory: true)
         let store = try StudyStore(container: container, seeds: seeds)
-        XCTAssertEqual(VocabularyTopic.allCases.count, 10)
+        XCTAssertEqual(VocabularyTopic.allCases.count, 16)
         XCTAssertTrue(store.words.allSatisfy { !$0.studyTopics.isEmpty })
         let initial = store.topicProgress(words: store.words)
         XCTAssertTrue(VocabularyTopic.allCases.allSatisfy { initial[$0, default: TopicProgress()].total > 100 })
         let moving = try XCTUnwrap(store.words.first { $0.english == "move" })
         XCTAssertTrue(moving.matchesTopic(VocabularyTopic.home.rawValue))
-        XCTAssertTrue(moving.matchesTopic(VocabularyTopic.essentials.rawValue))
+        XCTAssertTrue(moving.matchesTopic(VocabularyTopic.commonVerbs.rawValue))
         XCTAssertFalse(moving.matchesTopic(VocabularyTopic.nature.rawValue))
         let snapshot = try store.rate(moving, as: .known)
         let updated = store.topicProgress(words: store.words)
         XCTAssertEqual(updated[.home]?.known, 1)
-        XCTAssertEqual(updated[.essentials]?.known, 1)
+        XCTAssertEqual(updated[.commonVerbs]?.known, 1)
         XCTAssertEqual(store.count(.known), 1)
         XCTAssertEqual(store.events.count, 1)
         XCTAssertEqual(store.words.count, 3000)
@@ -40,6 +40,35 @@ final class StudyStoreTests: XCTestCase {
         try store.undo(snapshot)
         XCTAssertEqual(store.topicProgress(words: store.words)[.home]?.known, 0)
         XCTAssertEqual(store.count(.known), 0)
+    }
+
+    func testCoreCollectionsPartitionEssentialsAndStayBelow300Words() throws {
+        let store = try StudyStore(container: StudyStore.makeContainer(inMemory: true), seeds: StudyStore.readSeeds())
+        let core = Set(VocabularyTopic.coreCollections)
+        let groups = VocabularyTopic.coreCollections.map { topic in
+            store.words.filter { $0.matchesTopic(topic.rawValue) }
+        }
+        XCTAssertEqual(groups.count, 7)
+        XCTAssertTrue(groups.allSatisfy { !$0.isEmpty && $0.count <= 300 })
+        let ids = groups.flatMap { $0.map(\.id) }
+        XCTAssertEqual(ids.count, 1390)
+        XCTAssertEqual(Set(ids).count, ids.count)
+        for word in store.words {
+            XCTAssertLessThanOrEqual(word.studyTopics.intersection(core).count, 1, word.english)
+        }
+        let expected: [(String, VocabularyTopic)] = [
+            ("eat", .commonVerbs), ("move", .commonVerbs), ("think", .communicationVerbs),
+            ("careful", .adjectives), ("quickly", .adverbs), ("because", .essentials),
+            ("they", .essentials), ("may", .essentials), ("May", .timeNumbers),
+            ("yellow", .timeNumbers), ("reason", .nouns), ("refrigerator", .nouns),
+            ("bicycle", .travel)
+        ]
+        for (english, topic) in expected {
+            let word = try XCTUnwrap(store.words.first { $0.english == english })
+            XCTAssertTrue(word.studyTopics.contains(topic), english)
+        }
+        let oldIDs = Set(try StudyStore.readSeeds().map(\.id))
+        XCTAssertEqual(Set(store.words.map(\.id)), oldIDs)
     }
 
     func testTopicSearchCountsAndStudyMembershipAgree() throws {

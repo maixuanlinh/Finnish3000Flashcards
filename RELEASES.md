@@ -1,5 +1,27 @@
 # Release notes and version policy
 
+## ios-v1.1.0-dev.2 — 7 November 2026
+
+Status: development checkpoint for owner testing. iOS target **1.1.0 (32)**; Personal **0.22.1 (24)**. No store submission.
+
+Replace the 1,391-word Everyday essentials card with seven separately selectable collections under **Everyday word groups**. Switch between **YKI topics** and **Word groups** at the top of Words:
+
+| Collection | Words |
+| --- | ---: |
+| Everyday verbs — Arjen verbit | 247 |
+| Thinking & communication verbs — Ajattelun ja viestinnän verbit | 152 |
+| Adjectives — Adjektiivit | 294 |
+| Adverbs — Adverbit | 150 |
+| Grammar & linking words — Kielen perussanat | 170 |
+| Time, numbers & colours — Aika, luvut ja värit | 110 |
+| Everyday nouns & ideas — Arjen substantiivit | 267 |
+
+The seven collections partition 1,390 entries without duplicates. The remaining entry, **bicycle**, now correctly belongs to Travel & transport: its starter headword differed from the catalog's “bicycle / bike” spelling and previously fell into the catch-all list. Situational topic membership and per-word learning records are preserved.
+
+Word groups use the entry's representative learning sense; a polysemous entry can include other grammatical senses. Months are matched case-sensitively, so **May** and the modal **may** remain separate. A regression test enforces complete coverage, no duplicates and a maximum of 300 words in each core collection.
+
+Validation: all **23 vocabulary/store tests** and the focused physical iPhone 16 Plus UI test passed. They cover the group-size limit, coverage, May/may distinction, search, filtered practice and shared progress. The installed Personal app was reopened normally; every learning record and review event matched the pre-update backup. [Phone screenshot](CommercialValidation/Screenshots/core-word-groups-iphone.png).
+
 ## ios-v1.1.0-dev.1 — 7 November 2026
 
 Status: development checkpoint for owner testing; no store release was submitted by this change.

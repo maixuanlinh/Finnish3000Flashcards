@@ -92,19 +92,36 @@ final class VocabularyTopicFlowTests: XCTestCase {
         app.buttons["Clear filters"].tap()
         XCTAssertTrue(app.buttons["words.practice"].waitForExistence(timeout: 5))
         app.buttons["words.backToTopics"].tap()
-        app.swipeUp()
-        app.swipeUp()
-        XCTAssertTrue(app.buttons["topic.essentials"].waitForExistence(timeout: 5))
-        capture(app, "topics-mobile-lower-cards")
+        app.segmentedControls["words.collections"].buttons["Word groups"].tap()
+        let verbs = app.buttons["topic.commonVerbs"]
+        XCTAssertTrue(verbs.waitForExistence(timeout: 5), app.debugDescription)
+        XCTAssertTrue(verbs.isHittable)
+        capture(app, "topics-core-word-groups")
+        verbs.tap()
+        XCTAssertTrue(app.staticTexts["Arjen verbit"].waitForExistence(timeout: 5))
+        XCTAssertEqual(app.staticTexts["words.filteredCount"].label, "247 shown")
+        app.textFields["words.search"].tap()
+        app.textFields["words.search"].typeText("eat\n")
+        XCTAssertTrue(app.buttons.matching(NSPredicate(format: "identifier BEGINSWITH %@", "word.fi-")).firstMatch.waitForExistence(timeout: 5))
+        capture(app, "topics-common-verbs-search")
+        app.buttons["words.practice"].tap()
+        XCTAssertTrue(app.buttons["review.known"].waitForExistence(timeout: 5))
     }
 
     private func openWords(_ app: XCUIApplication) {
-        let tab = app.tabBars.firstMatch.buttons["Words"].firstMatch
-        tab.tap()
-        if !app.textFields["words.search"].waitForExistence(timeout: 3) {
+        let tabs = app.tabBars.buttons.matching(NSPredicate(format: "label == %@", "Words"))
+        let search = app.textFields["words.search"]
+        for _ in 0..<3 {
+            if search.exists && search.isHittable { break }
+            guard let tab = tabs.allElementsBoundByIndex.first(where: { $0.isHittable }) else {
+                XCTFail("No visible Words tab: \(app.debugDescription)")
+                return
+            }
             tab.coordinate(withNormalizedOffset: CGVector(dx: 0.5, dy: 0.5)).tap()
+            let visible = XCTNSPredicateExpectation(predicate: NSPredicate(format: "hittable == true"), object: search)
+            _ = XCTWaiter.wait(for: [visible], timeout: 3)
         }
-        XCTAssertTrue(app.textFields["words.search"].waitForExistence(timeout: 5), app.debugDescription)
+        XCTAssertTrue(search.exists && search.isHittable, app.debugDescription)
     }
 
     private func capture(_ app: XCUIApplication, _ name: String) {

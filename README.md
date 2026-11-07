@@ -2,9 +2,9 @@
 
 ## Current development checkpoint — 7 November 2026
 
-The iOS topic-browser update targets **1.1.0 (31)**; the personal phone build is **0.22.0 (23)** and keeps `com.finnishcards.SisuCards` to preserve installed progress. Git tag: `ios-v1.1.0-dev.1`. This is a development checkpoint, not an App Store/Google Play submission. See [release notes and version policy](RELEASES.md).
+The iOS topic-browser update targets **1.1.0 (32)**; the personal phone build is **0.22.1 (24)** and keeps `com.finnishcards.SisuCards` to preserve installed progress. Git tag: `ios-v1.1.0-dev.2`. This is a development checkpoint, not an App Store/Google Play submission. See [release notes and version policy](RELEASES.md).
 
-Words now opens a phone-sized browser of nine YKI themes plus Everyday essentials. Each word retains its original ID and learning record across every topic. Study and Words share topic, status and letter filters. Android's saved media/offline-study work is included; the new topic browser is currently iOS-only.
+Words now opens a phone-sized browser of nine YKI themes plus seven smaller everyday word groups, each capped at 300 words. These replace the oversized Everyday essentials list. Each word retains its original ID and learning record across every topic. Study and Words share topic, status and letter filters. Android's saved media/offline-study work is included; the new topic browser is currently iOS-only.
 
 The media manifest and two starter packs are tracked under `MediaDelivery/generated/assets/`, so native builds work from a fresh checkout. Full media generation and hosting remain separate. The snapshot and validation notes below describe earlier releases.
 

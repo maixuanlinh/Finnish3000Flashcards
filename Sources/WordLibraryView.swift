@@ -10,6 +10,7 @@ struct WordLibraryView: View {
     @State private var importingArtworkPack = false
     @State private var showingFilters = false
     @State private var browsingTopics = true
+    @State private var browsingCoreWords = false
 
     private var filterTitle: String {
         [navigation.scope.title, navigation.startingLetter, navigation.topic].compactMap { $0 }.joined(separator: " · ")
@@ -32,7 +33,7 @@ struct WordLibraryView: View {
         let progress = store.topicProgress(words: store.words)
         NavigationStack {
             ScrollView {
-                LazyVStack(alignment: .leading, spacing: 18) {
+                VStack(alignment: .leading, spacing: 18) {
                     header
                     if let topic = selectedTopic {
                         topicHeader(topic, progress: progress[topic, default: TopicProgress()])
@@ -40,12 +41,18 @@ struct WordLibraryView: View {
                     searchField
                     if showsTopics {
                         overallProgress
+                        Picker("Browse vocabulary", selection: $browsingCoreWords) {
+                            Text("YKI topics").tag(false)
+                            Text("Word groups").tag(true)
+                        }
+                        .pickerStyle(.segmented)
+                        .accessibilityIdentifier("words.collections")
                         HStack(alignment: .firstTextBaseline) {
                             VStack(alignment: .leading, spacing: 4) {
-                                Text("Explore by topic")
+                                Text(browsingCoreWords ? "Everyday word groups" : "Explore by topic")
                                     .font(.system(size: 23, weight: .semibold, design: .serif))
                                     .foregroundStyle(Palette.ink)
-                                Text("9 YKI themes + everyday essentials")
+                                Text(browsingCoreWords ? "7 focused collections · up to 300 words each" : "9 themes for everyday situations")
                                     .font(.caption).foregroundStyle(Palette.muted)
                             }
                             Spacer(minLength: 4)
@@ -62,7 +69,7 @@ struct WordLibraryView: View {
                             Spacer()
                             filterButton
                         }
-                        TopicCardGrid(progress: progress, selected: nil) { topic in
+                        TopicCardGrid(topics: browsingCoreWords ? VocabularyTopic.coreCollections : VocabularyTopic.ykiThemes, progress: progress, selected: nil) { topic in
                             search = ""
                             browsingTopics = false
                             navigation.applyFilters(scope: .all, letter: nil, topic: topic.rawValue)
@@ -88,15 +95,18 @@ struct WordLibraryView: View {
                                 }
                             }
                         } else {
-                            ForEach(filtered) { word in
-                                Button { selectedWord = word } label: { wordRow(word) }
-                                    .buttonStyle(.plain).accessibilityIdentifier("word.\(word.id)")
+                            LazyVStack(spacing: 12) {
+                                ForEach(filtered) { word in
+                                    Button { selectedWord = word } label: { wordRow(word) }
+                                        .buttonStyle(.plain).accessibilityIdentifier("word.\(word.id)")
+                                }
                             }
                         }
                     }
                 }
                 .padding(.horizontal, 18).padding(.top, 12).padding(.bottom, 16)
             }
+            .accessibilityIdentifier("words.content")
             .scrollDismissesKeyboard(.interactively)
             .background(Palette.background).toolbar(.hidden, for: .navigationBar)
             .safeAreaInset(edge: .bottom) {
@@ -281,6 +291,7 @@ struct TopicIcon: View {
 
 struct TopicCardGrid: View {
     @Environment(\.dynamicTypeSize) private var dynamicTypeSize
+    var topics: [VocabularyTopic] = VocabularyTopic.allCases
     let progress: [VocabularyTopic: TopicProgress]
     let selected: String?
     let onSelect: (VocabularyTopic) -> Void
@@ -291,7 +302,7 @@ struct TopicCardGrid: View {
 
     var body: some View {
         LazyVGrid(columns: columns, spacing: 12) {
-            ForEach(VocabularyTopic.allCases) { topic in
+            ForEach(topics) { topic in
                 let stats = progress[topic, default: TopicProgress()]
                 let isSelected = selected == topic.rawValue
                 Button { onSelect(topic) } label: {
