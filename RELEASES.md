@@ -1,5 +1,16 @@
 # Release notes and version policy
 
+## ios-v1.1.0-submitted — 7 November 2026, 22:40 EET
+
+**1.1.0 (38) submitted to Apple; Waiting for Review.** Automatic release after approval is selected. This is a submitted update, not a claim that version 1.1.0 is already live. The previously distributed version is 1.0 (30).
+
+- Upload succeeded and Apple processing completed. Attached build `d9b65eef-d5cf-410d-8a8e-bc60c7ef09de` (38) to version 1.1.0, replacing the unused build 31 in the unsubmitted 1.0.1 draft.
+- Saved the English description, What's New and review notes for topics, saved sessions, Settings, Free automatic offline media, Premium downloads/reminders and preserved existing Premium access. Updated Marketing URL to the current landing page. Kept existing screenshot/video assets and the pending product-page-optimization submission unchanged.
+- Verified the existing `com.linapps.ykiflashcards.complete` non-consumable remains Approved. No new product, pricing, app identity or purchase migration was introduced. Existing privacy, content-rights and account declarations were retained; no new legal agreement was accepted.
+- Submitted one App Version item. Apple submission ID: `14ade235-71d3-4ea1-ac91-86a94b74777c`.
+
+[Review status](https://appstoreconnect.apple.com/apps/6826695314/distribution/reviewsubmissions/details/14ade235-71d3-4ea1-ac91-86a94b74777c), [submission screenshot](CommercialValidation/Screenshots/appstore-1.1.0-waiting-review.png), [saved listing text](ReleasePreparation/AppStore-1.1.0-en-US.json). TestFlight purchase/restore and a real purchased-version upgrade were not performed in this submission checkpoint; prior physical-device/local-StoreKit validation remains documented below.
+
 ## ios-v1.1.0-rc.2 — 7 November 2026
 
 Customer release candidate **1.1.0 (38)**. Final Release installed/opened on the owner’s iPhone; refreshed signed App Store IPA exported locally. Personal configuration **0.23.5 (30)** remains separate. No upload or store submission.

@@ -1,6 +1,8 @@
 # 3000 Finnish Words — iOS 1.1.0 (38)
 
-Prepared 7 November 2026. Git checkpoint: `ios-v1.1.0-rc.2`.
+Prepared 7 November 2026. Source checkpoint: `ios-v1.1.0-rc.2`. Submission checkpoint: `ios-v1.1.0-submitted`.
+
+**Submitted 7 November 2026 at 22:40 EET. Current observed status: Waiting for Review. Automatic release after approval is selected.** Apple submission ID `14ade235-71d3-4ea1-ac91-86a94b74777c`. [Review record](https://appstoreconnect.apple.com/apps/6826695314/distribution/reviewsubmissions/details/14ade235-71d3-4ea1-ac91-86a94b74777c).
 
 ## Identity and existing buyers
 
@@ -55,13 +57,16 @@ Screens: [English Premium prompt](../CommercialValidation/Screenshots/offline-pr
 - Signed App Store IPA: `build/Commercial/Export-1.1.0-build38/SisuCards.ipa`
 - IPA size: **25,587,472 bytes**; Apple determines actual device download size.
 - IPA SHA-256: `5d36851b0a1613e760573017498247d0e62bbad9651c7f9c1086f020a76cd707`
-- Verified deep code signature, distribution profile, debugger disabled, app/version identity and included privacy manifest. Export completed successfully. Build 38 supersedes build 37 for testing; neither was uploaded in these checkpoints.
+- Verified deep code signature, distribution profile, debugger disabled, app/version identity and included privacy manifest. Export completed successfully. Build 38 supersedes build 37 and was uploaded successfully for this submission; build 37 was not uploaded.
 - Archive and IPA stay local, outside Git. Release-configured customer app installed and opened on the physical iPhone.
 
-## Remaining before public release
+## Submission outcome and remaining external steps
 
-1. Test this candidate through TestFlight with a sandbox account, including purchase, cancel and restore. Also update an actually purchased older installation in place and confirm Premium and learning history remain available. Local tests cover the entitlement contract but cannot prove a real account’s historical receipt migration.
-2. Verify the current App Store Connect version, listing/screenshots and hosting/privacy declarations. This run did not access or change the store account; historical local release-status notes are not a current store-status check.
-3. Upload and review the concrete candidate, then submit/release through the existing store record. No upload or submission was performed in this checkpoint.
+- Apple processing completed and version **1.1.0 (38)** was attached to the existing record. The unsubmitted 1.0.1 draft/build 31 was replaced; no live release or pending screenshot experiment was withdrawn.
+- Saved accurate English description/release/review text, retained existing marketing screenshots/video and the approved Complete product, and set the marketing URL to the current landing page. [Exact saved metadata and status](AppStore-1.1.0-en-US.json).
+- App Store Connect accepted **one App Version item** and shows **Waiting for Review**. Automatic public release after approval is selected. Apple's approval and actual store availability remain external steps; they were not observed during this run.
+- Existing privacy/account declarations were viewed and retained. Hosting retention was not independently inspected in this run, and the published privacy label was not changed or newly attested.
+- This submission did not include a TestFlight/sandbox purchase or an upgrade from an actually purchased older installation. Local StoreKit, entitlement startup/restore tests, unchanged identifiers and phone testing are the validation evidence available.
+
 
 Android parity and physical Android testing are deferred until an Android device is available. Swedish parity follows the accepted Finnish implementation; neither platform was changed in this checkpoint.
