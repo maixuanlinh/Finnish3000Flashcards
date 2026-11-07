@@ -174,7 +174,13 @@ final class PremiumStore {
         do {
             switch try await client.purchase() {
             case .purchased:
-                await refreshAccess()
+                // A verified purchase can arrive before StoreKit publishes it in
+                // currentEntitlements. Keep the purchase UI busy while it catches up.
+                for attempt in 0..<10 {
+                    await refreshAccess()
+                    if isPremium { break }
+                    if attempt < 9 { try await Task.sleep(for: .milliseconds(300)) }
+                }
                 if !isPremium { message = "We’re checking your purchase. Try Restore Purchases if Premium doesn’t appear." }
                 else { message = "Premium unlocked. All 3,000 complete lessons are ready." }
             case .cancelled: break

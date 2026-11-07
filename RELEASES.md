@@ -1,5 +1,18 @@
 # Release notes and version policy
 
+## ios-v1.1.0-rc.1 — 7 November 2026
+
+Customer iOS release candidate **1.1.0 (37)**, named **3000 Finnish Words**. Archive and App Store distribution IPA exported and verified locally; Release installed on the owner’s iPhone. No upload, store metadata changes or submission. Personal configuration **0.23.4 (29)** remains separate.
+
+- Preserve `com.linapps.ykiflashcards` and the existing non-consumable `com.linapps.ykiflashcards.complete`. Previously purchased Premium remains full Premium, including reminders and full offline downloads, with no second purchase. No learning schema or word IDs changed.
+- Fix verified-purchase entitlement propagation: check the current entitlement again for up to 2.7 seconds while the purchase UI remains busy. This addresses the reproduced local StoreKit delay without granting access to cancelled, pending or unverified purchases.
+- More contains only Shuffle this session and Show Finnish first / Show English first. Playback settings remains in the bottom toolbar; Return to manual study moves into that settings sheet.
+- Verify the actual customer Free/Premium experience, including Free A-set offline access and Premium reminders. No Personal unlock or preview bypass is included in the Release build.
+
+Validation: 63 offline unit/integration tests passed with one notification-permission check skipped in the baseline customer run; the changed Premium suite then passed all 8 unit tests and 4 real local-StoreKit tests. Three customer Premium UI flows passed. Final menu/Settings, Free restrictions and playback-stop changes passed on the physical iPhone; the inline menu/Settings flow also passed on a 13-inch iPad simulator. Structural content validation covers all 3,000 entries, illustrations and bilingual examples. App Store IPA signature, identity, version, privacy manifest and distribution profile were verified. TestFlight/App Store transactions and an upgrade from an actually purchased older installation remain to be checked before public release; local StoreKit tests do not replace those checks.
+
+[Free lesson](CommercialValidation/Screenshots/release-1.1.0-free-word.png), [Premium lesson](CommercialValidation/Screenshots/release-1.1.0-premium-word.png), [Premium restored](CommercialValidation/Screenshots/release-1.1.0-premium-restored.png), [two-item menu](CommercialValidation/Screenshots/release-1.1.0-study-menu.png), [iPad Settings](CommercialValidation/Screenshots/release-1.1.0-ipad-settings.png). Details: [iOS release preparation](ReleasePreparation/iOS-1.1.0.md).
+
 ## ios-v1.1.0-dev.6 — 7 November 2026
 
 Settings and Study menu refinement. iOS target **1.1.0 (36)**; Personal **0.23.3 (28)**. Development checkpoint; no store submission.

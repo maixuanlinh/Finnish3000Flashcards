@@ -11,11 +11,15 @@ private final class FakePremiumClient: PremiumClient {
     var outcome = PremiumPurchaseOutcome.cancelled
     var purchaseFails = false
     var restoreFails = false
+    var checksUntilVisible = 0
     var purchaseCalls = 0
     var restoreCalls = 0
     let events = AsyncStream<Void>.makeStream()
     func offer() async throws -> PremiumOffer? { price }
-    func hasPurchase() async -> Bool { owns }
+    func hasPurchase() async -> Bool {
+        if owns && checksUntilVisible > 0 { checksUntilVisible -= 1; return false }
+        return owns
+    }
     func purchase() async throws -> PremiumPurchaseOutcome {
         purchaseCalls += 1
         if purchaseFails { throw StoreKitError.notEntitled }
@@ -85,6 +89,35 @@ final class PremiumStoreTests: XCTestCase {
         for _ in 0..<100 where store.isPremium { try await Task.sleep(for: .milliseconds(10)) }
         XCTAssertFalse(store.isPremium)
         XCTAssertTrue(store.message?.contains("no longer active") == true)
+    }
+
+    func testVerifiedPurchaseWaitsForDelayedEntitlement() async {
+        let client = FakePremiumClient()
+        let store = PremiumStore(client: client)
+        await store.start(); await store.loadOffer()
+        client.checksUntilVisible = 2
+        client.outcome = .purchased
+        await store.purchase()
+        XCTAssertTrue(store.isPremium)
+        XCTAssertFalse(store.busy)
+        XCTAssertEqual(client.purchaseCalls, 1)
+    }
+
+    func testExistingPremiumPurchaseUnlocksAtStartupWithoutRepurchase() async throws {
+        // Same product and bundle IDs as previous customer releases.
+        XCTAssertEqual(PremiumStore.productID, "com.linapps.ykiflashcards.complete")
+        let client = FakePremiumClient(); client.owns = true
+        let store = PremiumStore(client: client)
+        await store.start()
+        XCTAssertTrue(store.isPremium)
+        XCTAssertFalse(store.isPersonal)
+        XCTAssertEqual(client.purchaseCalls, 0)
+        let seeds = try StudyStore.readSeeds()
+        XCTAssertEqual(seeds.filter { PremiumAccess.hasLesson($0.english, premium: store.isPremium) }.count, 3000)
+        let reopened = PremiumStore(client: client)
+        await reopened.start(); await reopened.restore()
+        XCTAssertTrue(reopened.isPremium)
+        XCTAssertEqual(client.purchaseCalls, 0)
     }
 
     func testRestoreWithoutPurchaseAndRestoreFailureGiveRecoverableMessages() async {

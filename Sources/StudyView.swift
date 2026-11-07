@@ -88,7 +88,7 @@ struct StudyView: View {
             .onChange(of: premium.isPremium) { _, owns in
                 if !owns { playback.stop(); speech?.stop() }
             }
-            .sheet(isPresented: $showingPlayback) { AutoStudyOptions(start: startAutomatic) }
+            .sheet(isPresented: $showingPlayback) { AutoStudyOptions(start: startAutomatic, stop: playback.isActive ? stopAutomatic : nil) }
             .sheet(isPresented: $showingFilters) {
                 VocabularyFilterSheet(words: store.words, scope: navigation.scope,
                                       letter: navigation.startingLetter, topic: navigation.topic,
@@ -187,12 +187,6 @@ struct StudyView: View {
                     toolbarIcon("slider.horizontal.3")
                 }.accessibilityLabel("Playback settings").accessibilityIdentifier("study.playbackSettings")
                 Menu {
-                    Button("Playback settings", systemImage: "slider.horizontal.3") { playback.pause(); showingPlayback = true }
-                    if playback.isActive {
-                        Button("Return to manual study", systemImage: "stop.fill") {
-                            speech?.stop(); playback.stop(); revealed = false
-                        }.accessibilityIdentifier("playback.stop")
-                    }
                     Button(showsEnglishFirst ? "Show Finnish first" : "Show English first", systemImage: "arrow.left.arrow.right") {
                         playback.stop(); englishFirst = !showsEnglishFirst; navigation.promptEnglishFirst = nil; revealed = false
                     }
@@ -206,6 +200,10 @@ struct StudyView: View {
             .overlay { RoundedRectangle(cornerRadius: 22).strokeBorder(Palette.line.opacity(0.7)) }
         }
         .accessibilityElement(children: .contain).accessibilityIdentifier("study.toolbar")
+    }
+
+    private func stopAutomatic() {
+        speech?.stop(); playback.stop(); revealed = false
     }
 
     private func toolbarIcon(_ name: String) -> some View {

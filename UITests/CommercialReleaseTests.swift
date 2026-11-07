@@ -136,7 +136,7 @@ final class VocabularyTopicFlowTests: XCTestCase {
 @MainActor
 final class SettingsAndResumeFlowTests: XCTestCase {
     private func openTab(_ name: String, in app: XCUIApplication) {
-        let buttons = app.tabBars.buttons.matching(NSPredicate(format: "label == %@", name))
+        let buttons = app.buttons.matching(NSPredicate(format: "label == %@", name))
         guard let button = buttons.allElementsBoundByIndex.first(where: { $0.isHittable }) else {
             XCTFail("No visible \(name) tab: \(app.debugDescription)"); return
         }
@@ -164,6 +164,9 @@ final class SettingsAndResumeFlowTests: XCTestCase {
         XCTAssertFalse(app.buttons["review.known"].exists)
         XCTAssertFalse(app.buttons["review.learning"].exists)
         XCTAssertFalse(app.staticTexts["Mark this word"].exists)
+        XCTAssertTrue(app.buttons["study.playbackSettings"].exists)
+        XCTAssertEqual(app.buttons.matching(NSPredicate(format: "label == %@", "Playback settings")).count, 1)
+        XCTAssertTrue(app.buttons["Show Finnish first"].exists)
         capture(app, "study-menu-without-rating-actions")
         app.coordinate(withNormalizedOffset: CGVector(dx: 0.5, dy: 0.3)).tap()
         openTab("Settings", in: app)
@@ -335,7 +338,7 @@ final class StudyToolbarPrototypeTests: XCTestCase {
         capture(app, "study-toolbar-prototype-playback")
         app.buttons["playback.next"].tap()
         app.buttons["playback.previous"].tap()
-        app.buttons["study.options"].tap()
+        app.buttons["study.playbackSettings"].tap()
         app.buttons["playback.stop"].tap()
         XCTAssertTrue(app.buttons["review.undo"].exists)
         XCTAssertFalse(app.buttons["playback.next"].exists)

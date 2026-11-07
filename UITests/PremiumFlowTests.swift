@@ -19,10 +19,32 @@ final class PremiumFlowTests: XCTestCase {
         XCTAssertTrue(app.buttons["card.flip"].waitForExistence(timeout: 30))
     }
 
+    private func openTab(_ name: String) {
+        let target: XCUIElement
+        switch name {
+        case "Settings": target = app.staticTexts["settings.membership"]
+        case "Progress": target = app.staticTexts["progress.known"]
+        default: target = app.textFields["words.search"]
+        }
+        for _ in 0..<3 {
+            let buttons = app.buttons.matching(NSPredicate(format: "label == %@", name))
+            guard let button = buttons.allElementsBoundByIndex.first(where: { $0.isHittable }) else {
+                XCTFail("No visible \(name) tab"); return
+            }
+            button.coordinate(withNormalizedOffset: CGVector(dx: 0.5, dy: 0.5)).tap()
+            if target.waitForExistence(timeout: 3) { return }
+        }
+        XCTFail("The \(name) screen did not open: \(app.debugDescription)")
+    }
+
     private func openBook() {
-        app.tabBars.buttons["Words"].tap()
-        app.textFields["words.search"].tap()
-        app.textFields["words.search"].typeText("book")
+        openTab("Words")
+        let search = app.textFields["words.search"]
+        search.tap()
+        if let text = search.value as? String, text != "Search English or Finnish", !text.isEmpty {
+            search.typeText(String(repeating: XCUIKeyboardKey.delete.rawValue, count: text.count))
+        }
+        search.typeText("book\n")
         app.buttons.matching(NSPredicate(format: "identifier BEGINSWITH %@", "word.fi-")).firstMatch.tap()
         XCTAssertTrue(app.staticTexts["detail.finnish"].waitForExistence(timeout: 5))
     }
@@ -40,8 +62,9 @@ final class PremiumFlowTests: XCTestCase {
         app.buttons["premium.done"].tap()
         app.buttons["detail.status.known"].tap()
         app.buttons["detail.done"].tap()
-        app.tabBars.buttons["Progress"].tap()
+        openTab("Progress")
         XCTAssertEqual(app.staticTexts["progress.known"].label, "1")
+        openTab("Settings")
         XCTAssertEqual(app.staticTexts["settings.membership"].label, "3000 Finnish Words Free")
         capture("43-free-status-and-restore")
     }
@@ -58,9 +81,14 @@ final class PremiumFlowTests: XCTestCase {
         capture("45-unlocked-word-detail")
         app.terminate(); app.launch()
         XCTAssertTrue(app.buttons["card.flip"].waitForExistence(timeout: 30))
-        app.tabBars.buttons["Progress"].tap()
+        openTab("Settings")
         XCTAssertTrue(app.staticTexts["settings.membership"].waitForExistence(timeout: 5))
         XCTAssertEqual(app.staticTexts["settings.membership"].label, "3000 Finnish Words Premium")
+        app.buttons["settings.restore"].tap()
+        let restored = XCTNSPredicateExpectation(predicate: NSPredicate(format: "enabled == true"), object: app.buttons["settings.restore"])
+        XCTAssertEqual(XCTWaiter.wait(for: [restored], timeout: 10), .completed)
+        XCTAssertEqual(app.staticTexts["settings.membership"].label, "3000 Finnish Words Premium")
+        capture("premium-settings-and-restore")
         let transaction = try XCTUnwrap(purchases.allTransactions().first)
         try purchases.refundTransaction(identifier: transaction.identifier)
         let free = NSPredicate(format: "label == %@", "3000 Finnish Words Free")
@@ -82,7 +110,7 @@ final class PremiumFlowTests: XCTestCase {
         XCTAssertEqual(app.staticTexts["session.count"].label, "0 / 211")
         app.buttons["study.autoplay"].tap()
         XCTAssertTrue(app.buttons["playback.next"].waitForExistence(timeout: 5))
-        app.buttons["study.options"].tap()
+        app.buttons["study.playbackSettings"].tap()
         app.buttons["playback.stop"].tap()
         app.buttons["card.reveal"].tap()
         XCTAssertTrue(app.staticTexts["card.sentence"].exists)
@@ -127,7 +155,7 @@ final class PersonalAccessFlowTests: XCTestCase {
         app.buttons["filter.reset"].tap()
         app.buttons["filter.apply"].tap()
         app.textFields["words.search"].tap()
-        app.textFields["words.search"].typeText("book")
+        app.textFields["words.search"].typeText("book\n")
         app.buttons.matching(NSPredicate(format: "identifier BEGINSWITH %@", "word.fi-")).firstMatch.tap()
         XCTAssertTrue(app.staticTexts["detail.sentence"].waitForExistence(timeout: 5))
         XCTAssertFalse(app.buttons["lesson.locked"].exists)
