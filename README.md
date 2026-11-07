@@ -2,7 +2,9 @@
 
 ## Current development checkpoint — 7 November 2026
 
-The iOS study-and-settings update targets **1.1.0 (33)**; the personal phone build is **0.23.0 (25)** and keeps `com.finnishcards.SisuCards` to preserve installed progress. Git tag: `ios-v1.1.0-dev.3`. This is a development checkpoint, not an App Store/Google Play submission. See [release notes and version policy](RELEASES.md).
+The iOS Study-controls prototype targets **1.1.0 (34)**; the personal phone build is **0.23.1 (26)** and keeps `com.finnishcards.SisuCards` to preserve installed progress. Git tag: `ios-v1.1.0-dev.4`. This is a development checkpoint, not an App Store/Google Play submission. See [release notes and version policy](RELEASES.md).
+
+The current Study prototype keeps only the list title, count and filter control above the card. Undo, Play/Pause, playback settings, English subtitles and More sit in a compact row above the bottom tabs. Automatic study adds previous/next controls. Swipe ratings remain the primary interaction; menu and accessibility actions provide alternatives. This layout is for owner review before treating it as a final UI.
 
 Words now opens a phone-sized browser of nine YKI themes plus seven smaller everyday word groups, each capped at 300 words. These replace the oversized Everyday essentials list. Each word retains its original ID and learning record across every topic. Study and Words share topic, status and letter filters. Android's saved media/offline-study work is included; the new topic browser is currently iOS-only.
 

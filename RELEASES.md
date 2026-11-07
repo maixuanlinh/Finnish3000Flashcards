@@ -1,5 +1,18 @@
 # Release notes and version policy
 
+## ios-v1.1.0-dev.4 — 7 November 2026
+
+Status: **Study controls prototype for owner review**, not a store submission. iOS target **1.1.0 (34)**; Personal **0.23.1 (26)**.
+
+- Keep the active list name, word counter and filter button at the top of Study. Topic lists show their Finnish title; filtered selections and learning lists retain appropriate names.
+- Replace the visible Still learning / I know it row with compact Undo, Play/Pause, Playback settings, English subtitles and More controls. The row sits above the bottom tabs and retains their safe area.
+- During automatic study, expose previous/next controls in the same row. Stop is available in More; the toolbar remains a single row.
+- Preserve swipe ratings, Undo, playback and saved-session behavior. Alternative ratings remain in More and as accessibility actions. The subtitle control hides or shows the English sentence translation; Finnish examples remain visible.
+
+Validation: **33 checks passed** on the physical iPhone 16 Plus: 30 study-store/playback tests and three UI flows covering swipe/Undo, English subtitles and automatic controls, and exact study-session recovery after relaunch. Geometry checks verify that the header, card, toolbar and bottom tabs do not overlap and that toolbar targets remain at least 44 points. Existing learning IDs and prior review history were preserved after reopening the owner app. Existing App Store/Play builds are unchanged.
+
+Actual phone screenshots with temporary test data: [prompt](CommercialValidation/Screenshots/study-toolbar-prototype-prompt.png), [answer](CommercialValidation/Screenshots/study-toolbar-prototype-answer.png), and [automatic playback](CommercialValidation/Screenshots/study-toolbar-prototype-playback.png).
+
 ## ios-v1.1.0-dev.3 — 7 November 2026
 
 Status: iOS development checkpoint for owner testing. Customer target **1.1.0 (33)**; Personal **0.23.0 (25)**. No store submission. Android remains at the previous checkpoint.

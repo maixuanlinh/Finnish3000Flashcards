@@ -19,18 +19,17 @@ final class FlashcardFlowTests: XCTestCase {
             app.launchArguments += ["-readPrompt", "NO", "-readAnswer", "NO", "-readSentence", "NO", "-recallSeconds", "3", "-answerSeconds", "2"]
         }
         app.launch()
-        XCTAssertTrue(app.buttons["review.known"].waitForExistence(timeout: 30), app.debugDescription)
+        XCTAssertTrue(app.buttons["card.flip"].waitForExistence(timeout: 30), app.debugDescription)
     }
 
     private func startSilentPlayback(captureOptions: Bool = false) {
-        app.buttons["study.options"].tap()
-        app.buttons["Playback settings"].tap()
+        app.buttons["study.playbackSettings"].tap()
         XCTAssertTrue(app.buttons["playback.start"].waitForExistence(timeout: 5))
         let start = app.buttons["playback.start"]
         if captureOptions { capture("31-automatic-study-options") }
         XCTAssertTrue(start.isHittable)
         start.tap()
-        XCTAssertTrue(app.buttons["playback.pause"].waitForExistence(timeout: 5))
+        XCTAssertTrue(app.buttons["study.autoplay"].waitForExistence(timeout: 5))
     }
 
     func testWordReminderSettingsPreviewAndSaveWithoutEnabling() {
@@ -71,7 +70,7 @@ final class FlashcardFlowTests: XCTestCase {
         app.terminate()
         app.launchArguments = []
         app.launch()
-        XCTAssertTrue(app.buttons["review.known"].waitForExistence(timeout: 30))
+        XCTAssertTrue(app.buttons["card.flip"].waitForExistence(timeout: 30))
         app.tabBars.buttons["Progress"].tap()
         let knownBefore = app.staticTexts["progress.known"].label
         app.buttons["Settings"].firstMatch.tap()
@@ -117,8 +116,7 @@ final class FlashcardFlowTests: XCTestCase {
     }
 
     func testPlaybackAudioSettingsCanBeChangedWithoutStartingPlayback() {
-        app.buttons["study.options"].tap()
-        app.buttons["Playback settings"].tap()
+        app.buttons["study.playbackSettings"].tap()
         let start = app.buttons["playback.start"]
         XCTAssertTrue(start.waitForExistence(timeout: 5))
         let form = app.descendants(matching: .any).matching(identifier: "playback.form").firstMatch
@@ -141,8 +139,8 @@ final class FlashcardFlowTests: XCTestCase {
         }
         capture("35-playback-audio-controls")
         app.buttons["Done"].tap()
-        XCTAssertTrue(app.buttons["review.known"].exists)
-        XCTAssertFalse(app.buttons["playback.stop"].exists)
+        XCTAssertTrue(app.buttons["card.flip"].exists)
+        XCTAssertFalse(app.buttons["playback.next"].exists)
     }
 
     func testAutomaticPlaybackRevealsAdvancesAndStopsWithoutRating() {
@@ -151,28 +149,30 @@ final class FlashcardFlowTests: XCTestCase {
         XCTAssertGreaterThanOrEqual(play.frame.height, 44)
         startSilentPlayback(captureOptions: true)
         XCTAssertTrue(app.staticTexts["card.answer"].waitForExistence(timeout: 8))
-        app.buttons["playback.pause"].tap()
-        XCTAssertEqual(app.buttons["playback.pause"].label, "Play automatic study")
-        XCTAssertTrue(app.buttons["playback.stop"].isHittable)
-        XCTAssertGreaterThanOrEqual(app.buttons["playback.stop"].frame.height, 44)
+        app.buttons["study.autoplay"].tap()
+        XCTAssertEqual(app.buttons["study.autoplay"].label, "Play automatic study")
+        XCTAssertTrue(app.buttons["playback.next"].isHittable)
+        XCTAssertGreaterThanOrEqual(app.buttons["playback.next"].frame.height, 44)
         capture("32-automatic-study-paused")
-        app.buttons["playback.pause"].tap()
+        app.buttons["study.autoplay"].tap()
         let second = NSPredicate(format: "label == %@", "abandon")
         expectation(for: second, evaluatedWith: app.staticTexts["card.prompt"])
         waitForExpectations(timeout: 12)
-        app.buttons["playback.pause"].tap()
+        app.buttons["study.autoplay"].tap()
         app.buttons["playback.next"].tap()
         XCTAssertEqual(app.staticTexts["card.prompt"].label, "ability")
         app.buttons["playback.previous"].tap()
         XCTAssertEqual(app.staticTexts["card.prompt"].label, "abandon")
+        app.buttons["study.options"].tap()
         app.buttons["playback.stop"].tap()
         waitForPrompt("a, an")
         XCTAssertEqual(app.staticTexts["session.count"].label.components(separatedBy: "/").map { $0.filter(\.isNumber) }, ["0", "3000"])
         app.buttons["study.autoplay"].tap()
-        XCTAssertTrue(app.buttons["playback.stop"].waitForExistence(timeout: 5))
+        XCTAssertTrue(app.buttons["playback.next"].waitForExistence(timeout: 5))
         XCTAssertFalse(app.buttons["playback.start"].exists, "The Play button must start immediately")
         app.buttons["study.autoplay"].tap()
-        XCTAssertEqual(app.buttons["playback.pause"].label, "Play automatic study")
+        XCTAssertEqual(app.buttons["study.autoplay"].label, "Play automatic study")
+        app.buttons["study.options"].tap()
         app.buttons["playback.stop"].tap()
         app.tabBars.buttons["Progress"].tap()
         XCTAssertEqual(app.staticTexts["progress.known"].label, "0")
@@ -183,7 +183,8 @@ final class FlashcardFlowTests: XCTestCase {
         app.tabBars.buttons["Words"].tap()
         XCTAssertTrue(app.textFields["words.search"].waitForExistence(timeout: 5))
         app.tabBars.buttons["Study"].tap()
-        XCTAssertEqual(app.buttons["playback.pause"].label, "Play automatic study")
+        XCTAssertEqual(app.buttons["study.autoplay"].label, "Play automatic study")
+        app.buttons["study.options"].tap()
         app.buttons["playback.stop"].tap()
         waitForPrompt("a, an")
     }
@@ -198,8 +199,9 @@ final class FlashcardFlowTests: XCTestCase {
         let completed = NSPredicate(format: "label == %@", "1 / 1")
         expectation(for: completed, evaluatedWith: app.staticTexts["session.count"])
         waitForExpectations(timeout: 12)
-        XCTAssertEqual(app.buttons["playback.pause"].label, "Play automatic study")
+        XCTAssertEqual(app.buttons["study.autoplay"].label, "Play automatic study")
         XCTAssertEqual(app.staticTexts["card.translation"].label, "The zone is marked on the map.")
+        app.buttons["study.options"].tap()
         app.buttons["playback.stop"].tap()
         waitForPrompt("zone")
         app.tabBars.buttons["Progress"].tap()
@@ -209,7 +211,7 @@ final class FlashcardFlowTests: XCTestCase {
     func testRevealSentenceAndZoomIllustration() {
         waitForPrompt("a, an")
         capture("01-study-prompt")
-        app.buttons["review.known"].tap()
+        app.otherElements["study.card"].swipeRight()
         waitForPrompt("abandon")
         app.buttons["card.flip"].tap()
         XCTAssertEqual(app.staticTexts["card.answer"].label, "hylätä")
@@ -222,12 +224,12 @@ final class FlashcardFlowTests: XCTestCase {
         XCTAssertTrue(app.buttons["illustration.done"].waitForExistence(timeout: 5))
         app.buttons["illustration.done"].tap()
         app.buttons["detail.done"].tap()
-        app.buttons["review.known"].tap()
+        app.otherElements["study.card"].swipeRight()
         waitForPrompt("ability")
         app.buttons["card.flip"].tap()
         XCTAssertEqual(app.staticTexts["card.answer"].label, "kyky")
         XCTAssertEqual(app.staticTexts["card.translation"].label, "They have the ability to learn quickly.")
-        XCTAssertTrue(app.buttons["review.known"].isHittable)
+        XCTAssertTrue(app.buttons["card.flip"].isHittable)
         XCTAssertTrue(app.buttons["card.flip"].isHittable)
         capture("02-study-answer")
         app.buttons["card.detail"].tap()
@@ -268,7 +270,7 @@ final class FlashcardFlowTests: XCTestCase {
         XCTAssertLessThanOrEqual(subtitle.frame.maxY, app.otherElements["card.artwork"].frame.minY)
         XCTAssertLessThanOrEqual(subtitle.frame.maxY, flip.frame.minY)
         XCTAssertTrue(flip.isHittable)
-        XCTAssertTrue(app.buttons["review.known"].isHittable)
+        XCTAssertTrue(app.buttons["card.flip"].isHittable)
         capture("27-study-sentence-translation")
         flip.tap()
         waitForPrompt("govern")
@@ -281,9 +283,9 @@ final class FlashcardFlowTests: XCTestCase {
         XCTAssertGreaterThanOrEqual(flip.frame.width, card.frame.width - 2)
         flip.coordinate(withNormalizedOffset: CGVector(dx: 0.1, dy: 0.5)).tap()
         XCTAssertTrue(app.staticTexts["card.answer"].waitForExistence(timeout: 5))
-        XCTAssertTrue(app.buttons["review.learning"].isHittable)
-        XCTAssertTrue(app.buttons["review.known"].isHittable)
-        XCTAssertLessThanOrEqual(card.frame.maxY, app.buttons["review.known"].frame.minY)
+        XCTAssertTrue(app.buttons["study.autoplay"].isHittable)
+        XCTAssertTrue(app.buttons["card.flip"].isHittable)
+        XCTAssertLessThanOrEqual(card.frame.maxY, app.buttons["study.autoplay"].frame.minY)
         XCTAssertGreaterThanOrEqual(card.frame.minY, app.buttons["study.filters"].frame.maxY)
         let artwork = app.otherElements["card.artwork"]
         XCTAssertTrue(artwork.exists)
@@ -527,9 +529,9 @@ final class FlashcardFlowTests: XCTestCase {
     }
 
     func testLearningListSearchAndFocusedReview() {
-        app.buttons["review.known"].tap()
+        app.otherElements["study.card"].swipeRight()
         waitForPrompt("abandon")
-        app.buttons["review.learning"].tap()
+        app.otherElements["study.card"].swipeLeft()
         waitForPrompt("ability")
         app.tabBars.buttons["Words"].tap()
         applyFilters(scope: "learning", letter: nil, inWords: true)
@@ -541,7 +543,7 @@ final class FlashcardFlowTests: XCTestCase {
         app.buttons["words.practice"].tap()
         waitForPrompt("abandon")
         XCTAssertEqual(app.staticTexts["session.count"].label, "0 / 1")
-        app.buttons["review.known"].tap()
+        app.otherElements["study.card"].swipeRight()
         XCTAssertTrue(app.otherElements["session.complete"].waitForExistence(timeout: 5))
         app.tabBars.buttons["Progress"].tap()
         XCTAssertEqual(app.staticTexts["progress.known"].label, "2")
@@ -552,7 +554,7 @@ final class FlashcardFlowTests: XCTestCase {
         app.launchArguments = ["-test-store", UUID().uuidString]
         app.launch()
         XCTAssertTrue(app.buttons["card.reveal"].waitForExistence(timeout: 30))
-        app.buttons["review.known"].tap()
+        app.otherElements["study.card"].swipeRight()
         waitForPrompt("abandon")
         app.terminate()
         app.launch()
@@ -578,7 +580,7 @@ final class FlashcardFlowTests: XCTestCase {
         XCTAssertEqual(app.staticTexts["card.sentence"].label, "Vyöhyke on merkitty karttaan.")
         XCTAssertEqual(app.staticTexts["card.translation"].label, "The zone is marked on the map.")
         capture("06-catalog-example")
-        app.buttons["review.known"].tap()
+        app.otherElements["study.card"].swipeRight()
         XCTAssertTrue(app.otherElements["session.complete"].waitForExistence(timeout: 5))
         app.tabBars.buttons["Progress"].tap()
         XCTAssertEqual(app.staticTexts["progress.known"].label, "1")
@@ -590,7 +592,7 @@ final class FlashcardFlowTests: XCTestCase {
         applyFilters(scope: "all", letter: "B")
         waitForPrompt("baby")
         capture("07-study-letter-b")
-        app.buttons["review.known"].tap()
+        app.otherElements["study.card"].swipeRight()
         waitForPrompt("back")
         app.tabBars.buttons["Words"].tap()
         XCTAssertTrue(app.buttons["words.filters"].label.contains("B"))

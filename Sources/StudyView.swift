@@ -7,6 +7,7 @@ struct StudyView: View {
     @Environment(\.scenePhase) private var scenePhase
     @Environment(AppNavigation.self) private var navigation
     @AppStorage("englishFirst") private var englishFirst = true
+    @AppStorage("showStudySubtitles") private var showSubtitles = true
     @State private var queue: [String] = []
     @State private var history: [ReviewSnapshot] = []
     @State private var initialCount = 0
@@ -55,10 +56,10 @@ struct StudyView: View {
                 if let word = current {
                     cardStack(word)
                         .frame(maxWidth: .infinity, maxHeight: .infinity)
-                    if playback.isActive { playbackControls } else { ratingButtons }
                 } else {
                     completion.frame(maxWidth: .infinity, maxHeight: .infinity)
                 }
+                studyToolbar
             }
             .padding(.horizontal, 18).padding(.top, 8).padding(.bottom, 12)
             .frame(maxWidth: 520).frame(maxWidth: .infinity, maxHeight: .infinity)
@@ -101,50 +102,131 @@ struct StudyView: View {
         }
     }
 
+    private var currentListTitle: String {
+        if let topic = navigation.topic {
+            return VocabularyTopic(rawValue: topic)?.finnish ?? topic
+        }
+        if let letter = navigation.startingLetter { return "Words starting with " + letter }
+        if navigation.requestedIDs != nil || (navigation.scope == .all && initialCount < store.words.count) {
+            return "Selected words"
+        }
+        switch navigation.scope {
+        case .all: return "All vocabulary"
+        case .learning: return "Currently learning"
+        case .remaining: return "New & learning"
+        case .known: return "Known words"
+        case .new: return "New words"
+        }
+    }
+
     private var controls: some View {
-        HStack(spacing: 8) {
-            Button { playback.pause(); showingFilters = true } label: {
-                HStack(spacing: 7) {
-                    Image(systemName: "line.3.horizontal.decrease")
-                    Text(filterTitle).lineLimit(1)
+        HStack(spacing: 12) {
+            VStack(alignment: .leading, spacing: 4) {
+                Text(currentListTitle)
+                    .font(.system(size: 23, weight: .semibold, design: .serif))
+                    .foregroundStyle(Palette.ink).lineLimit(2).minimumScaleFactor(0.8)
+                    .accessibilityIdentifier("study.listTitle")
+                if navigation.topic != nil || navigation.startingLetter != nil {
+                    Text(navigation.scope.title).font(.caption).foregroundStyle(Palette.muted)
                 }
-                .font(.subheadline.weight(.medium)).foregroundStyle(Palette.forest)
-                .frame(minHeight: 44).contentShape(Rectangle())
             }
-            .accessibilityLabel("Filters: \(filterTitle)")
-            .accessibilityIdentifier("study.filters")
-            Spacer(minLength: 2)
+            Spacer(minLength: 0)
             Text(playback.isActive ? "\(playback.playedCount) / \(playback.total)" : "\(initialCount - queue.count) / \(initialCount)")
                 .font(.system(.caption, design: .monospaced)).foregroundStyle(Palette.muted)
                 .fixedSize().accessibilityIdentifier("session.count")
-            Button(action: undo) {
-                Image(systemName: "arrow.uturn.backward").frame(width: 36, height: 44)
+            Button { playback.pause(); showingFilters = true } label: {
+                Image(systemName: "line.3.horizontal.decrease")
+                    .font(.system(size: 17, weight: .medium))
+                    .frame(width: 44, height: 44).background(Palette.sage, in: RoundedRectangle(cornerRadius: 14))
             }
-            .accessibilityLabel("Undo last swipe").accessibilityIdentifier("review.undo")
-            .disabled(history.isEmpty || advancing)
-            Button {
-                speech?.stop()
-                if playback.isPlaying { playback.pause() }
-                else if playback.state == .paused { playback.resume() }
-                else { startAutomatic() }
-            } label: {
-                Image(systemName: playback.isPlaying ? "pause.fill" : "play.fill").frame(width: 36, height: 44)
-                    .overlay(alignment: .topTrailing) { if automaticLocked { PremiumLock().allowsHitTesting(false) } }
-            }.accessibilityLabel(playback.isPlaying ? "Pause automatic study" : "Play automatic study")
-                .accessibilityIdentifier("study.autoplay").disabled(advancing || current == nil)
-            Menu {
-                Button("Playback settings", systemImage: "slider.horizontal.3") { playback.pause(); showingPlayback = true }
-                Button(showsEnglishFirst ? "Show Finnish first" : "Show English first", systemImage: "arrow.left.arrow.right") {
-                    playback.stop(); englishFirst = !showsEnglishFirst; navigation.promptEnglishFirst = nil; revealed = false
-                }
-                Button("Shuffle this session", systemImage: "shuffle") { playback.stop(); queue.shuffle(); revealed = false }
-            } label: {
-                Image(systemName: "ellipsis").frame(width: 32, height: 44)
-            }
-            .accessibilityLabel("Study options").accessibilityIdentifier("study.options")
+            .foregroundStyle(Palette.forest)
+            .accessibilityLabel("Filters: \(filterTitle)").accessibilityIdentifier("study.filters")
         }
-        .foregroundStyle(Palette.forest)
-        .frame(height: 44)
+        .frame(minHeight: 52)
+        .accessibilityElement(children: .contain).accessibilityIdentifier("study.header")
+    }
+
+    private var studyToolbar: some View {
+        VStack(spacing: 5) {
+            if let message = playback.error {
+                Text(message).font(.caption).foregroundStyle(Palette.clay).lineLimit(2)
+            }
+            HStack(spacing: 0) {
+                if playback.isActive {
+                    Button { speech?.stop(); playback.step(-1) } label: {
+                        toolbarIcon("backward.end.fill")
+                    }.accessibilityLabel("Previous card").accessibilityIdentifier("playback.previous")
+                } else {
+                    Button(action: undo) { toolbarIcon("arrow.uturn.backward") }
+                        .accessibilityLabel("Undo last swipe").accessibilityIdentifier("review.undo")
+                        .disabled(history.isEmpty || advancing)
+                }
+                Button {
+                    speech?.stop()
+                    if playback.isPlaying { playback.pause() }
+                    else if playback.state == .paused { playback.resume() }
+                    else { startAutomatic() }
+                } label: {
+                    Image(systemName: playback.isPlaying ? "pause.fill" : "play.fill")
+                        .font(.system(size: 18, weight: .semibold))
+                        .foregroundStyle(.white).frame(width: 44, height: 44)
+                        .background(Palette.forest, in: Circle())
+                        .overlay(alignment: .topTrailing) {
+                            if automaticLocked { PremiumLock().allowsHitTesting(false) }
+                        }
+                        .frame(maxWidth: .infinity, minHeight: 50)
+                        .contentShape(Rectangle())
+                }
+                .accessibilityLabel(playback.isPlaying ? "Pause automatic study" : "Play automatic study")
+                .accessibilityIdentifier("study.autoplay").disabled(advancing || current == nil)
+                if playback.isActive {
+                    Button { speech?.stop(); playback.step(1) } label: {
+                        toolbarIcon("forward.end.fill")
+                    }.accessibilityLabel("Next card").accessibilityIdentifier("playback.next")
+                }
+                Button { playback.pause(); showingPlayback = true } label: {
+                    toolbarIcon("slider.horizontal.3")
+                }.accessibilityLabel("Playback settings").accessibilityIdentifier("study.playbackSettings")
+                Button { showSubtitles.toggle() } label: {
+                    Image(systemName: showSubtitles ? "captions.bubble.fill" : "captions.bubble")
+                        .font(.system(size: 20, weight: .medium))
+                        .foregroundStyle(showSubtitles ? Palette.forest : Palette.muted)
+                        .frame(maxWidth: .infinity, minHeight: 50).contentShape(Rectangle())
+                }
+                .accessibilityLabel(showSubtitles ? "Hide English subtitles" : "Show English subtitles")
+                .accessibilityValue(showSubtitles ? "On" : "Off")
+                .accessibilityIdentifier("study.subtitles").disabled(current == nil)
+                Menu {
+                    Button("Playback settings", systemImage: "slider.horizontal.3") { playback.pause(); showingPlayback = true }
+                    if playback.isActive {
+                        Button("Return to manual study", systemImage: "stop.fill") {
+                            speech?.stop(); playback.stop(); revealed = false
+                        }.accessibilityIdentifier("playback.stop")
+                    }
+                    Button(showsEnglishFirst ? "Show Finnish first" : "Show English first", systemImage: "arrow.left.arrow.right") {
+                        playback.stop(); englishFirst = !showsEnglishFirst; navigation.promptEnglishFirst = nil; revealed = false
+                    }
+                    Button("Shuffle this session", systemImage: "shuffle") { playback.stop(); queue.shuffle(); revealed = false }
+                    Section("Mark this word") {
+                        Button("Still learning", systemImage: "arrow.left") { rate(.learning) }
+                            .accessibilityIdentifier("review.learning")
+                        Button("I know it", systemImage: "checkmark") { rate(.known) }
+                            .accessibilityIdentifier("review.known")
+                    }.disabled(current == nil || advancing)
+                } label: { toolbarIcon("ellipsis") }
+                .accessibilityLabel("Study options").accessibilityIdentifier("study.options")
+            }
+            .buttonStyle(.plain).foregroundStyle(Palette.forest)
+            .padding(.horizontal, 8).padding(.vertical, 5)
+            .background(.white, in: RoundedRectangle(cornerRadius: 22))
+            .overlay { RoundedRectangle(cornerRadius: 22).strokeBorder(Palette.line.opacity(0.7)) }
+        }
+        .accessibilityElement(children: .contain).accessibilityIdentifier("study.toolbar")
+    }
+
+    private func toolbarIcon(_ name: String) -> some View {
+        Image(systemName: name).font(.system(size: 19, weight: .medium))
+            .frame(maxWidth: .infinity, minHeight: 50).contentShape(Rectangle())
     }
 
     private func cardStack(_ word: VocabularyWord) -> some View {
@@ -153,7 +235,7 @@ struct StudyView: View {
                 .padding(.horizontal, 10).offset(y: 7)
             FlashcardView(word: word, revealed: Binding(
                             get: { playback.isActive ? playback.revealed : revealed },
-                            set: { value in if playback.isActive { playback.flip() } else { revealed = value } }), englishFirst: showsEnglishFirst,
+                            set: { value in if playback.isActive { playback.flip() } else { revealed = value } }), englishFirst: showsEnglishFirst, showSubtitles: showSubtitles,
                           canInteract: { canTapCard },
                           openDetail: {
                               guard canTapCard else { return }
@@ -198,31 +280,10 @@ struct StudyView: View {
                         }
                     })
                 .accessibilityElement(children: .contain).accessibilityIdentifier("study.card")
+                .accessibilityAction(named: Text("Mark as still learning")) { rate(.learning) }
+                .accessibilityAction(named: Text("Mark as known")) { rate(.known) }
         }
         .padding(.bottom, 7)
-    }
-
-    private var playbackControls: some View {
-        VStack(spacing: 4) {
-            if let message = playback.error { Text(message).font(.caption).foregroundStyle(Palette.clay) }
-            HStack(spacing: 12) {
-                Button { speech?.stop(); playback.step(-1) } label: { Image(systemName: "backward.end.fill").frame(width: 44, height: 54).contentShape(Rectangle()) }
-                    .accessibilityLabel("Previous card").accessibilityIdentifier("playback.previous")
-                Button {
-                    speech?.stop()
-                    if playback.isPlaying { playback.pause() }
-                    else if playback.state == .finished { startAutomatic() }
-                    else { playback.resume() }
-                } label: { Image(systemName: playback.isPlaying ? "pause.fill" : "play.fill").frame(maxWidth: .infinity, minHeight: 54).contentShape(Rectangle()) }
-                    .accessibilityLabel(playback.isPlaying ? "Pause automatic study" : "Play automatic study")
-                    .accessibilityIdentifier("playback.pause")
-                Button { speech?.stop(); playback.step(1) } label: { Image(systemName: "forward.end.fill").frame(width: 44, height: 54).contentShape(Rectangle()) }
-                    .accessibilityLabel("Next card").accessibilityIdentifier("playback.next")
-                Button { speech?.stop(); playback.stop(); revealed = false } label: { Image(systemName: "stop.fill").frame(width: 44, height: 54).contentShape(Rectangle()) }
-                    .accessibilityLabel("Return to manual study").accessibilityIdentifier("playback.stop")
-            }.foregroundStyle(Palette.forest).frame(maxWidth: .infinity)
-                .background(Palette.sage, in: RoundedRectangle(cornerRadius: 17))
-        }.buttonStyle(.plain)
     }
 
     private func startAutomatic() {
@@ -238,24 +299,6 @@ struct StudyView: View {
         }
         playback.start(items, settings: AutoStudySettings(recallSeconds: recallSeconds, answerSeconds: answerSeconds,
             readPrompt: readPrompt, readAnswer: readAnswer, readSentence: readSentence, speechRate: Float(speechRate)))
-    }
-
-    private var ratingButtons: some View {
-        HStack(spacing: 12) {
-            Button { rate(.learning) } label: {
-                HStack(spacing: 7) { Image(systemName: "arrow.left"); Text("Still learning") }
-                    .frame(maxWidth: .infinity, minHeight: 54)
-                    .foregroundStyle(Palette.clay).background(Palette.peach, in: RoundedRectangle(cornerRadius: 17))
-            }
-            .accessibilityIdentifier("review.learning")
-            Button { rate(.known) } label: {
-                HStack(spacing: 7) { Text("I know it"); Image(systemName: "checkmark") }
-                    .frame(maxWidth: .infinity, minHeight: 54)
-                    .foregroundStyle(.white).background(Palette.forest, in: RoundedRectangle(cornerRadius: 17))
-            }
-            .accessibilityIdentifier("review.known")
-        }
-        .font(.system(size: 14, weight: .semibold)).buttonStyle(.plain).disabled(advancing)
     }
 
     private var completion: some View {
@@ -382,6 +425,7 @@ private struct FlashcardView: View {
     let word: VocabularyWord
     @Binding var revealed: Bool
     let englishFirst: Bool
+    let showSubtitles: Bool
     let canInteract: () -> Bool
     let openDetail: () -> Void
     let play: () -> Void
@@ -414,7 +458,7 @@ private struct FlashcardView: View {
                                 Text(word.sentence).font(.system(size: compact ? 16 : 18, weight: .medium))
                                     .foregroundStyle(Palette.ink)
                                     .accessibilityIdentifier("card.sentence")
-                                if !word.sentenceEnglish.isEmpty {
+                                if showSubtitles, !word.sentenceEnglish.isEmpty {
                                     Text(word.sentenceEnglish).font(.system(size: compact ? 13 : 15))
                                         .foregroundStyle(Palette.muted)
                                         .accessibilityIdentifier("card.translation")

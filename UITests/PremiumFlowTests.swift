@@ -16,7 +16,7 @@ final class PremiumFlowTests: XCTestCase {
         app.launchArguments = ["-ui-testing", "-englishFirst", "YES", "-readPrompt", "NO", "-readAnswer", "NO", "-readSentence", "NO"]
         app.launchEnvironment["SISUCARDS_STOREKIT_TESTING"] = "1"
         app.launch()
-        XCTAssertTrue(app.buttons["review.known"].waitForExistence(timeout: 30))
+        XCTAssertTrue(app.buttons["card.flip"].waitForExistence(timeout: 30))
     }
 
     private func openBook() {
@@ -57,7 +57,7 @@ final class PremiumFlowTests: XCTestCase {
         XCTAssertFalse(app.buttons["lesson.locked"].exists)
         capture("45-unlocked-word-detail")
         app.terminate(); app.launch()
-        XCTAssertTrue(app.buttons["review.known"].waitForExistence(timeout: 30))
+        XCTAssertTrue(app.buttons["card.flip"].waitForExistence(timeout: 30))
         app.tabBars.buttons["Progress"].tap()
         XCTAssertTrue(app.staticTexts["settings.membership"].waitForExistence(timeout: 5))
         XCTAssertEqual(app.staticTexts["settings.membership"].label, "3000 Finnish Words Premium")
@@ -81,7 +81,8 @@ final class PremiumFlowTests: XCTestCase {
         XCTAssertTrue(app.buttons["study.autoplay"].waitForExistence(timeout: 5))
         XCTAssertEqual(app.staticTexts["session.count"].label, "0 / 211")
         app.buttons["study.autoplay"].tap()
-        XCTAssertTrue(app.buttons["playback.stop"].waitForExistence(timeout: 5))
+        XCTAssertTrue(app.buttons["playback.next"].waitForExistence(timeout: 5))
+        app.buttons["study.options"].tap()
         app.buttons["playback.stop"].tap()
         app.buttons["card.reveal"].tap()
         XCTAssertTrue(app.staticTexts["card.sentence"].exists)

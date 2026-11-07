@@ -8,7 +8,7 @@ final class CommercialReleaseTests: XCTestCase {
         app.launchArguments = ["-ui-testing", "-englishFirst", "YES", "-readPrompt", "NO", "-readAnswer", "NO", "-readSentence", "NO"]
         // Use the real StoreKit product lookup, without a local purchase fixture.
         app.launch()
-        XCTAssertTrue(app.buttons["review.known"].waitForExistence(timeout: 30))
+        XCTAssertTrue(app.buttons["card.flip"].waitForExistence(timeout: 30))
         capture(app, "commercial-study")
         app.buttons["Words"].firstMatch.tap()
         XCTAssertTrue(app.textFields["words.search"].waitForExistence(timeout: 5))
@@ -66,7 +66,7 @@ final class VocabularyTopicFlowTests: XCTestCase {
         let app = XCUIApplication()
         app.launchArguments = ["-ui-testing", "-readPrompt", "NO", "-readAnswer", "NO", "-readSentence", "NO"]
         app.launch()
-        XCTAssertTrue(app.buttons["review.known"].waitForExistence(timeout: 30))
+        XCTAssertTrue(app.buttons["card.flip"].waitForExistence(timeout: 30))
         openWords(app)
         let home = app.buttons["topic.home"]
         XCTAssertTrue(home.waitForExistence(timeout: 5), app.debugDescription)
@@ -82,7 +82,7 @@ final class VocabularyTopicFlowTests: XCTestCase {
         app.textFields["words.search"].typeText("house\n")
         XCTAssertTrue(app.buttons.matching(NSPredicate(format: "identifier BEGINSWITH %@", "word.fi-")).firstMatch.waitForExistence(timeout: 5))
         app.buttons["words.practice"].tap()
-        XCTAssertTrue(app.buttons["review.known"].waitForExistence(timeout: 5))
+        XCTAssertTrue(app.buttons["card.flip"].waitForExistence(timeout: 5))
         openWords(app)
         app.buttons["words.backToTopics"].tap()
         XCTAssertTrue(home.waitForExistence(timeout: 5), app.debugDescription)
@@ -107,7 +107,7 @@ final class VocabularyTopicFlowTests: XCTestCase {
         XCTAssertTrue(app.buttons.matching(NSPredicate(format: "identifier BEGINSWITH %@", "word.fi-")).firstMatch.waitForExistence(timeout: 5))
         capture(app, "topics-common-verbs-search")
         app.buttons["words.practice"].tap()
-        XCTAssertTrue(app.buttons["review.known"].waitForExistence(timeout: 5))
+        XCTAssertTrue(app.buttons["card.flip"].waitForExistence(timeout: 5))
     }
 
     private func openWords(_ app: XCUIApplication) {
@@ -154,7 +154,7 @@ final class SettingsAndResumeFlowTests: XCTestCase {
         let app = XCUIApplication()
         app.launchArguments = arguments + ["-englishFirst", "YES", "-readPrompt", "NO", "-readAnswer", "NO", "-readSentence", "NO"]
         app.launch()
-        XCTAssertTrue(app.buttons["review.known"].waitForExistence(timeout: 30), app.debugDescription)
+        XCTAssertTrue(app.buttons["card.flip"].waitForExistence(timeout: 30), app.debugDescription)
         return app
     }
 
@@ -192,7 +192,7 @@ final class SettingsAndResumeFlowTests: XCTestCase {
         app.buttons["words.practice"].tap()
         XCTAssertTrue(app.staticTexts["card.prompt"].waitForExistence(timeout: 5))
         let first = app.staticTexts["card.prompt"].label
-        app.buttons["review.learning"].tap()
+        app.otherElements["study.card"].swipeLeft()
         let changed = XCTNSPredicateExpectation(predicate: NSPredicate(format: "label != %@", first), object: app.staticTexts["card.prompt"])
         XCTAssertEqual(XCTWaiter.wait(for: [changed], timeout: 5), .completed)
         let next = app.staticTexts["card.prompt"].label
@@ -228,5 +228,87 @@ final class SettingsAndResumeFlowTests: XCTestCase {
         XCTAssertTrue(app.staticTexts["Free A-set lessons"].exists)
         capture(app, "free-a-set-offline-download")
         app.buttons["Done"].tap()
+    }
+}
+
+@MainActor
+final class StudyToolbarPrototypeTests: XCTestCase {
+    private func launch() -> XCUIApplication {
+        continueAfterFailure = false
+        let app = XCUIApplication()
+        app.launchArguments = ["-ui-testing", "-englishFirst", "YES", "-readPrompt", "NO", "-readAnswer", "NO", "-readSentence", "NO", "-recallSeconds", "3", "-answerSeconds", "2"]
+        app.launch()
+        XCTAssertTrue(app.buttons["card.flip"].waitForExistence(timeout: 30), app.debugDescription)
+        return app
+    }
+
+    private func capture(_ app: XCUIApplication, _ name: String) {
+        let attachment = XCTAttachment(screenshot: app.screenshot())
+        attachment.name = name; attachment.lifetime = .keepAlways; add(attachment)
+    }
+
+    private func assertNoOverlap(_ app: XCUIApplication) {
+        let card = app.otherElements["study.card"]
+        let header = app.otherElements["study.header"]
+        let toolbar = app.otherElements["study.toolbar"]
+        XCTAssertTrue(header.exists && toolbar.exists, app.debugDescription)
+        XCTAssertLessThanOrEqual(header.frame.maxY, card.frame.minY)
+        XCTAssertLessThanOrEqual(card.frame.maxY, toolbar.frame.minY)
+        XCTAssertLessThanOrEqual(toolbar.frame.maxY, app.tabBars.firstMatch.frame.minY)
+        for id in ["study.autoplay", "study.playbackSettings", "study.subtitles", "study.options"] {
+            let button = app.buttons[id]
+            XCTAssertTrue(button.isHittable, id)
+            XCTAssertGreaterThanOrEqual(button.frame.height, 44, id)
+            XCTAssertGreaterThanOrEqual(button.frame.width, 44, id)
+        }
+    }
+
+    func testHeaderFooterSwipeAndUndo() {
+        let app = launch()
+        XCTAssertTrue(app.staticTexts["study.listTitle"].exists)
+        XCTAssertFalse(app.buttons["review.known"].exists)
+        XCTAssertFalse(app.buttons["review.learning"].exists)
+        assertNoOverlap(app)
+        capture(app, "study-toolbar-prototype-prompt")
+        let first = app.staticTexts["card.prompt"].label
+        app.otherElements["study.card"].swipeRight()
+        let changed = XCTNSPredicateExpectation(predicate: NSPredicate(format: "label != %@", first), object: app.staticTexts["card.prompt"])
+        XCTAssertEqual(XCTWaiter.wait(for: [changed], timeout: 5), .completed)
+        let undo = app.buttons["review.undo"]
+        let ready = XCTNSPredicateExpectation(predicate: NSPredicate(format: "enabled == true"), object: undo)
+        XCTAssertEqual(XCTWaiter.wait(for: [ready], timeout: 5), .completed)
+        undo.tap()
+        XCTAssertEqual(app.staticTexts["card.prompt"].label, first)
+        app.buttons["study.playbackSettings"].tap()
+        XCTAssertTrue(app.buttons["playback.start"].waitForExistence(timeout: 5))
+        app.buttons["Done"].tap()
+        XCTAssertTrue(app.buttons["card.flip"].waitForExistence(timeout: 5))
+    }
+
+    func testSubtitlesAndAutomaticToolbar() {
+        let app = launch()
+        let subtitles = app.buttons["study.subtitles"]
+        if (subtitles.value as? String) == "Off" { subtitles.tap() }
+        app.buttons["card.flip"].tap()
+        XCTAssertTrue(app.staticTexts["card.translation"].waitForExistence(timeout: 5))
+        subtitles.tap()
+        XCTAssertFalse(app.staticTexts["card.translation"].exists)
+        subtitles.tap()
+        XCTAssertTrue(app.staticTexts["card.translation"].waitForExistence(timeout: 5))
+        assertNoOverlap(app)
+        capture(app, "study-toolbar-prototype-answer")
+        app.buttons["study.autoplay"].tap()
+        XCTAssertTrue(app.buttons["playback.next"].waitForExistence(timeout: 5))
+        XCTAssertTrue(app.buttons["playback.previous"].isHittable)
+        app.buttons["study.autoplay"].tap()
+        XCTAssertEqual(app.buttons["study.autoplay"].label, "Play automatic study")
+        assertNoOverlap(app)
+        capture(app, "study-toolbar-prototype-playback")
+        app.buttons["playback.next"].tap()
+        app.buttons["playback.previous"].tap()
+        app.buttons["study.options"].tap()
+        app.buttons["playback.stop"].tap()
+        XCTAssertTrue(app.buttons["review.undo"].exists)
+        XCTAssertFalse(app.buttons["playback.next"].exists)
     }
 }
