@@ -338,7 +338,12 @@ struct StudyView: View {
     private func play(_ text: String) {
         playback.pause()
         if speech == nil { speech = SpeechPlayer() }
-        if speech?.speak(text, rate: Float(speechRate)) != true { error = "A Finnish voice is not available on this device. You can add one in Settings → Accessibility → Spoken Content → Voices." }
+        guard let speech else { return }
+        Task {
+            do { try await speech.speakAndWait(text, language: "fi-FI", rate: Float(speechRate)) }
+            catch is CancellationError {}
+            catch { self.error = error.localizedDescription }
+        }
     }
 }
 

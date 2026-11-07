@@ -10,6 +10,13 @@
 		0415176C0E0FCF9B1FD24607 /* starter100.json in Resources */ = {isa = PBXBuildFile; fileRef = 9FCC52ADCAAF73C75A3E03D9 /* starter100.json */; };
 		071A645D3A80D0BEB58927B5 /* PremiumView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3BC729CE4CFE69CBB581D7F7 /* PremiumView.swift */; };
 		09E48BE61171C457B6E2FE01 /* PremiumStoreTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9F0E497C0F3318F25ABD866E /* PremiumStoreTests.swift */; };
+		110000000000000000000001 /* LessonMedia.swift in Sources */ = {isa = PBXBuildFile; fileRef = 120000000000000000000001 /* LessonMedia.swift */; };
+		110000000000000000000002 /* OfflineStudyView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 120000000000000000000002 /* OfflineStudyView.swift */; };
+		110000000000000000000003 /* manifest.json in Resources */ = {isa = PBXBuildFile; fileRef = 120000000000000000000003 /* manifest.json */; };
+		110000000000000000000004 /* lesson-media.json in Resources */ = {isa = PBXBuildFile; fileRef = 120000000000000000000004 /* lesson-media.json */; };
+		110000000000000000000005 /* starter pack 1 in Resources */ = {isa = PBXBuildFile; fileRef = 120000000000000000000005 /* pack-03c7230c152fca68f88c66c47eb93e33496bffb6198f82c579adbcf487630ecc.bin */; };
+		110000000000000000000006 /* starter pack 2 in Resources */ = {isa = PBXBuildFile; fileRef = 120000000000000000000006 /* pack-4b600f7df996665fc7f11b72901ea4f7df68be0c50701b2cc18c76f0c730d035.bin */; };
+		110000000000000000000007 /* LessonMediaTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 120000000000000000000007 /* LessonMediaTests.swift */; };
 		17EE02E2AB660E4A26B0DDA0 /* WordLibraryView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 87A0EB63696A1629403DEE44 /* WordLibraryView.swift */; };
 		1919E1E07BC0FED0ECA34311 /* Theme.swift in Sources */ = {isa = PBXBuildFile; fileRef = CF65C3165AB720B06D15F046 /* Theme.swift */; };
 		1B748A3D8D5EB799DFF171AB /* SisuCardsApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4F070584A7E0FAE52C7DEFF /* SisuCardsApp.swift */; };
@@ -24,7 +31,6 @@
 		5835975E9B972F3D6E8E071C /* SisuCards.storekit in Resources */ = {isa = PBXBuildFile; fileRef = DAAD077A76217B7EF73139F1 /* SisuCards.storekit */; };
 		5D1B58E198773F46D9D58499 /* artwork-test.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 9B4E67726F881F83A96839A5 /* artwork-test.jpg */; };
 		5F06C310A13A5C58358BBA9B /* SisuCards.storekit in Resources */ = {isa = PBXBuildFile; fileRef = DAAD077A76217B7EF73139F1 /* SisuCards.storekit */; };
-		67E8F546E6328A4B1ECDC876 /* BundledArtwork in Resources */ = {isa = PBXBuildFile; fileRef = FD7849E9A038C521797F056F /* BundledArtwork */; };
 		6E13D8471A9063800E7B7BAD /* SupportView.swift in Sources */ = {isa = PBXBuildFile; fileRef = FCD4CD40854B4EFCEB6337EF /* SupportView.swift */; };
 		772FA348CA28991B3913CF25 /* StudyView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 285E58F432660BAB272885DA /* StudyView.swift */; };
 		7F0A628DEAEB21F7100F9BD1 /* WordReminderTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2364ACC5CE164516D16C313A /* WordReminderTests.swift */; };
@@ -40,7 +46,6 @@
 		D0F7FB171895FB599D66B50F /* WordReminderSettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A43335BD7C07BE99D58C8F66 /* WordReminderSettingsView.swift */; };
 		D2AA3844220F0CD3B46128FB /* FlashcardFlowTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8603C2FAE438FD42ABCA7F2B /* FlashcardFlowTests.swift */; };
 		D348A7B1B98328C4D3C432FB /* WordDetailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C672E5A53EA15207E24B1356 /* WordDetailView.swift */; };
-		D3A79BDAFDAA869243AAC4A9 /* artworkBriefs.json in Resources */ = {isa = PBXBuildFile; fileRef = 9AA023552C7042E38482904E /* artworkBriefs.json */; };
 		E120FD660532991B5D097055 /* AutoStudyPlayer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 65D8172616438B3BF7E51F37 /* AutoStudyPlayer.swift */; };
 		FCD385E62F992E78032C1E16 /* examples3000.json in Resources */ = {isa = PBXBuildFile; fileRef = 92661912BCB218235A5DA8BE /* examples3000.json */; };
 /* End PBXBuildFile section */
@@ -81,6 +86,13 @@
 		9B4E67726F881F83A96839A5 /* artwork-test.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = "artwork-test.jpg"; sourceTree = "<group>"; };
 		9F0E497C0F3318F25ABD866E /* PremiumStoreTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PremiumStoreTests.swift; sourceTree = "<group>"; };
 		9FCC52ADCAAF73C75A3E03D9 /* starter100.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = starter100.json; sourceTree = "<group>"; };
+		120000000000000000000001 /* LessonMedia.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LessonMedia.swift; sourceTree = "<group>"; };
+		120000000000000000000002 /* OfflineStudyView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OfflineStudyView.swift; sourceTree = "<group>"; };
+		120000000000000000000003 /* manifest.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = BundledArtwork/manifest.json; sourceTree = "<group>"; };
+		120000000000000000000004 /* lesson-media.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = ../MediaDelivery/generated/assets/lesson-media.json; sourceTree = "<group>"; };
+		120000000000000000000005 /* pack-03c7230c152fca68f88c66c47eb93e33496bffb6198f82c579adbcf487630ecc.bin */ = {isa = PBXFileReference; lastKnownFileType = file; path = ../MediaDelivery/generated/assets/pack-03c7230c152fca68f88c66c47eb93e33496bffb6198f82c579adbcf487630ecc.bin; sourceTree = "<group>"; };
+		120000000000000000000006 /* pack-4b600f7df996665fc7f11b72901ea4f7df68be0c50701b2cc18c76f0c730d035.bin */ = {isa = PBXFileReference; lastKnownFileType = file; path = ../MediaDelivery/generated/assets/pack-4b600f7df996665fc7f11b72901ea4f7df68be0c50701b2cc18c76f0c730d035.bin; sourceTree = "<group>"; };
+		120000000000000000000007 /* LessonMediaTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LessonMediaTests.swift; sourceTree = "<group>"; };
 		A43335BD7C07BE99D58C8F66 /* WordReminderSettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WordReminderSettingsView.swift; sourceTree = "<group>"; };
 		A8D9D6DF9BA837B96836C738 /* AutoStudyPlayerTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AutoStudyPlayerTests.swift; sourceTree = "<group>"; };
 		AAAF2A8801C0A059C8717F2E /* StudyStoreTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StudyStoreTests.swift; sourceTree = "<group>"; };
@@ -100,13 +112,16 @@
 		E7BC28E24A468837E629B299 /* EnglishAlphabet.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EnglishAlphabet.swift; sourceTree = "<group>"; };
 		EF692679557D0C6F5DCF6E97 /* RootView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RootView.swift; sourceTree = "<group>"; };
 		FCD4CD40854B4EFCEB6337EF /* SupportView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SupportView.swift; sourceTree = "<group>"; };
-		FD7849E9A038C521797F056F /* BundledArtwork */ = {isa = PBXFileReference; lastKnownFileType = folder; name = BundledArtwork; path = Resources/BundledArtwork; sourceTree = SOURCE_ROOT; };
 /* End PBXFileReference section */
 
 /* Begin PBXGroup section */
 		3BD683B53B6F75710DDEA571 /* Resources */ = {
 			isa = PBXGroup;
 			children = (
+				120000000000000000000003 /* manifest.json */,
+				120000000000000000000004 /* lesson-media.json */,
+				120000000000000000000005 /* pack-03c7230c152fca68f88c66c47eb93e33496bffb6198f82c579adbcf487630ecc.bin */,
+				120000000000000000000006 /* pack-4b600f7df996665fc7f11b72901ea4f7df68be0c50701b2cc18c76f0c730d035.bin */,
 				9B4E67726F881F83A96839A5 /* artwork-test.jpg */,
 				9AA023552C7042E38482904E /* artworkBriefs.json */,
 				0064C37871F02B4100014310 /* Assets.xcassets */,
@@ -121,6 +136,7 @@
 		4289764E0608B1A62F383478 /* Tests */ = {
 			isa = PBXGroup;
 			children = (
+				120000000000000000000007 /* LessonMediaTests.swift */,
 				A8D9D6DF9BA837B96836C738 /* AutoStudyPlayerTests.swift */,
 				9F0E497C0F3318F25ABD866E /* PremiumStoreTests.swift */,
 				AAAF2A8801C0A059C8717F2E /* StudyStoreTests.swift */,
@@ -152,6 +168,8 @@
 		B713DB917F42E1E10652F2CC /* Sources */ = {
 			isa = PBXGroup;
 			children = (
+				120000000000000000000001 /* LessonMedia.swift */,
+				120000000000000000000002 /* OfflineStudyView.swift */,
 				72C30E1E6AF799AA9171B01E /* Artwork.swift */,
 				D9524191321F9EC0C627867D /* AutoStudyOptions.swift */,
 				65D8172616438B3BF7E51F37 /* AutoStudyPlayer.swift */,
@@ -178,7 +196,6 @@
 		C9AA7DE7606208C54FEDD51B = {
 			isa = PBXGroup;
 			children = (
-				FD7849E9A038C521797F056F /* BundledArtwork */,
 				3BD683B53B6F75710DDEA571 /* Resources */,
 				B713DB917F42E1E10652F2CC /* Sources */,
 				FB9032AF951E317F1F69603C /* StoreKit */,
@@ -313,11 +330,13 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				110000000000000000000003 /* manifest.json in Resources */,
+				110000000000000000000004 /* lesson-media.json in Resources */,
+				110000000000000000000005 /* starter pack 1 in Resources */,
+				110000000000000000000006 /* starter pack 2 in Resources */,
 				B2FC9A94A675B33C6EAE28AE /* Assets.xcassets in Resources */,
-				67E8F546E6328A4B1ECDC876 /* BundledArtwork in Resources */,
 				5595CC158C8FA95D3F06208F /* PrivacyInfo.xcprivacy in Resources */,
 				5D1B58E198773F46D9D58499 /* artwork-test.jpg in Resources */,
-				D3A79BDAFDAA869243AAC4A9 /* artworkBriefs.json in Resources */,
 				C9C2151A955FFE95106A3A2F /* catalog3000.json in Resources */,
 				FCD385E62F992E78032C1E16 /* examples3000.json in Resources */,
 				0415176C0E0FCF9B1FD24607 /* starter100.json in Resources */,
@@ -331,6 +350,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				110000000000000000000007 /* LessonMediaTests.swift in Sources */,
 				9FF33B84C639E30925B14D20 /* AutoStudyPlayerTests.swift in Sources */,
 				09E48BE61171C457B6E2FE01 /* PremiumStoreTests.swift in Sources */,
 				21EF03D51DC5B165741D47CC /* StudyStoreTests.swift in Sources */,
@@ -352,6 +372,8 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				110000000000000000000001 /* LessonMedia.swift in Sources */,
+				110000000000000000000002 /* OfflineStudyView.swift in Sources */,
 				4EC72A9AA8A67A9224DD5246 /* Artwork.swift in Sources */,
 				B9F7A93D37798D48C473A39C /* AutoStudyOptions.swift in Sources */,
 				E120FD660532991B5D097055 /* AutoStudyPlayer.swift in Sources */,
@@ -487,7 +509,7 @@
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
 				CODE_SIGN_STYLE = Automatic;
 				COPY_PHASE_STRIP = NO;
-				CURRENT_PROJECT_VERSION = 29;
+				CURRENT_PROJECT_VERSION = 30;
 				DEBUG_INFORMATION_FORMAT = dwarf;
 				DEVELOPMENT_TEAM = 2FN25VD7TR;
 				ENABLE_PREVIEWS = NO;
@@ -576,7 +598,7 @@
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
 				CODE_SIGN_STYLE = Automatic;
 				COPY_PHASE_STRIP = NO;
-				CURRENT_PROJECT_VERSION = 29;
+				CURRENT_PROJECT_VERSION = 30;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				DEVELOPMENT_TEAM = 2FN25VD7TR;
 				ENABLE_NS_ASSERTIONS = NO;
@@ -673,7 +695,7 @@
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
 				CODE_SIGN_STYLE = Automatic;
 				COPY_PHASE_STRIP = NO;
-				CURRENT_PROJECT_VERSION = 29;
+				CURRENT_PROJECT_VERSION = 30;
 				DEBUG_INFORMATION_FORMAT = dwarf;
 				DEVELOPMENT_TEAM = 2FN25VD7TR;
 				ENABLE_PREVIEWS = NO;

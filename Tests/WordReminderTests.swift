@@ -106,7 +106,7 @@ final class WordReminderTests: XCTestCase {
     }
 
     func testAttachmentUsesDisposableCopyAndKeepsOriginalThumbnailUnchanged() throws {
-        let original = try XCTUnwrap(BundledArtwork.url(for: "fi-0002", thumbnail: true))
+        let original = try XCTUnwrap(Bundle.main.url(forResource: "artwork-test", withExtension: "jpg"))
         let originalData = try Data(contentsOf: original)
         let word = ReminderWord(id: "fi-0002", english: "abandon", finnish: "hylätä", status: "new", thumbnail: original)
         let content = try ReminderNotification.content(word: word, settings: enabled)
@@ -122,7 +122,7 @@ final class WordReminderTests: XCTestCase {
         let center = UNUserNotificationCenter.current()
         let status = await center.notificationSettings().authorizationStatus
         guard status == .authorized else { throw XCTSkip("Enable notifications through the sample UI check first.") }
-        let original = try XCTUnwrap(BundledArtwork.url(for: "fi-0002", thumbnail: true))
+        let original = try XCTUnwrap(Bundle.main.url(forResource: "artwork-test", withExtension: "jpg"))
         let content = try ReminderNotification.content(word: ReminderWord(id: "fi-0002", english: "abandon",
             finnish: "hylätä", status: "new", thumbnail: original), settings: enabled)
         let id = ReminderNotification.prefix + "attachment-integration"
@@ -203,8 +203,7 @@ final class WordReminderTests: XCTestCase {
         let store = try StudyStore(container: StudyStore.makeContainer(inMemory: true), seeds: StudyStore.readSeeds())
         let reminders = WordReminders(defaults: defaults, center: center)
         let artwork = try XCTUnwrap(reminders.snapshots(from: store).first { $0.id == "fi-0002" })
-        XCTAssertEqual(artwork.thumbnail, BundledArtwork.url(for: "fi-0002"))
-        XCTAssertNotEqual(artwork.thumbnail, BundledArtwork.url(for: "fi-0002", thumbnail: true))
+        XCTAssertNil(artwork.thumbnail)
         XCTAssertFalse(reminders.settings.enabled)
         await reminders.refresh(store: store)
         let promptCount = await center.promptCount()

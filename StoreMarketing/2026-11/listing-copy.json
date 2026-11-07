@@ -1,0 +1,20 @@
+{
+  "finnish": {
+    "appName": "3000 Finnish Words",
+    "appStoreSubtitle": "Illustrated flashcards & audio",
+    "playShortDescription": "Remember Finnish with illustrated flashcards, real examples and recorded audio.",
+    "promotionalText": "Picture it. Hear it. Remember it. Learn Finnish with illustrated memory cues, bilingual examples and recorded audio. Try 211 complete lessons free.",
+    "youtubePromo": "https://youtu.be/kzlkmG2XyPs",
+    "youtubeVisibility": "unlisted",
+    "appStoreSubtitleStatus": "Saved only in unsubmitted 1.0.1 draft; not part of the listing-only screenshot/video update."
+  },
+  "swedish": {
+    "appName": "3000 Swedish Words",
+    "appStoreSubtitle": "Illustrated flashcards & audio",
+    "playShortDescription": "Remember Swedish with illustrated flashcards, real examples and recorded audio.",
+    "promotionalText": "Picture it. Hear it. Remember it. Learn Swedish with illustrated memory cues, bilingual examples and recorded audio. Try 211 complete lessons free.",
+    "youtubePromo": "https://youtu.be/-VDwfs_8c6Y",
+    "youtubeVisibility": "unlisted",
+    "appStoreSubtitleStatus": "Saved only in unsubmitted 1.0.1 draft; not part of the listing-only screenshot/video update."
+  }
+}

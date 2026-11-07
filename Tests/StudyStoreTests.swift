@@ -349,9 +349,11 @@ final class StudyStoreTests: XCTestCase {
         }
     }
 
-    func testAll3000BundledImagesAreAvailableWithoutImporting() throws {
+    func testAll3000HostedImagesAreAddressableWithoutImporting() throws {
         let store = try StudyStore(container: StudyStore.makeContainer(inMemory: true), seeds: StudyStore.readSeeds())
         let words = store.reviewWords(in: .all)
+        let mediaURL = try XCTUnwrap(Bundle.main.url(forResource: "lesson-media", withExtension: "json"))
+        let media = try JSONDecoder().decode(LessonMediaManifest.self, from: Data(contentsOf: mediaURL)).validated()
         let expectedCounts: [String: Int] = ["A": 211, "B": 152, "C": 292, "D": 163, "E": 162, "F": 155, "G": 73, "H": 100, "I": 121, "J": 23, "K": 18, "L": 108, "M": 134, "N": 65, "O": 82, "P": 238, "Q": 16, "R": 163, "S": 351, "T": 166, "U": 50, "V": 36, "W": 106, "X": 0, "Y": 13, "Z": 2]
         for (letter, count) in expectedCounts {
             XCTAssertEqual(store.reviewWords(in: .all, startingWith: letter).count, count, letter)
@@ -363,10 +365,10 @@ final class StudyStoreTests: XCTestCase {
             try autoreleasepool {
                 XCTAssertTrue(store.hasArtwork(for: word), word.id)
                 XCTAssertTrue(store.artworkContainsText(for: word), word.id)
-                let full = try XCTUnwrap(store.artworkImage(for: word), word.id)
-                let thumb = try XCTUnwrap(store.artworkImage(for: word, thumbnail: true), word.id)
-                XCTAssertLessThanOrEqual(max(full.size.width, full.size.height), 768)
-                XCTAssertLessThanOrEqual(max(thumb.size.width, thumb.size.height), 160)
+                let full = try XCTUnwrap(BundledArtwork.mediaKey(for: word.id), word.id)
+                let thumb = try XCTUnwrap(BundledArtwork.mediaKey(for: word.id, thumbnail: true), word.id)
+                XCTAssertNotNil(media.itemByKey[full], word.id)
+                XCTAssertNotNil(media.itemByKey[thumb], word.id)
                 XCTAssertFalse(store.artworkMemoryHook(for: word).isEmpty, word.id)
             }
         }

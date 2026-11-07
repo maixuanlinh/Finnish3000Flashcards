@@ -52,6 +52,11 @@ private tailrec fun Context.activity(): Activity?=when(this) { is Activity -> th
                 Eyebrow("Privacy")
                 TextButton(onClick={ openURL(context,Privacy) }) { Text("Privacy policy") }
                 Text("Study progress and imported artwork are stored in this app on your device. Restoring Premium restores purchase access, not your learning history.",fontSize=14.sp,color=Muted)
+                Text("Lesson images and audio load from our hosting when needed. Offline downloads stay on this phone. Your learning history and personal artwork are not uploaded when lessons load.",fontSize=14.sp,color=Muted)
+            }
+            SectionCard {
+                Eyebrow("Pronunciation")
+                Text("Finnish and English use prepared computer-generated recordings. No speech voice installation is needed. If a pronunciation sounds wrong, please email the word and sentence to support.",fontSize=14.sp,color=Muted)
             }
             SectionCard {
                 Eyebrow("About 3000 Finnish Words")

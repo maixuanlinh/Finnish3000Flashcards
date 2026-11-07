@@ -52,6 +52,7 @@ struct RootView: View {
     @Environment(StudyStore.self) private var store
     @Environment(WordReminders.self) private var reminders
     @Environment(PremiumStore.self) private var premium
+    @Environment(LessonMedia.self) private var media
     @Environment(\.scenePhase) private var scenePhase
     @State private var inbox = ReminderInbox.shared
     @State private var showingReminders = false
@@ -75,6 +76,7 @@ struct RootView: View {
         .sheet(isPresented: $showingReminders) { WordReminderSettingsView(settings: reminders.settings) }
         .task {
             consumeReminder()
+            await media.refresh()
             await premium.start()
             await reminders.setPremium(premium.isPremium, store: store)
             await reminders.refresh(store: store)

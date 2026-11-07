@@ -21,7 +21,7 @@ import org.json.JSONObject
 import java.time.Instant
 import java.time.ZoneId
 
-class Reminders(private val context: Context, private val repository: StudyRepository, private val artwork: ArtworkRepository) {
+class Reminders(private val context: Context, private val repository: StudyRepository, private val artwork: ArtworkRepository,private val media: LessonMedia) {
     private val prefs=context.getSharedPreferences("word-reminders",Context.MODE_PRIVATE)
     private val alarm=context.getSystemService(AlarmManager::class.java)
     private val notifications=NotificationManagerCompat.from(context)
@@ -90,7 +90,7 @@ class Reminders(private val context: Context, private val repository: StudyRepos
         if(word!=null && settings.showArtwork && AccessPolicy.hasLesson(word,access)) {
             val bitmap=runCatching {
                 artwork.active(word.id)?.let { BitmapFactory.decodeFile(artwork.file(it.thumbnail).path) }
-                    ?: context.assets.open("BundledArtwork/${word.thumbnail}").use { BitmapFactory.decodeStream(it) }
+                    ?: media.cached("image/${word.thumbnail}")?.let { BitmapFactory.decodeByteArray(it,0,it.size) }
             }.getOrNull()
             bitmap?.let { builder.setLargeIcon(it) }
         }

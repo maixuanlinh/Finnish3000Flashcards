@@ -3,6 +3,7 @@ package com.linapps.ykiflashcards
 import android.content.Context
 import androidx.test.core.app.ApplicationProvider
 import com.linapps.ykiflashcards.data.LocalStudyRepository
+import com.linapps.ykiflashcards.data.LessonMedia
 import com.linapps.ykiflashcards.domain.*
 import kotlinx.coroutines.test.runTest
 import org.junit.*
@@ -26,7 +27,8 @@ class RepositoryTest {
         val apple=words.single { it.id=="fi-0136" }
         assertEquals("Food",apple.topic)
         assertEquals("omena",apple.finnish)
-        context.assets.open("BundledArtwork/${apple.image}").use { assertTrue(it.read()>0) }
+        val picture=LessonMedia(context).load("image/${apple.image}")
+        assertNotNull(android.graphics.BitmapFactory.decodeByteArray(picture,0,picture.size))
     }
     @Test fun ratingsSurviveNewRepositoryAndUndoRemovesOnlyItsEvent() = runTest {
         val repo=LocalStudyRepository(context)

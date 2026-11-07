@@ -28,10 +28,26 @@ print('PASS: 3,000 stable IDs, bilingual examples, artwork pairs; 211 free A les
 apk = root / 'Android/app/build/outputs/apk/debug/app-debug.apk'
 if apk.exists():
     with zipfile.ZipFile(apk) as archive:
-        for path in [resources / name for name in ('catalog3000.json', 'starter100.json', 'examples3000.json', 'artworkBriefs.json')] + list((resources / 'BundledArtwork').glob('*')):
+        metadata = [resources / name for name in ('catalog3000.json', 'starter100.json', 'examples3000.json', 'artworkBriefs.json')] + [resources / 'BundledArtwork/manifest.json']
+        paths = metadata if 'assets/lesson-media.json' in archive.namelist() else metadata + list((resources / 'BundledArtwork').glob('*.jpg'))
+        for path in paths:
             if path.is_file():
                 target = 'assets/' + str(path.relative_to(resources))
                 assert hashlib.sha256(path.read_bytes()).digest() == hashlib.sha256(archive.read(target)).digest(), target
-    print('PASS: every packaged vocabulary/metadata/image file matches iOS source SHA-256.')
+        if 'assets/lesson-media.json' in archive.namelist():
+            manifest = json.loads(archive.read('assets/lesson-media.json'))
+            assert manifest['wordCount'] == 3000 and manifest['recordingCount'] == 8811
+            keys = {r['key'] for r in manifest['assets']}
+            for row in art:
+                assert all('image/' + row[name] in keys for name in ('filename', 'thumbnailFilename'))
+            for pack in manifest['packs']:
+                target = 'assets/' + pack['file']
+                if target in archive.namelist():
+                    data = archive.read(target)
+                    assert len(data) == pack['bytes'] and hashlib.sha256(data).hexdigest() == pack['sha256']
+                else:
+                    assert not pack['starter'], 'A starter pack is missing from the installation.'
+            print('PASS: media manifest contains every illustration and 8,811 recordings; all bundled pack hashes match.')
+    print('PASS: packaged vocabulary/metadata matches iOS source SHA-256.')
 else:
     print('APK asset-hash verification pending: compile :app:assembleDebug first.')

@@ -114,11 +114,8 @@ import java.util.Locale
                 Column(Modifier.weight(1f),verticalArrangement=Arrangement.spacedBy(4.dp)) { Text(if(s.access==Entitlement.COMPLETE) "3000 Finnish Words Premium" else "3000 Finnish Words Free",fontWeight=FontWeight.SemiBold,color=Forest,fontSize=16.sp);Text(if(s.access==Entitlement.COMPLETE) "All 3,000 complete lessons unlocked" else "211 complete A-set lessons included",fontSize=12.sp,color=Muted) }
                 Symbol("chevron",Modifier.size(16.dp))
             }
-            Row(Modifier.fillMaxWidth(),verticalAlignment=Alignment.CenterVertically) {
-                if(s.access!=Entitlement.COMPLETE) TextButton(onClick={ vm.premium(true) }) { Text("Explore Premium") }
-                Spacer(Modifier.weight(1f))
-                TextButton(onClick={ billing?.restore() },enabled=!purchaseBusy) { Text("Restore Purchases",fontSize=12.sp) }
-            }
+            if(s.access!=Entitlement.COMPLETE) FilledAction("Go Premium",{ vm.premium(true) },Modifier.testTag("progress.goPremium"),enabled=!purchaseBusy)
+            TextButton(onClick={ billing?.restore() },enabled=!purchaseBusy,modifier=Modifier.fillMaxWidth()) { Text(if(purchaseBusy) "Checking purchases…" else "Restore Purchases",fontSize=12.sp) }
             purchaseMessage?.let { Text(it,fontSize=12.sp,color=Muted) }
         }
         Row(Modifier.fillMaxWidth().clip(RoundedCornerShape(23.dp)).background(Color.White).clickable { open("reminders") }.padding(16.dp).testTag("progress.reminders"),verticalAlignment=Alignment.CenterVertically,horizontalArrangement=Arrangement.spacedBy(14.dp)) {
@@ -126,6 +123,14 @@ import java.util.Locale
             Column(Modifier.weight(1f),verticalArrangement=Arrangement.spacedBy(4.dp)) {
                 Text("Word reminders",fontWeight=FontWeight.SemiBold,color=Forest)
                 Text(if(reminders.enabled && next!=null) "Next: "+Instant.ofEpochMilli(next).atZone(zone).format(DateTimeFormatter.ofPattern("d MMM, HH:mm")) else if(reminders.enabled) "Check notification settings" else "A little Finnish, throughout your day",fontSize=12.sp,color=Muted)
+            }
+            Symbol("chevron",Modifier.size(16.dp))
+        }
+        Row(Modifier.fillMaxWidth().clip(RoundedCornerShape(23.dp)).background(Color.White).clickable { vm.pause();open("offline") }.padding(16.dp).testTag("progress.offline"),verticalAlignment=Alignment.CenterVertically,horizontalArrangement=Arrangement.spacedBy(14.dp)) {
+            Symbol("words",Modifier.size(44.dp).background(Sage,RoundedCornerShape(50)).padding(10.dp))
+            Column(Modifier.weight(1f),verticalArrangement=Arrangement.spacedBy(4.dp)) {
+                Text("Download for offline study",fontWeight=FontWeight.SemiBold,color=Forest)
+                Text("Learn without internet. Downloaded images and audio use space on your phone.",fontSize=12.sp,color=Muted)
             }
             Symbol("chevron",Modifier.size(16.dp))
         }
@@ -197,7 +202,7 @@ import java.util.Locale
         FilledAction("Show ${if(filter.letter==null) counts.values.sum() else counts[filter.letter] ?: 0} words",{ onApply(filter) },Modifier.padding(20.dp).testTag("filter.apply"))
     }
 }
-@Composable internal fun PlaybackOptions(initial: PlaybackSettings,onDismiss: ()->Unit,onChange: (PlaybackSettings)->Unit,onStart: ()->Unit) {
+@Composable internal fun PlaybackOptions(initial: PlaybackSettings,onDismiss: ()->Unit,onChange: (PlaybackSettings)->Unit,onStart: ()->Unit,onDownloads: ()->Unit) {
     var settings by remember { mutableStateOf(initial) }
     fun update(value: PlaybackSettings) { settings=value;onChange(value) }
     Panel("Automatic study",onDismiss) {
@@ -216,11 +221,13 @@ import java.util.Locale
                 Toggle("Read the Finnish sentence",settings.readSentence) { update(settings.copy(readSentence=it)) }
                 Text("Voice speed",fontWeight=FontWeight.Medium)
                 FlowRow(horizontalArrangement=Arrangement.spacedBy(8.dp)) { listOf("Slow" to .76f,"Natural" to 1f,"Brisk" to 1.19f).forEach { (label,rate) -> FilterChip(selected=kotlin.math.abs(settings.rate-rate)<.03,onClick={ update(settings.copy(rate=rate)) },label={ Text(label) }) } }
-                Text("Uses your device’s speech voices. Install a Finnish voice for offline pronunciation.",fontSize=12.sp,color=Muted)
+                Text("Ready-made Finnish and English recordings. No phone voice setup is needed. Lessons use the internet unless they are downloaded for offline study.",fontSize=12.sp,color=Muted)
+                TextButton(onClick=onDownloads) { Text("Download for offline study") }
+                Text("For silent automatic study, turn off all three reading switches above.",fontSize=12.sp,color=Muted)
             }
         }
         FilledAction("Start automatic study",onStart,Modifier.padding(16.dp))
     }
 }
 @Composable private fun Stepper(label: String,value: Int,change: (Int)->Unit) { Column { Text("$label: $value seconds",fontSize=14.sp);Row(verticalAlignment=Alignment.CenterVertically) { TextButton(onClick={ change((value-1).coerceAtLeast(1)) },enabled=value>1,modifier=Modifier.testTag("$label.minus")) { Text("−",fontSize=24.sp) };Text("$value",modifier=Modifier.padding(horizontal=8.dp));TextButton(onClick={ change((value+1).coerceAtMost(15)) },enabled=value<15) { Text("+",fontSize=24.sp) } } } }
-@Composable internal fun Toggle(label: String,value: Boolean,change: (Boolean)->Unit) { Row(Modifier.fillMaxWidth(),verticalAlignment=Alignment.CenterVertically) { Text(label,Modifier.weight(1f),fontSize=14.sp);Switch(checked=value,onCheckedChange=change,modifier=Modifier.testTag("toggle.$label")) } }
+@Composable internal fun Toggle(label: String,value: Boolean,enabled: Boolean=true,change: (Boolean)->Unit) { Row(Modifier.fillMaxWidth(),verticalAlignment=Alignment.CenterVertically) { Text(label,Modifier.weight(1f),fontSize=14.sp);Switch(checked=value,onCheckedChange=change,enabled=enabled,modifier=Modifier.testTag("toggle.$label")) } }

@@ -6,6 +6,7 @@ struct ProgressViewScreen: View {
     @State private var showingPremium = false
     @State private var showingReminders = false
     @State private var showingSupport = false
+    @State private var showingOfflineStudy = false
     @Environment(StudyStore.self) private var store
     @Environment(AppNavigation.self) private var navigation
 
@@ -32,6 +33,7 @@ struct ProgressViewScreen: View {
                         }.accessibilityIdentifier("progress.support")
                     }
                     premiumCard
+                    OfflineStudyRow { showingOfflineStudy = true }
                     reminderCard
                     masteryCard
                     HStack(spacing: 12) {
@@ -63,8 +65,9 @@ struct ProgressViewScreen: View {
             .sheet(isPresented: $showingReminders) { WordReminderSettingsView(settings: reminders.settings) }
             .sheet(isPresented: $showingPremium) { PremiumView() }
             .sheet(isPresented: $showingSupport) { SupportView() }
+            .sheet(isPresented: $showingOfflineStudy) { OfflineStudyView() }
             .onChange(of: navigation.request) { _, _ in
-                showingReminders = false; showingPremium = false; showingSupport = false
+                showingReminders = false; showingPremium = false; showingSupport = false; showingOfflineStudy = false
             }
         }
     }
@@ -86,12 +89,13 @@ struct ProgressViewScreen: View {
                 }.foregroundStyle(Palette.forest)
             }.buttonStyle(.plain).accessibilityIdentifier("progress.premium")
             if !premium.isPersonal {
-                HStack {
+                VStack(spacing: 12) {
                     if !premium.isPremium {
-                        Button("Explore Premium") { showingPremium = true }
-                            .font(.subheadline.weight(.semibold)).accessibilityIdentifier("progress.upgrade")
+                        Button { showingPremium = true } label: {
+                            Label("Go Premium", systemImage: "sparkles").frame(maxWidth: .infinity)
+                        }
+                        .buttonStyle(FilledActionStyle()).accessibilityIdentifier("progress.upgrade")
                     }
-                    Spacer()
                     Button("Restore Purchases") { Task { await premium.restore() } }
                         .font(.caption.weight(.medium)).disabled(premium.busy)
                         .accessibilityIdentifier("progress.restore")

@@ -1,6 +1,10 @@
 # 3000 Finnish Words for Android
 
-The current Android update follows **iOS 1.0, build 29**. Development version **1.0.0-dev29** (code 2); application ID remains `com.linapps.ykiflashcards` to preserve installed Android progress.
+The working source now uses **prerecorded Finnish/English audio and downloadable lesson media**. No Android speech engine or voice installation is needed. Generate the media before building; see [media generation and Bluehost delivery](../MediaDelivery/README.md). This change has not yet been published to Google Play. The build-29 parity notes below describe the preceding release.
+
+Progress → **Download for offline study** offers an optional download with its actual size, Wi-Fi-only control, pause/continue and removal. Its subtitle explains that downloaded images and audio occupy storage. The same screen is linked from Playback settings. Starter lessons are included; other media loads online unless downloaded. Normal Android Studio and Gradle builds now use the verified Bluehost directory `https://essaykingapp.com/finnish3000/v1` by default. No special build flags are needed. An explicit `-PmediaBaseUrl=` bundles the complete collection for offline development testing.
+
+The current Android update builds on **iOS 1.0, build 29**. Development version **1.1-media-test** (code 2); the normal application ID remains `com.linapps.ykiflashcards`. Prerecorded audio and media downloads are integrated into this regular app, including future Play builds. The optional `phonePreview` flag is only for the previously published separate preview.
 
 Open this `Android` folder in Android Studio, let it sync, select `app` and your phone/emulator, then Run. Keep the adjacent `Resources` folder in place. Use the bundled JDK and Android SDK 36; minimum Android API 26.
 
@@ -15,7 +19,20 @@ Build/check from this directory:
 python3 tools/verify_content.py
 ```
 
-The debug APK is `app/build/outputs/apk/debug/app-debug.apk`. On a personal phone, install with `adb install -r`; see the test-safety note in PARITY.md before running instrumentation. The historical notes below describe the initial implementation and are retained for context.
+The debug APK is `app/build/outputs/apk/debug/app-debug.apk`. It can update a development installation signed with the same debug key. A Play-installed app normally has a different signing key: test that update through a Play test track rather than uninstalling and losing progress. See the test-safety note in PARITY.md before running instrumentation. The historical notes below describe the initial implementation and are retained for context.
+
+## If Play asks for a Finnish speech voice
+
+This workaround applies to the existing Play version that uses Android TTS, not the new prerecorded-audio source.
+
+The vocabulary is bundled with the app, but pronunciation uses downloaded voices from Android's selected text-to-speech engine. Some phones do not include Finnish in the default engine. Both automatic study and the individual pronunciation buttons need a Finnish voice; English prompt/answer audio also needs an English voice.
+
+1. In Android Settings, search for **Text-to-speech** (on Samsung, usually under **General management → Text-to-speech output**).
+2. Check the preferred engine. If it does not offer Finnish, select an installed engine that does, such as Google's speech engine.
+3. Open the engine's settings, choose **Install voice data**, and download **Finnish / Suomi** and an English voice. This download needs an internet connection.
+4. Return to the app and tap Play again. If using an older app version, reopen the app after changing the speech engine.
+
+The new source replaces device-generated speech with prepared recordings. For silent automatic study, turn off all three reading switches in Playback settings.
 
 ---
 

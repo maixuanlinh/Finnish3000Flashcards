@@ -96,7 +96,7 @@ final class PremiumStoreTests: XCTestCase {
         XCTAssertTrue(store.message?.contains("couldn’t be restored") == true)
     }
 
-    func testNotificationArtworkFollowsAccessAndClearsDeliveredPaidPictures() async throws {
+    func testHostedNotificationArtworkDoesNotFetchAndRevocationClearsDeliveredPictures() async throws {
         let data = try StudyStore(container: StudyStore.makeContainer(inMemory: true), seeds: StudyStore.readSeeds())
         let name = "premium-reminder-\(UUID())"; let defaults = UserDefaults(suiteName: name)!
         defer { defaults.removePersistentDomain(forName: name) }
@@ -105,9 +105,9 @@ final class PremiumStoreTests: XCTestCase {
         let apple = try XCTUnwrap(data.words.first { $0.english == "apple" })
         let free = reminders.snapshots(from: data)
         XCTAssertNil(free.first { $0.id == book.id }?.thumbnail)
-        XCTAssertNotNil(free.first { $0.id == apple.id }?.thumbnail)
+        XCTAssertNil(free.first { $0.id == apple.id }?.thumbnail)
         await reminders.setPremium(true, store: data)
-        XCTAssertNotNil(reminders.snapshots(from: data).first { $0.id == book.id }?.thumbnail)
+        XCTAssertNil(reminders.snapshots(from: data).first { $0.id == book.id }?.thumbnail)
         await reminders.setPremium(false, store: data)
         XCTAssertNil(reminders.snapshots(from: data).first { $0.id == book.id }?.thumbnail)
         let removed = await center.removedIDs()

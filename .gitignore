@@ -40,4 +40,19 @@ __pycache__/
 
 # Android's asset-pack copy is regenerated from Resources/BundledArtwork.
 /Android/illustrations/src/main/assets/
+/MediaDelivery/work/
+/MediaDelivery/public/
+/MediaDelivery/generated/*
+!/MediaDelivery/generated/assets/
+/MediaDelivery/size-report.json
+/MediaDelivery/verification.json
 *.log
+
+# Unrelated video experiments and private store/account evidence remain local.
+/LyricsVideo/
+/StoreMarketing/*
+!/StoreMarketing/2026-11/
+/StoreMarketing/2026-11/*
+!/StoreMarketing/2026-11/*.py
+!/StoreMarketing/2026-11/listing-copy.json
+!/StoreMarketing/2026-11/README.md

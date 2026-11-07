@@ -7,6 +7,7 @@ struct SisuCardsApp: App {
     @UIApplicationDelegateAdaptor(ReminderAppDelegate.self) private var appDelegate
     @State private var reminders = WordReminders()
     @State private var premium = PremiumStore()
+    @State private var media = LessonMedia.shared
     @State private var store: StudyStore?
     @State private var startupError: String?
 
@@ -54,6 +55,7 @@ struct SisuCardsApp: App {
                         .environment(store)
                         .environment(reminders)
                         .environment(premium)
+                        .environment(media)
                         .modelContainer(store.container)
                 } else if let startupError {
                     ContentUnavailableView {

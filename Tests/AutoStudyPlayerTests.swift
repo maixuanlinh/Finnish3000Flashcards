@@ -105,7 +105,7 @@ private final class TestStudySpeech: StudySpeech {
     func speakAndWait(_ text: String, language: String, rate: Float) async throws {
         try Task.checkCancellation()
         requests.append(Request(text: text, language: language, rate: rate))
-        if fail { throw SpeechPlayer.SpeechError.missingVoice }
+        if fail { throw SpeechPlayer.SpeechError.unavailable }
         if block { try await withCheckedThrowingContinuation { pending = $0 } }
         try Task.checkCancellation()
     }

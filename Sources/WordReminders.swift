@@ -200,11 +200,11 @@ final class WordReminders {
         }
         return store.words.map { word in
             let personal = revisions[word.id].flatMap { FileManager.default.fileExists(atPath: $0.path) ? $0 : nil }
-            // iOS derives its thumbnail from the attachment. The existing 768px
-            // picture also keeps the mnemonic text legible when expanded.
+            // Personal artwork is already a durable local file. Hosted lesson
+            // images are deliberately not fetched by notification scheduling.
             return ReminderWord(id: word.id, english: word.english, finnish: word.finnish,
                 status: word.statusRaw, thumbnail: PremiumAccess.hasLesson(word.english, premium: premiumAccess) ?
-                    (personal ?? BundledArtwork.url(for: word.id)) : nil)
+                    personal : nil)
         }
     }
 

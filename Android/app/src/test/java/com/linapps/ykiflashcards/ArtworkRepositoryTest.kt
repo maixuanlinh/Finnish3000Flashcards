@@ -3,6 +3,7 @@ package com.linapps.ykiflashcards
 import android.content.Context
 import androidx.test.core.app.ApplicationProvider
 import com.linapps.ykiflashcards.data.ArtworkRepository
+import com.linapps.ykiflashcards.data.LessonMedia
 import kotlinx.coroutines.test.runTest
 import org.json.JSONArray
 import org.json.JSONObject
@@ -21,10 +22,11 @@ import android.util.Base64
 class ArtworkRepositoryTest {
     private lateinit var context: Context
     @Before fun setup() { context=ApplicationProvider.getApplicationContext();File(context.filesDir,"artwork").deleteRecursively() }
-    private fun image()=context.assets.open("BundledArtwork/"+runTestImage()).use { it.readBytes() }
-    private fun runTestImage(): String {
-        val manifest=JSONArray(context.assets.open("BundledArtwork/manifest.json").bufferedReader().use { it.readText() })
-        return manifest.getJSONObject(0).getString("filename")
+    private fun image(): ByteArray {
+        val media=LessonMedia(context)
+        val installed=context.assets.list("").orEmpty().toSet()
+        val item=media.catalog.items.values.first { it.key.startsWith("image/") && it.pack in installed }
+        return requireNotNull(media.cached(item.key))
     }
     @Test fun imageHistorySurvivesRelaunchAndOriginalKeepsRevisions()=runTest {
         val repo=ArtworkRepository(context);val word=word()

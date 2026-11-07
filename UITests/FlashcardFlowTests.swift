@@ -320,7 +320,8 @@ final class FlashcardFlowTests: XCTestCase {
         app.buttons["word.fi-0199"].tap()
         XCTAssertEqual(app.staticTexts["detail.finnish"].label, "täti")
         let image = app.buttons["detail.image"]
-        XCTAssertTrue(image.waitForExistence(timeout: 5))
+        expectation(for: NSPredicate(format: "enabled == true"), evaluatedWith: image)
+        waitForExpectations(timeout: 15)
         image.tap()
         XCTAssertTrue(app.buttons["illustration.done"].waitForExistence(timeout: 5))
         capture("15-bundled-a-artwork")
@@ -335,7 +336,8 @@ final class FlashcardFlowTests: XCTestCase {
         app.buttons["word.fi-0316"].tap()
         XCTAssertEqual(app.staticTexts["detail.finnish"].label, "pullo")
         let image = app.buttons["detail.image"]
-        XCTAssertTrue(image.waitForExistence(timeout: 5))
+        expectation(for: NSPredicate(format: "enabled == true"), evaluatedWith: image)
+        waitForExpectations(timeout: 15)
         image.tap()
         XCTAssertTrue(app.buttons["illustration.done"].waitForExistence(timeout: 5))
         capture("16-bundled-b-artwork")
@@ -350,7 +352,8 @@ final class FlashcardFlowTests: XCTestCase {
         app.buttons["word.fi-0489"].tap()
         XCTAssertEqual(app.staticTexts["detail.finnish"].label, "kahvi")
         let image = app.buttons["detail.image"]
-        XCTAssertTrue(image.waitForExistence(timeout: 5))
+        expectation(for: NSPredicate(format: "enabled == true"), evaluatedWith: image)
+        waitForExpectations(timeout: 15)
         image.tap()
         XCTAssertTrue(app.buttons["illustration.done"].waitForExistence(timeout: 5))
         capture("17-bundled-c-artwork")
@@ -365,7 +368,8 @@ final class FlashcardFlowTests: XCTestCase {
         app.buttons["word.fi-0737"].tap()
         XCTAssertEqual(app.staticTexts["detail.finnish"].label, "sanakirja")
         let image = app.buttons["detail.image"]
-        XCTAssertTrue(image.waitForExistence(timeout: 5))
+        expectation(for: NSPredicate(format: "enabled == true"), evaluatedWith: image)
+        waitForExpectations(timeout: 15)
         image.tap()
         XCTAssertTrue(app.buttons["illustration.done"].waitForExistence(timeout: 5))
         capture("18-bundled-d-artwork")
@@ -380,7 +384,8 @@ final class FlashcardFlowTests: XCTestCase {
         app.buttons["word.fi-0858"].tap()
         XCTAssertEqual(app.staticTexts["detail.finnish"].label, "norsu")
         let image = app.buttons["detail.image"]
-        XCTAssertTrue(image.waitForExistence(timeout: 5))
+        expectation(for: NSPredicate(format: "enabled == true"), evaluatedWith: image)
+        waitForExpectations(timeout: 15)
         image.tap()
         XCTAssertTrue(app.buttons["illustration.done"].waitForExistence(timeout: 5))
         capture("19-bundled-e-artwork")
@@ -395,7 +400,8 @@ final class FlashcardFlowTests: XCTestCase {
         app.buttons["word.fi-1016"].tap()
         XCTAssertEqual(app.staticTexts["detail.finnish"].label, "helmikuu")
         let image = app.buttons["detail.image"]
-        XCTAssertTrue(image.waitForExistence(timeout: 5))
+        expectation(for: NSPredicate(format: "enabled == true"), evaluatedWith: image)
+        waitForExpectations(timeout: 15)
         image.tap()
         XCTAssertTrue(app.buttons["illustration.done"].waitForExistence(timeout: 5))
         capture("20-bundled-f-artwork")
@@ -410,7 +416,8 @@ final class FlashcardFlowTests: XCTestCase {
         app.buttons["word.fi-1141"].tap()
         XCTAssertEqual(app.staticTexts["detail.finnish"].label, "autotalli; autokorjaamo")
         let image = app.buttons["detail.image"]
-        XCTAssertTrue(image.waitForExistence(timeout: 5))
+        expectation(for: NSPredicate(format: "enabled == true"), evaluatedWith: image)
+        waitForExpectations(timeout: 15)
         image.tap()
         XCTAssertTrue(app.buttons["illustration.done"].waitForExistence(timeout: 5))
         capture("21-bundled-g-artwork")
@@ -425,7 +432,8 @@ final class FlashcardFlowTests: XCTestCase {
         app.buttons["word.fi-1273"].tap()
         XCTAssertEqual(app.staticTexts["detail.finnish"].label, "jääkiekko")
         let image = app.buttons["detail.image"]
-        XCTAssertTrue(image.waitForExistence(timeout: 5))
+        expectation(for: NSPredicate(format: "enabled == true"), evaluatedWith: image)
+        waitForExpectations(timeout: 15)
         image.tap()
         XCTAssertTrue(app.buttons["illustration.done"].waitForExistence(timeout: 5))
         capture("22-bundled-h-artwork")
@@ -440,7 +448,8 @@ final class FlashcardFlowTests: XCTestCase {
         app.buttons["word.fi-1311"].tap()
         XCTAssertEqual(app.staticTexts["detail.finnish"].label, "jäätelö")
         let image = app.buttons["detail.image"]
-        XCTAssertTrue(image.waitForExistence(timeout: 5))
+        expectation(for: NSPredicate(format: "enabled == true"), evaluatedWith: image)
+        waitForExpectations(timeout: 15)
         image.tap()
         XCTAssertTrue(app.buttons["illustration.done"].waitForExistence(timeout: 5))
         capture("23-bundled-i-artwork")
@@ -455,7 +464,8 @@ final class FlashcardFlowTests: XCTestCase {
         app.buttons["word.fi-2999"].tap()
         XCTAssertEqual(app.staticTexts["detail.finnish"].label, "nolla")
         let image = app.buttons["detail.image"]
-        XCTAssertTrue(image.waitForExistence(timeout: 5))
+        expectation(for: NSPredicate(format: "enabled == true"), evaluatedWith: image)
+        waitForExpectations(timeout: 15)
         image.tap()
         XCTAssertTrue(app.buttons["illustration.done"].waitForExistence(timeout: 5))
         capture("24-bundled-z-artwork")

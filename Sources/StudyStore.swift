@@ -198,14 +198,13 @@ final class StudyStore {
         if let revision = activeArtwork(for: word.id) {
             sources.append(.file(artworkDirectory.appending(path: thumbnail ? revision.thumbnailFilename : revision.filename)))
         }
-        if let url = BundledArtwork.url(for: word.id, thumbnail: thumbnail) { sources.append(.file(url)) }
+        if let key = BundledArtwork.mediaKey(for: word.id, thumbnail: thumbnail) { sources.append(.hosted(key)) }
         if let name = word.imageName { sources.append(.asset(name)) }
         return sources
     }
 
     func artworkImage(for word: VocabularyWord, thumbnail: Bool = false) -> UIImage? {
         if let revision = activeArtwork(for: word.id), let image = artworkImage(revision, thumbnail: thumbnail) { return image }
-        if let image = BundledArtwork.image(for: word.id, thumbnail: thumbnail) { return image }
         return word.imageName.flatMap { UIImage(named: $0) }
     }
 

@@ -12,6 +12,7 @@ struct WordDetailView: View {
     @AppStorage("speechRate") private var speechRate = 0.42
     @State private var error: String?
     @State private var artworkEditorOpen = false
+    @State private var displayedArtwork: UIImage?
 
     var body: some View {
         NavigationStack {
@@ -42,12 +43,12 @@ struct WordDetailView: View {
                         LockedLessonView(open: { showingPremium = true }).frame(minHeight: 220)
                     } else if store.hasArtwork(for: word) {
                         VStack(spacing: 4) {
-                            WordArtworkImage(word: word)
+                            WordArtworkImage(word: word, onLoad: { displayedArtwork = $0 })
                                 .frame(maxWidth: .infinity).frame(height: 340)
                                 .background(.white)
                                 .clipShape(RoundedRectangle(cornerRadius: 24))
                                 .accessibilityIdentifier("detail.artworkImage")
-                            Button { imageOpen = true } label: {
+                            Button { if displayedArtwork != nil { imageOpen = true } } label: {
                                 Image(systemName: "arrow.up.left.and.arrow.down.right")
                                     .font(.subheadline.weight(.semibold))
                                     .frame(width: 48, height: 44)
@@ -55,6 +56,7 @@ struct WordDetailView: View {
                             }
                             .buttonStyle(.plain).accessibilityLabel("Open full-screen illustration")
                             .accessibilityIdentifier("detail.image")
+                            .disabled(displayedArtwork == nil)
                             .frame(maxWidth: .infinity)
                         }
                     }
@@ -131,7 +133,7 @@ struct WordDetailView: View {
             }
             .sheet(isPresented: $artworkEditorOpen) { ArtworkEditor(word: word) }
             .fullScreenCover(isPresented: $imageOpen) {
-                if premium.hasLesson(word), let image = store.artworkImage(for: word) { IllustrationViewer(image: image, word: word.finnish) }
+                if premium.hasLesson(word), let image = displayedArtwork { IllustrationViewer(image: image, word: word.finnish) }
             }
             .alert("Couldn’t complete that action", isPresented: Binding(get: { error != nil }, set: { if !$0 { error = nil } })) {
                 Button("OK", role: .cancel) { error = nil }
@@ -141,7 +143,12 @@ struct WordDetailView: View {
 
     private func play(_ text: String) {
         if speech == nil { speech = SpeechPlayer() }
-        if speech?.speak(text, rate: Float(speechRate)) != true { error = "A Finnish voice is not available. Add a Finnish voice in the iPhone’s spoken content settings." }
+        guard let speech else { return }
+        Task {
+            do { try await speech.speakAndWait(text, language: "fi-FI", rate: Float(speechRate)) }
+            catch is CancellationError {}
+            catch { self.error = error.localizedDescription }
+        }
     }
 }
 

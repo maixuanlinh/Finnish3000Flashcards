@@ -34,6 +34,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.LifecycleEventObserver
+import androidx.lifecycle.repeatOnLifecycle
 import androidx.lifecycle.compose.LocalLifecycleOwner
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.linapps.ykiflashcards.SisuApplication
@@ -43,7 +44,8 @@ import kotlinx.coroutines.withContext
 
 @Composable fun SisuApp(vm: StudyViewModel) {
     val s by vm.uiState.collectAsStateWithLifecycle()
-    val app=LocalContext.current.applicationContext as SisuApplication
+    val context=LocalContext.current
+    val app=context.applicationContext as SisuApplication
     var panel by rememberSaveable { mutableStateOf<String?>(null) }
     var zoom by rememberSaveable { mutableStateOf<String?>(null) }
     var artWord by rememberSaveable { mutableStateOf<String?>(null) }
@@ -51,6 +53,16 @@ import kotlinx.coroutines.withContext
     var reminderVersion by remember { mutableIntStateOf(0) }
     val owner=LocalLifecycleOwner.current
     val latestAccess by rememberUpdatedState(s.access)
+    val nextMedia = remember(s.current?.id,s.playback,s.queue,s.playIds,s.cursor,s.playIndex,s.detail,s.tab,panel) {
+        if(s.detail!=null) listOfNotNull(s.byId[s.detail])
+        else if(s.tab==0 && panel==null) {
+            val ids=if(s.playback==PlaybackState.IDLE) s.queue.drop(s.cursor) else s.playIds.drop(s.playIndex)
+            ids.take(4).mapNotNull { s.byId[it] }
+        } else emptyList()
+    }
+    LaunchedEffect(nextMedia,s.access,owner) {
+        owner.lifecycle.repeatOnLifecycle(Lifecycle.State.RESUMED) { app.media.prefetch(nextMedia,s.access) }
+    }
     LaunchedEffect(s.navigationRequest) { panel=null;artWord=null;zoom=null }
     DisposableEffect(owner) {
         val observer=LifecycleEventObserver { _, event ->
@@ -97,7 +109,8 @@ import kotlinx.coroutines.withContext
             } }
             when(panel) {
                 "filters" -> Filters(s,onDismiss={ panel=null },onApply={ vm.filter(it);panel=null })
-                "playback" -> PlaybackOptions(s.settings,onDismiss={ panel=null },onChange=vm::settings,onStart={ panel=null;vm.play() })
+                "playback" -> PlaybackOptions(s.settings,onDismiss={ panel=null },onChange=vm::settings,onStart={ panel=null;vm.play() },onDownloads={ vm.pause();panel="offline" })
+                "offline" -> OfflineOptions(vm,onClose={ panel=null })
                 "reminders" -> ReminderOptions(s,vm,onClose={ panel=null;reminderVersion++ })
                 "support" -> Support { panel=null }
                 "pack" -> ArtworkPackImporter(s,vm,onClose={ panel=null },onChanged={ artworkVersion++ })
@@ -110,7 +123,7 @@ import kotlinx.coroutines.withContext
     }
 }
 @Composable private fun Study(s: StudyUiState,vm: StudyViewModel,filters: ()->Unit,settings: ()->Unit) {
-    var menu by remember { mutableStateOf(false) }
+    var options by remember { mutableStateOf(false) }
     Column(Modifier.widthIn(max=520.dp).fillMaxSize().padding(horizontal=18.dp).padding(top=8.dp,bottom=8.dp),verticalArrangement=Arrangement.spacedBy(12.dp)) {
         Row(Modifier.fillMaxWidth().heightIn(min=44.dp),verticalAlignment=Alignment.CenterVertically) {
             Row(Modifier.weight(1f).heightIn(min=44.dp).clickable(onClick=filters).testTag("study.filters"),verticalAlignment=Alignment.CenterVertically,horizontalArrangement=Arrangement.spacedBy(8.dp)) {
@@ -122,14 +135,7 @@ import kotlinx.coroutines.withContext
                 IconAction(if(s.playback==PlaybackState.PLAYING) "pause" else "play",if(s.playback==PlaybackState.PLAYING) "Pause automatic study" else "Play automatic study",vm::play,enabled=s.current!=null && !s.busy,modifier=Modifier.size(40.dp).testTag("study.autoplay"))
                 if(s.access!=Entitlement.COMPLETE && s.queue.any { s.byId[it]?.initial!="A" }) Symbol("lock",Modifier.size(12.dp).align(Alignment.TopEnd))
             }
-            Box {
-                IconAction("more","Study options",{ menu=true },modifier=Modifier.size(36.dp).testTag("study.options"))
-                DropdownMenu(expanded=menu,onDismissRequest={ menu=false }) {
-                    DropdownMenuItem(text={ Text("Playback settings") },onClick={ menu=false;settings() })
-                    DropdownMenuItem(text={ Text(if(s.showsEnglishFirst) "Show Finnish first" else "Show English first") },onClick={ menu=false;vm.direction() })
-                    DropdownMenuItem(text={ Text("Shuffle this session") },onClick={ menu=false;vm.shuffle() })
-                }
-            }
+            IconAction("more","Study options",{ options=true },modifier=Modifier.size(36.dp).testTag("study.options"))
         }
         val word=s.current
         if(word==null) {
@@ -188,6 +194,37 @@ import kotlinx.coroutines.withContext
             }
         }
     }
+    if(options) StudyOptions(s,onClose={ options=false },onPlayback={ options=false;settings() },onDirection={ vm.direction();options=false },onShuffle={ vm.shuffle();options=false })
+}
+@Composable private fun StudyOptions(s: StudyUiState,onClose: ()->Unit,onPlayback: ()->Unit,onDirection: ()->Unit,onShuffle: ()->Unit) {
+    Panel("Study options",onClose) {
+        Column(Modifier.weight(1f).verticalScroll(rememberScrollState()).padding(20.dp),verticalArrangement=Arrangement.spacedBy(20.dp)) {
+            SectionTitle("Shape this study session")
+            Text("Choose how cards play and appear. These choices do not change your learning progress.",color=Muted)
+            SectionCard {
+                Eyebrow("Automatic study")
+                StudyOptionRow("play","Playback settings","Timing, pronunciation and voice speed",onPlayback,Modifier.testTag("study.option.playback"))
+            }
+            SectionCard {
+                Eyebrow("Card language")
+                StudyOptionRow("flip",if(s.showsEnglishFirst) "Show Finnish first" else "Show English first","For this session",onDirection,Modifier.testTag("study.option.direction"))
+            }
+            SectionCard {
+                Eyebrow("Card order")
+                StudyOptionRow("shuffle","Shuffle this session","Keep your current filters and mix the remaining cards",onShuffle,Modifier.testTag("study.option.shuffle"))
+            }
+        }
+    }
+}
+@Composable private fun StudyOptionRow(icon: String,title: String,subtitle: String,onClick: ()->Unit,modifier: Modifier=Modifier) {
+    Row(modifier.fillMaxWidth().clip(RoundedCornerShape(16.dp)).clickable(onClick=onClick).padding(vertical=5.dp),verticalAlignment=Alignment.CenterVertically,horizontalArrangement=Arrangement.spacedBy(14.dp)) {
+        Symbol(icon,Modifier.size(44.dp).background(Sage,RoundedCornerShape(14.dp)).padding(10.dp))
+        Column(Modifier.weight(1f),verticalArrangement=Arrangement.spacedBy(4.dp)) {
+            Text(title,fontWeight=FontWeight.SemiBold,color=Forest,fontSize=16.sp)
+            Text(subtitle,fontSize=13.sp,color=Muted)
+        }
+        Symbol("chevron",Modifier.size(17.dp))
+    }
 }
 @Composable internal fun Ratings(busy: Boolean,onRate: (LearningStatus)->Unit) {
     Row(Modifier.fillMaxWidth(),horizontalArrangement=Arrangement.spacedBy(12.dp)) {
@@ -208,14 +245,26 @@ private val imageCache=object: LruCache<String,ImageBitmap>(24*1024*1024) { over
     val personal=revision?.let { if(thumbnail) it.thumbnail else it.filename }
     val bundled=if(thumbnail) word.thumbnail else word.image
     val key=personal ?: bundled
-    val bitmap by produceState<ImageBitmap?>(null,key) {
-        value=withContext(Dispatchers.IO) { imageCache.get(key) ?: runCatching {
-            personal?.let { BitmapFactory.decodeFile(app.artwork.file(it).path)?.asImageBitmap() }
-                ?: app.assets.open("BundledArtwork/$bundled").use { BitmapFactory.decodeStream(it)?.asImageBitmap() }
-        }.getOrNull()?.also { imageCache.put(key,it) } }
+    var retry by remember(key) { mutableIntStateOf(0) }
+    val downloads by app.media.status.collectAsStateWithLifecycle()
+    val result by produceState<Pair<ImageBitmap?,Boolean>>(null to true,key,retry,downloads.packsReady) {
+        value=withContext(Dispatchers.IO) {
+            try {
+                val bitmap=imageCache.get(key) ?: (personal?.let { BitmapFactory.decodeFile(app.artwork.file(it).path)?.asImageBitmap() }
+                    ?: app.media.load("image/$bundled").let { BitmapFactory.decodeByteArray(it,0,it.size)?.asImageBitmap() })?.also { imageCache.put(key,it) }
+                bitmap to false
+            } catch(e: kotlinx.coroutines.CancellationException) { throw e }
+            catch(_: Exception) { null to false }
+        }
     }
     Box(modifier.clip(RoundedCornerShape(16.dp)).background(Cream),contentAlignment=Alignment.Center) {
-        bitmap?.let { Image(it,contentDescription="Illustration for ${word.finnish}",contentScale=ContentScale.Fit,modifier=Modifier.fillMaxSize()) } ?: Symbol("photo",Modifier.size(30.dp))
+        result.first?.let { Image(it,contentDescription="Illustration for ${word.finnish}",contentScale=ContentScale.Fit,modifier=Modifier.fillMaxSize()) }
+            ?: if(result.second) CircularProgressIndicator(Modifier.size(24.dp))
+            else if(thumbnail) Symbol("photo",Modifier.size(30.dp))
+            else Column(Modifier.padding(16.dp),horizontalAlignment=Alignment.CenterHorizontally) {
+                Symbol("photo",Modifier.size(30.dp));Text("Connect to load this image",fontSize=12.sp,color=Muted)
+                TextButton(onClick={ retry++ }) { Text("Retry") }
+            }
     }
 }
 @Composable private fun ZoomArtwork(word: Word,onDismiss: ()->Unit) {

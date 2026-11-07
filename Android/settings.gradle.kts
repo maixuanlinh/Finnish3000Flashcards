@@ -5,4 +5,3 @@ dependencyResolutionManagement {
 }
 rootProject.name = "SisuCardsAndroid"
 include(":app")
-if (providers.gradleProperty("playDistribution").orNull == "true") include(":illustrations")

@@ -94,7 +94,9 @@ class ParityScreenTest {
         val before=runBlocking { app.repository.events() }
         try {
             compose.onNodeWithTag("tab.Words").performClick();compose.onNodeWithTag("words.search").performTextInput("omena");compose.onNodeWithTag("words.practice").performClick()
-            compose.onNodeWithTag("study.options").performClick();compose.onNodeWithText("Playback settings").performClick()
+            compose.onNodeWithTag("study.options").performClick()
+            compose.onNodeWithText("Study options").assertExists();compose.onNodeWithText("For this session").assertExists()
+            compose.onNodeWithTag("study.option.playback").performClick()
             repeat(2) { compose.onNodeWithTag("Recall pause.minus").performScrollTo().performClick() }
             compose.onNodeWithTag("Pause after audio.minus").performScrollTo().performClick()
             listOf("Read the prompt","Read the answer","Read the Finnish sentence").forEach { label -> compose.onNodeWithTag("toggle.$label").performScrollTo().performClick() }

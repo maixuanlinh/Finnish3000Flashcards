@@ -18,8 +18,8 @@ parser.add_argument('--license-key-file', type=pathlib.Path, help='File containi
 arguments = parser.parse_args()
 if arguments.version_code < 1:
     parser.error('--version-code must be positive')
-if bool(arguments.product_id) != bool(arguments.license_key_file):
-    parser.error('Provide both --product-id and --license-key-file, or neither for a free-only test build')
+if not arguments.product_id or arguments.license_key_file is None:
+    parser.error('Provide both --product-id and --license-key-file for every Play release build')
 root = pathlib.Path(__file__).resolve().parents[1]
 private = pathlib.Path.home() / '.android/keys/3000-finnish-words'
 original = pathlib.Path('/Users/linhmai/EssayKing-collapsingbar/keystore/essayking.jks')
@@ -93,9 +93,8 @@ print('Key and passwords verified. Building the signed Google Play bundle…', f
 log = report / 'signed-bundle-release.log'
 command = [str(root / 'gradlew'), '--no-daemon', '-PplayDistribution=true',
            f'-PreleaseVersionCode={arguments.version_code}', f'-PreleaseVersionName={arguments.version_name}']
-if arguments.product_id:
-    environment['ORG_GRADLE_PROJECT_playProductId'] = arguments.product_id
-    environment['ORG_GRADLE_PROJECT_playLicenseKey'] = arguments.license_key_file.read_text().strip()
+environment['ORG_GRADLE_PROJECT_playProductId'] = arguments.product_id
+environment['ORG_GRADLE_PROJECT_playLicenseKey'] = arguments.license_key_file.read_text().strip()
 command.append(':app:bundleRelease')
 with log.open('w') as output:
     result = subprocess.run(command,

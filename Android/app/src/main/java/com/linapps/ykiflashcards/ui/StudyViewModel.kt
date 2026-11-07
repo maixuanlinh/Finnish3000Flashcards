@@ -106,6 +106,9 @@ class StudyViewModel(
     }
     fun flip() { if(state.value.busy) return; pause(); state.update { it.copy(revealed=!it.revealed) } }
     fun clearMessage() { state.update { it.copy(message=null) } }
+    private fun speechFailure(error: Exception) {
+        message(error.message ?: "Audio unavailable. Connect to the internet or download lessons for offline study.")
+    }
     fun message(text: String) { state.update { it.copy(message=text) } }
     fun premium(show: Boolean) { pause(); state.update { it.copy(premiumRequested=show) } }
     fun rate(id: String, status: LearningStatus) {
@@ -147,7 +150,7 @@ class StudyViewModel(
         if(sentence && !AccessPolicy.hasLesson(word,state.value.access)) return
         speechJob=viewModelScope.launch {
             try { speech.say(if(sentence) word.sentence else word.finnish,"fi-FI",state.value.settings.rate) }
-            catch(e: Exception) { if(e !is CancellationException) message(e.message ?: "Speech unavailable.") }
+            catch(e: Exception) { if(e !is CancellationException) speechFailure(e) }
         }
     }
     fun settings(settings: PlaybackSettings) { pause(); preferences.playback=settings; state.update { it.copy(settings=settings) } }
@@ -181,7 +184,10 @@ class StudyViewModel(
                     state.update { it.copy(playIndex=it.playIndex+1) }
                 }
             } catch(e: Exception) {
-                if(e !is CancellationException) state.update { it.copy(playback=PlaybackState.PAUSED,message=e.message ?: "Playback interrupted.") }
+                if(e !is CancellationException) {
+                    state.update { it.copy(playback=PlaybackState.PAUSED) }
+                    speechFailure(e)
+                }
             } finally { speech.endSession() }
         }
     }
