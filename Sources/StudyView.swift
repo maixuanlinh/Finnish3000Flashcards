@@ -288,7 +288,7 @@ struct StudyView: View {
         playback.stop()
         let selectedIDs = navigation.requestedIDs.map { Set($0) }
         queue = store.reviewWords(in: navigation.scope, startingWith: navigation.startingLetter)
-            .filter { (navigation.topic == nil || $0.topic == navigation.topic) && (selectedIDs?.contains($0.id) ?? true) }.map(\.id)
+            .filter { $0.matchesTopic(navigation.topic) && (selectedIDs?.contains($0.id) ?? true) }.map(\.id)
         initialCount = queue.count
         history = []
         revealed = false

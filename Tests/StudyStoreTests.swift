@@ -5,6 +5,59 @@ import UIKit
 
 @MainActor
 final class StudyStoreTests: XCTestCase {
+
+    func testTopicCoverageAndSharedProgressNeverDuplicateWords() throws {
+        let seeds = try StudyStore.readSeeds()
+        let container = try StudyStore.makeContainer(inMemory: true)
+        let store = try StudyStore(container: container, seeds: seeds)
+        XCTAssertEqual(VocabularyTopic.allCases.count, 10)
+        XCTAssertTrue(store.words.allSatisfy { !$0.studyTopics.isEmpty })
+        let initial = store.topicProgress(words: store.words)
+        XCTAssertTrue(VocabularyTopic.allCases.allSatisfy { initial[$0, default: TopicProgress()].total > 100 })
+        let moving = try XCTUnwrap(store.words.first { $0.english == "move" })
+        XCTAssertTrue(moving.matchesTopic(VocabularyTopic.home.rawValue))
+        XCTAssertTrue(moving.matchesTopic(VocabularyTopic.essentials.rawValue))
+        XCTAssertFalse(moving.matchesTopic(VocabularyTopic.nature.rawValue))
+        let snapshot = try store.rate(moving, as: .known)
+        let updated = store.topicProgress(words: store.words)
+        XCTAssertEqual(updated[.home]?.known, 1)
+        XCTAssertEqual(updated[.essentials]?.known, 1)
+        XCTAssertEqual(store.count(.known), 1)
+        XCTAssertEqual(store.events.count, 1)
+        XCTAssertEqual(store.words.count, 3000)
+        for topic in moving.studyTopics {
+            let known = store.filterSummary(words: store.words, scope: .known, topic: topic.rawValue)
+            XCTAssertEqual(known.total, 1)
+            XCTAssertEqual(known.count(startingWith: "M"), 1)
+            let matches = store.words.filter { $0.matchesTopic(topic.rawValue) }
+            XCTAssertEqual(Set(matches.map(\.id)).count, matches.count)
+        }
+        let reopened = try StudyStore(container: container, seeds: seeds)
+        XCTAssertEqual(reopened.word(withID: moving.id)?.status, .known)
+        XCTAssertEqual(reopened.word(withID: moving.id)?.reviewCount, 1)
+        XCTAssertEqual(reopened.events.count, 1)
+        XCTAssertEqual(reopened.topicProgress(words: reopened.words)[.home]?.known, 1)
+        try store.undo(snapshot)
+        XCTAssertEqual(store.topicProgress(words: store.words)[.home]?.known, 0)
+        XCTAssertEqual(store.count(.known), 0)
+    }
+
+    func testTopicSearchCountsAndStudyMembershipAgree() throws {
+        let store = try StudyStore(container: StudyStore.makeContainer(inMemory: true), seeds: StudyStore.readSeeds())
+        let searched = store.searchWords("house")
+        let summary = store.filterSummary(words: searched, scope: .all, topic: VocabularyTopic.home.rawValue)
+        let expected = searched.filter { $0.matchesTopic(VocabularyTopic.home.rawValue) }
+        XCTAssertEqual(summary.total, expected.count)
+        XCTAssertEqual(summary.letterCounts.values.reduce(0, +), expected.count)
+        let apple = try XCTUnwrap(store.words.first { $0.english == "apple" })
+        XCTAssertTrue(apple.matchesTopic(VocabularyTopic.shopping.rawValue))
+        XCTAssertFalse(apple.matchesTopic(VocabularyTopic.work.rawValue))
+        XCTAssertTrue(apple.matchesTopic(apple.topic))
+        XCTAssertEqual(VocabularyTopic.topics(for: "because"), [.essentials])
+        XCTAssertTrue(store.words.filter { $0.matchesTopic(VocabularyTopic.travel.rawValue) }.contains { $0.english == "reservation" })
+        XCTAssertTrue(store.words.filter { $0.matchesTopic(VocabularyTopic.shopping.rawValue) }.contains { $0.english == "reservation" })
+    }
+
     func testIndexedLookupAndFilterCountsFollowRatingsAndUndo() throws {
         let store = try StudyStore(container: StudyStore.makeContainer(inMemory: true), seeds: StudyStore.readSeeds())
         let first = try XCTUnwrap(store.word(withID: "fi-0001"))

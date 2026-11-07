@@ -15,8 +15,8 @@ settings:
     TARGETED_DEVICE_FAMILY: "1,2"
     CODE_SIGN_STYLE: Automatic
     GENERATE_INFOPLIST_FILE: YES
-    CURRENT_PROJECT_VERSION: 30
-    MARKETING_VERSION: "1.0"
+    CURRENT_PROJECT_VERSION: 31
+    MARKETING_VERSION: "1.1.0"
     DEVELOPMENT_TEAM: 2FN25VD7TR
     # Phone development plus the approved temporary iPad simulator validation.
     SUPPORTED_PLATFORMS: "iphoneos iphonesimulator"
@@ -64,8 +64,8 @@ targets:
           PRODUCT_BUNDLE_IDENTIFIER: com.finnishcards.SisuCards
           INFOPLIST_KEY_CFBundleDisplayName: Sisu Cards
           ASSETCATALOG_COMPILER_APPICON_NAME: PersonalIcon
-          MARKETING_VERSION: 0.21.0
-          CURRENT_PROJECT_VERSION: 22
+          MARKETING_VERSION: 0.22.0
+          CURRENT_PROJECT_VERSION: 23
   SisuCardsTests:
     type: bundle.unit-test
     platform: iOS

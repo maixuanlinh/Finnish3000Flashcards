@@ -151,13 +151,25 @@ final class StudyStore {
         var topics: Set<String> = []
         var total = 0
         for word in candidates {
-            topics.insert(word.topic)
-            if scope.includes(word) && (topic == nil || word.topic == topic) {
+            topics.formUnion(word.studyTopics.map(\.rawValue))
+            if scope.includes(word) && word.matchesTopic(topic) {
                 counts[initial(for: word), default: 0] += 1
                 total += 1
             }
         }
         return VocabularyFilterSummary(total: total, letterCounts: counts, topics: topics.sorted())
+    }
+
+    func topicProgress(words candidates: [VocabularyWord]) -> [VocabularyTopic: TopicProgress] {
+        var result: [VocabularyTopic: TopicProgress] = [:]
+        for word in candidates {
+            for topic in word.studyTopics {
+                result[topic, default: TopicProgress()].total += 1
+                if word.status == .known { result[topic, default: TopicProgress()].known += 1 }
+                if word.status == .learning { result[topic, default: TopicProgress()].learning += 1 }
+            }
+        }
+        return result
     }
 
     func activeArtwork(for wordID: String) -> ArtworkRevision? {

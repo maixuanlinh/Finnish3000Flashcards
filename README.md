@@ -1,5 +1,14 @@
 # 3000 Finnish Words
 
+## Current development checkpoint — 7 November 2026
+
+The iOS topic-browser update targets **1.1.0 (31)**; the personal phone build is **0.22.0 (23)** and keeps `com.finnishcards.SisuCards` to preserve installed progress. Git tag: `ios-v1.1.0-dev.1`. This is a development checkpoint, not an App Store/Google Play submission. See [release notes and version policy](RELEASES.md).
+
+Words now opens a phone-sized browser of nine YKI themes plus Everyday essentials. Each word retains its original ID and learning record across every topic. Study and Words share topic, status and letter filters. Android's saved media/offline-study work is included; the new topic browser is currently iOS-only.
+
+The media manifest and two starter packs are tracked under `MediaDelivery/generated/assets/`, so native builds work from a fresh checkout. Full media generation and hosting remain separate. The snapshot and validation notes below describe earlier releases.
+
+
 ## GitHub source snapshot — 25 October 2026
 
 Repository: `maixuanlinh/Finnish3000Flashcards`. This snapshot contains the native SwiftUI iOS app (version 1.0, build 30), the native Kotlin/Jetpack Compose Android app including its current Play distribution configuration, and their shared lesson media. The internal project and application identifiers remain unchanged to preserve existing installs.

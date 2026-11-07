@@ -56,3 +56,61 @@ final class CommercialReleaseTests: XCTestCase {
         result.name = name; result.lifetime = .keepAlways; add(result)
     }
 }
+
+@MainActor
+final class VocabularyTopicFlowTests: XCTestCase {
+    func testMobileTopicBrowserSearchFiltersAndPractice() {
+        continueAfterFailure = false
+        let app = XCUIApplication()
+        app.launchArguments = ["-ui-testing", "-readPrompt", "NO", "-readAnswer", "NO", "-readSentence", "NO"]
+        app.launch()
+        XCTAssertTrue(app.buttons["review.known"].waitForExistence(timeout: 30))
+        openWords(app)
+        let home = app.buttons["topic.home"]
+        XCTAssertTrue(home.waitForExistence(timeout: 5), app.debugDescription)
+        XCTAssertTrue(home.isHittable)
+        XCTAssertGreaterThanOrEqual(home.frame.minX, 0)
+        XCTAssertLessThanOrEqual(home.frame.maxX, app.frame.maxX)
+        capture(app, "topics-mobile-library")
+        home.tap()
+        XCTAssertTrue(app.staticTexts["Koti ja asuminen"].waitForExistence(timeout: 5))
+        XCTAssertTrue(app.buttons["words.practice"].exists)
+        capture(app, "topics-home-vocabulary")
+        app.textFields["words.search"].tap()
+        app.textFields["words.search"].typeText("house\n")
+        XCTAssertTrue(app.buttons.matching(NSPredicate(format: "identifier BEGINSWITH %@", "word.fi-")).firstMatch.waitForExistence(timeout: 5))
+        app.buttons["words.practice"].tap()
+        XCTAssertTrue(app.buttons["review.known"].waitForExistence(timeout: 5))
+        openWords(app)
+        app.buttons["words.backToTopics"].tap()
+        XCTAssertTrue(home.waitForExistence(timeout: 5), app.debugDescription)
+        app.buttons["words.filters"].tap()
+        XCTAssertTrue(app.buttons["filter.apply"].waitForExistence(timeout: 5))
+        app.buttons["filter.scope.known"].tap()
+        app.buttons["filter.apply"].tap()
+        XCTAssertTrue(app.staticTexts["No matching words"].waitForExistence(timeout: 5))
+        app.buttons["Clear filters"].tap()
+        XCTAssertTrue(app.buttons["words.practice"].waitForExistence(timeout: 5))
+        app.buttons["words.backToTopics"].tap()
+        app.swipeUp()
+        app.swipeUp()
+        XCTAssertTrue(app.buttons["topic.essentials"].waitForExistence(timeout: 5))
+        capture(app, "topics-mobile-lower-cards")
+    }
+
+    private func openWords(_ app: XCUIApplication) {
+        let tab = app.tabBars.firstMatch.buttons["Words"].firstMatch
+        tab.tap()
+        if !app.textFields["words.search"].waitForExistence(timeout: 3) {
+            tab.coordinate(withNormalizedOffset: CGVector(dx: 0.5, dy: 0.5)).tap()
+        }
+        XCTAssertTrue(app.textFields["words.search"].waitForExistence(timeout: 5), app.debugDescription)
+    }
+
+    private func capture(_ app: XCUIApplication, _ name: String) {
+        let attachment = XCTAttachment(screenshot: app.screenshot())
+        attachment.name = name
+        attachment.lifetime = .keepAlways
+        add(attachment)
+    }
+}
