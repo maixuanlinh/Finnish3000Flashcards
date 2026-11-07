@@ -42,7 +42,7 @@ struct PremiumView: View {
                     HStack(spacing: 24) {
                         Link("Privacy policy", destination: AppSupport.privacyURL)
                             .accessibilityIdentifier("premium.privacy")
-                        Link("Support", destination: AppSupport.supportURL)
+                        Link("Support", destination: AppSupport.emailURL)
                             .accessibilityIdentifier("premium.support")
                     }.font(.footnote)
                     if let preview, !premium.isPremium {

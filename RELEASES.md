@@ -1,5 +1,16 @@
 # Release notes and version policy
 
+## ios-v1.1.0-dev.6 — 7 November 2026
+
+Settings and Study menu refinement. iOS target **1.1.0 (36)**; Personal **0.23.3 (28)**. Development checkpoint; no store submission.
+
+- Remove Still learning / I know it from the Study More menu. Swipes and VoiceOver rating actions remain available.
+- Place Visit our website, Help & support, Privacy policy and version details directly in Settings. Remove the separate Help and privacy sheet.
+- Keep one **Report a problem** email action for bugs and feedback, with the support address visible and a draft containing the app version. No separate feature-request button. The Premium support link opens the same email draft.
+- Use the configured landing page at https://yki.essaykingapp.com/ and retain the existing published privacy-policy URL. Hosting returned HTTP 406 to scripted landing-page checks; live website navigation and sending email require manual confirmation.
+
+Validation: focused physical-iPhone UI test passed, checking the remaining Study menu, absent rating buttons, direct Settings links and absence of the old support sheet. Test uses isolated learning data; no live email is sent. [Website and report action](CommercialValidation/Screenshots/settings-website-and-report.png), [inline privacy](CommercialValidation/Screenshots/settings-inline-privacy.png), [Study menu](CommercialValidation/Screenshots/study-menu-without-rating-actions.png).
+
 ## ios-v1.1.0-dev.5 — 7 November 2026
 
 Study prototype refinement for owner review. iOS target **1.1.0 (35)**; Personal **0.23.2 (27)**. No store submission.

@@ -190,7 +190,6 @@ struct SettingsView: View {
     @Environment(AppNavigation.self) private var navigation
     @State private var showingPremium = false
     @State private var showingReminders = false
-    @State private var showingSupport = false
     @State private var showingOfflineStudy = false
 
     var body: some View {
@@ -202,24 +201,15 @@ struct SettingsView: View {
                     premiumCard
                     OfflineStudyRow { showingOfflineStudy = true }
                     reminderCard
-                    Button { showingSupport = true } label: {
-                        HStack(spacing: 14) {
-                            Image(systemName: "questionmark.circle").font(.title3)
-                                .frame(width: 44, height: 44).background(Palette.sage, in: Circle())
-                            Text("Help & support").font(.headline)
-                            Spacer()
-                            Image(systemName: "chevron.right").font(.caption)
-                        }.foregroundStyle(Palette.forest).padding(16)
-                            .background(.white, in: RoundedRectangle(cornerRadius: 23))
-                    }.buttonStyle(.plain).accessibilityIdentifier("settings.support")
+                    SettingsSupportSection()
                 }.frame(maxWidth: 580).padding(22).frame(maxWidth: .infinity)
-            }.background(Palette.background).toolbar(.hidden, for: .navigationBar)
+            }.accessibilityIdentifier("settings.content")
+                .background(Palette.background).toolbar(.hidden, for: .navigationBar)
             .sheet(isPresented: $showingPremium) { PremiumView() }
             .sheet(isPresented: $showingReminders) { WordReminderSettingsView(settings: reminders.settings) }
-            .sheet(isPresented: $showingSupport) { SupportView() }
             .sheet(isPresented: $showingOfflineStudy) { OfflineStudyView() }
             .onChange(of: navigation.request) { _, _ in
-                showingPremium = false; showingReminders = false; showingSupport = false; showingOfflineStudy = false
+                showingPremium = false; showingReminders = false; showingOfflineStudy = false
             }
         }
     }

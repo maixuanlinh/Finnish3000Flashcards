@@ -197,12 +197,6 @@ struct StudyView: View {
                         playback.stop(); englishFirst = !showsEnglishFirst; navigation.promptEnglishFirst = nil; revealed = false
                     }
                     Button("Shuffle this session", systemImage: "shuffle") { playback.stop(); queue.shuffle(); revealed = false }
-                    Section("Mark this word") {
-                        Button("Still learning", systemImage: "arrow.left") { rate(.learning) }
-                            .accessibilityIdentifier("review.learning")
-                        Button("I know it", systemImage: "checkmark") { rate(.known) }
-                            .accessibilityIdentifier("review.known")
-                    }.disabled(current == nil || advancing)
                 } label: { toolbarIcon("ellipsis") }
                 .accessibilityLabel("Study options").accessibilityIdentifier("study.options")
             }

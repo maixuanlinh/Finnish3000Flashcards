@@ -24,7 +24,7 @@ final class CommercialReleaseTests: XCTestCase {
         capture(app, "commercial-free-complete-lesson")
         app.buttons["detail.done"].tap()
         app.buttons["Progress"].firstMatch.tap()
-        XCTAssertTrue(app.buttons["settings.support"].waitForExistence(timeout: 5))
+        XCTAssertTrue(app.staticTexts["Currently learning"].waitForExistence(timeout: 5))
         capture(app, "commercial-progress")
         app.buttons["Settings"].firstMatch.tap()
         app.buttons["settings.offlineStudy"].tap()
@@ -32,14 +32,13 @@ final class CommercialReleaseTests: XCTestCase {
         XCTAssertTrue(app.switches["offline.wifiOnly"].exists)
         capture(app, "commercial-offline-study")
         app.buttons["Done"].tap()
-        app.buttons["settings.support"].tap()
-        XCTAssertTrue(app.buttons["support.done"].waitForExistence(timeout: 5))
-        XCTAssertTrue(app.descendants(matching: .any)["support.privacy"].exists)
-        XCTAssertTrue(app.descendants(matching: .any)["support.website"].exists)
-        XCTAssertTrue(app.descendants(matching: .any)["support.email"].exists)
-        capture(app, "commercial-help-and-privacy")
-        app.buttons["support.done"].tap()
-        app.buttons["Settings"].firstMatch.tap()
+        let privacy = app.descendants(matching: .any)["settings.privacy"].firstMatch
+        for _ in 0..<4 { if privacy.isHittable { break }; app.swipeUp() }
+        XCTAssertTrue(privacy.isHittable)
+        XCTAssertTrue(app.descendants(matching: .any)["settings.website"].firstMatch.exists)
+        XCTAssertTrue(app.descendants(matching: .any)["settings.report"].firstMatch.exists)
+        capture(app, "commercial-inline-help-and-privacy")
+        for _ in 0..<4 { if app.buttons["settings.premium"].isHittable { break }; app.swipeDown() }
         app.buttons["settings.premium"].tap()
         let buy = app.buttons["premium.buy"]
         let loaded = buy.waitForExistence(timeout: 30)
@@ -156,6 +155,33 @@ final class SettingsAndResumeFlowTests: XCTestCase {
         app.launch()
         XCTAssertTrue(app.buttons["card.flip"].waitForExistence(timeout: 30), app.debugDescription)
         return app
+    }
+
+    func testStudyMenuAndInlineSettingsSupport() {
+        let app = launch()
+        app.buttons["study.options"].tap()
+        XCTAssertTrue(app.buttons["Shuffle this session"].waitForExistence(timeout: 5))
+        XCTAssertFalse(app.buttons["review.known"].exists)
+        XCTAssertFalse(app.buttons["review.learning"].exists)
+        XCTAssertFalse(app.staticTexts["Mark this word"].exists)
+        capture(app, "study-menu-without-rating-actions")
+        app.coordinate(withNormalizedOffset: CGVector(dx: 0.5, dy: 0.3)).tap()
+        openTab("Settings", in: app)
+        let scroll = app.scrollViews["settings.content"]
+        let website = app.descendants(matching: .any)["settings.website"].firstMatch
+        let report = app.descendants(matching: .any)["settings.report"].firstMatch
+        let privacy = app.descendants(matching: .any)["settings.privacy"].firstMatch
+        for _ in 0..<4 { if report.isHittable { break }; scroll.swipeUp() }
+        XCTAssertTrue(website.exists)
+        XCTAssertTrue(report.isHittable)
+        XCTAssertFalse(app.buttons["settings.support"].exists)
+        XCTAssertFalse(app.staticTexts["Suggest a feature"].exists)
+        capture(app, "settings-website-and-report")
+        for _ in 0..<4 { if privacy.isHittable { break }; scroll.swipeUp() }
+        XCTAssertTrue(privacy.isHittable)
+        XCTAssertFalse(app.buttons["support.done"].exists)
+        scroll.swipeUp()
+        capture(app, "settings-inline-privacy")
     }
 
     func testProgressAndSettingsAreSeparateAndSleepScheduleIsEditable() throws {
