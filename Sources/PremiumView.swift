@@ -1,6 +1,7 @@
 import SwiftUI
 
 struct PremiumView: View {
+    @Environment(LessonMedia.self) private var media
     @Environment(\.dismiss) private var dismiss
     @Environment(PremiumStore.self) private var premium
     @Environment(StudyStore.self) private var store
@@ -89,6 +90,8 @@ struct PremiumView: View {
                 Button("Done") { dismiss() }.accessibilityIdentifier("premium.done")
             } }
             .task { if !premium.isPremium { await premium.loadOffer() } }
+            .onAppear { media.premiumOfferAppeared() }
+            .onDisappear { media.premiumOfferDisappeared() }
         }
     }
 

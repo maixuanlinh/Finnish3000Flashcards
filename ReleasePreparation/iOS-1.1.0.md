@@ -1,6 +1,6 @@
-# 3000 Finnish Words — iOS 1.1.0 (37)
+# 3000 Finnish Words — iOS 1.1.0 (38)
 
-Prepared 7 November 2026. Git checkpoint: `ios-v1.1.0-rc.1`.
+Prepared 7 November 2026. Git checkpoint: `ios-v1.1.0-rc.2`.
 
 ## Identity and existing buyers
 
@@ -20,7 +20,7 @@ The archive’s bundle ID and name were compared with build 30. Startup reads th
 | --- | --- | --- |
 | Basic vocabulary / word pronunciation | All 3,000 words | All 3,000 words |
 | Complete illustrated lessons | 211 A-set lessons | All 3,000 lessons |
-| Offline download | A set | Entire collection |
+| Offline download | A set saves automatically, Wi-Fi/mobile data | One-time optional full download; Wi-Fi / current connection / Later |
 | Word reminders | Upgrade required | Repeating schedule and sleep hours |
 | Automatic study | Free A-set route | Full collection |
 
@@ -37,13 +37,25 @@ The archive’s bundle ID and name were compared with build 30. Startup reads th
 
 A local StoreKit transaction returned success approximately one second before `currentEntitlements` became available. The purchase flow now retries the verified entitlement check up to ten times, 300 ms apart; it does not grant access merely because a purchase button was tapped. [Apple’s currentEntitlements documentation](https://developer.apple.com/documentation/storekit/transaction/currententitlements).
 
+## English offline onboarding and background transfers — build 38
+
+The automatic Free path downloads only the 211 A-set lesson assets (about 32 MB beyond the starter media), including on mobile data. It never queues a mixed full pack. Premium users are asked once on first use, including existing purchasers; new purchasers are asked after their purchase sheet closes. Later and interactive dismissal are remembered. Downloading can continue while studying or switching tabs, with a progress link in Study and controls in Settings. Explicitly pausing/removing Free downloads disables automatic restart until the user chooses to download again.
+
+Background URLSession tasks retain their exact verified range requests and persistent plan. iOS controls their background timing. Force-quitting can stop transfers; on reopening, the app reconciles pending tasks and missing verified files. Hash validation and filesystem work run off the main actor. Networking is low priority with a two-connection host limit. Existing completed files are kept across pauses and app updates; the content manifest is unchanged. A full collection download reuses existing whole saved packs; assets previously saved individually for Free are cleaned up as their full packs are saved to avoid keeping both copies.
+
+Ten retained media/policy unit checks passed. Physical-iPhone UI checks passed for automatic Free download during usable study, pause/relaunch, existing Premium prompt/Later/relaunch, and the prompt after a successful new purchase. Test media and preferences are isolated; Premium is granted only through local verified StoreKit transactions in those tests.
+
+A separate real-profile check left the app via Home for approximately 12 seconds. Its banner was at 7% before leaving. After returning, all **1,034 missing Free files, 31,932,680 bytes**, were present. Saved names and sizes exactly matched the catalog; **622 files have modification times between Home and reactivation**. Each save validates SHA-256. This check did not rate any word or reset the learning store. This is observed successful background delivery, not a promise about iOS scheduling on every device/network.
+
+Screens: [English Premium prompt](../CommercialValidation/Screenshots/offline-premium-first-download-prompt.png), [after upgrade](../CommercialValidation/Screenshots/offline-prompt-after-upgrade.png), [study and progress](../CommercialValidation/Screenshots/offline-auto-free-while-studying.png), [download controls](../CommercialValidation/Screenshots/offline-free-download-progress.png).
+
 ## Local artifacts
 
-- Archive: `build/Commercial/Finnish3000-1.1.0-build37.xcarchive`
-- Signed App Store IPA: `build/Commercial/Export-1.1.0-build37/SisuCards.ipa`
-- IPA size: **25,470,699 bytes**; Apple determines actual device download size.
-- IPA SHA-256: `214e62cce5b9baea51455205372f80cd655d11350a2260c8ac9ad4b808fdccf8`
-- Verified deep code signature, distribution profile, debugger disabled, app/version identity and included privacy manifest. Export completed successfully after a transient App Store Connect network warning.
+- Archive: `build/Commercial/Finnish3000-1.1.0-build38.xcarchive`
+- Signed App Store IPA: `build/Commercial/Export-1.1.0-build38/SisuCards.ipa`
+- IPA size: **25,587,472 bytes**; Apple determines actual device download size.
+- IPA SHA-256: `5d36851b0a1613e760573017498247d0e62bbad9651c7f9c1086f020a76cd707`
+- Verified deep code signature, distribution profile, debugger disabled, app/version identity and included privacy manifest. Export completed successfully. Build 38 supersedes build 37 for testing; neither was uploaded in these checkpoints.
 - Archive and IPA stay local, outside Git. Release-configured customer app installed and opened on the physical iPhone.
 
 ## Remaining before public release

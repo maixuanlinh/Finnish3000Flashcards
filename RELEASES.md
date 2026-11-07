@@ -1,5 +1,19 @@
 # Release notes and version policy
 
+## ios-v1.1.0-rc.2 — 7 November 2026
+
+Customer release candidate **1.1.0 (38)**. Final Release installed/opened on the owner’s iPhone; refreshed signed App Store IPA exported locally. Personal configuration **0.23.5 (30)** remains separate. No upload or store submission.
+
+- Automatically save the 211 A-set Free lessons over Wi-Fi or mobile data. No first-launch decision or wait screen is required. Existing starter assets and verified saved files are reused.
+- Offer Premium users one English download sheet: **Download on Wi-Fi**, **Download now** (including mobile data), or **Later**. Existing Premium buyers see it once if needed; newly upgraded users see it after closing the purchase sheet. Dismissing the sheet counts as Later. Settings remains available afterward.
+- Use persistent iOS background download tasks, a saved plan, exact verified byte ranges, low-priority networking, SHA-256 validation and background-session completion handling. Queue downloads off the main actor, retaining completed files. Stop Premium transfers when access is revoked. Resume paused requests without discarding their session progress when scope/network policy is unchanged.
+- Keep Study usable and display a compact download-status row. Add English progress/waiting messages and controls in Settings. Remember explicit Free pause/removal, and avoid downloading the collection every day or asking again after Later.
+- Keep the app identity, Premium product, word IDs and learning schema unchanged. Automated onboarding checks use isolated media/preferences and local StoreKit purchases.
+
+Validation: ten relevant media/policy unit checks passed, three distinct iPhone onboarding UI flows passed (automatic Free study/pause/relaunch; existing Premium Later/relaunch; new purchase then offline prompt), and a real customer-profile background check passed. The phone saved all **1,034 additional Free media files (31,932,680 bytes)**; names/sizes exactly matched the manifest. File timestamps show **622 files saved while the app was offscreen**, before returning to it. Saving validates each file hash. The live check never rated or reset learning data. iOS scheduling and force-quit behavior still limit background execution; continuous execution is not promised.
+
+[English Premium prompt](CommercialValidation/Screenshots/offline-premium-first-download-prompt.png), [prompt after upgrading](CommercialValidation/Screenshots/offline-prompt-after-upgrade.png), [study during download](CommercialValidation/Screenshots/offline-auto-free-while-studying.png), [download controls](CommercialValidation/Screenshots/offline-free-download-progress.png). [Candidate details](ReleasePreparation/iOS-1.1.0.md).
+
 ## ios-v1.1.0-rc.1 — 7 November 2026
 
 Customer iOS release candidate **1.1.0 (37)**, named **3000 Finnish Words**. Archive and App Store distribution IPA exported and verified locally; Release installed on the owner’s iPhone. No upload, store metadata changes or submission. Personal configuration **0.23.4 (29)** remains separate.

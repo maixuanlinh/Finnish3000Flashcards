@@ -298,6 +298,65 @@ actor LessonMediaRepository {
         try finish(partial, pack: pack)
     }
 
+    func offlineTransfers(previewOnly: Bool) throws -> [OfflineTransfer] {
+        if !previewOnly {
+            for pack in missingPacks() where fileSize(partURL(pack)) == pack.bytes {
+                try finish(partURL(pack), pack: pack)
+            }
+            return missingPacks().map { pack in
+                let start = min(fileSize(partURL(pack)), pack.bytes)
+                return OfflineTransfer(id: pack.file, previewKey: nil, packFile: pack.file,
+                    url: baseURL.appending(path: pack.file), start: start, end: pack.bytes - 1,
+                    packBytes: pack.bytes, unitBytes: pack.bytes)
+            }.filter { $0.bytes > 0 }
+        }
+        var transfers: [OfflineTransfer] = []
+        for key in previewMissingKeys() {
+            guard let item = catalog.itemByKey[key], let pack = catalog.packByFile[item.pack] else { continue }
+            let cached = cacheDirectory.appending(path: item.sha256)
+            if let data = try? Data(contentsOf: cached), data.count == item.bytes, lessonMediaHash(data) == item.sha256 {
+                let saved = previewURL(item)
+                try FileManager.default.createDirectory(at: saved.deletingLastPathComponent(), withIntermediateDirectories: true)
+                try data.write(to: saved, options: .atomic)
+                continue
+            }
+            transfers.append(OfflineTransfer(id: key, previewKey: key, packFile: pack.file,
+                url: baseURL.appending(path: pack.file), start: item.offset,
+                end: item.offset + Int64(item.bytes) - 1, packBytes: pack.bytes, unitBytes: Int64(item.bytes)))
+        }
+        return transfers
+    }
+
+    func acceptOfflineTransfer(_ transfer: OfflineTransfer, file: URL, response: URLResponse?, previewOnly: Bool) throws {
+        guard let pack = catalog.packByFile[transfer.packFile], transfer.packBytes == pack.bytes,
+              transfer.url == baseURL.appending(path: pack.file), let response else { throw LessonMediaError.invalidResponse }
+        try validate(response, expectedStart: transfer.start, expectedEnd: transfer.end,
+                     total: pack.bytes, dataCount: Int(fileSize(file)))
+        if let key = transfer.previewKey {
+            guard previewKeys.contains(key), let item = catalog.itemByKey[key], item.pack == pack.file,
+                  transfer.start == item.offset, transfer.bytes == Int64(item.bytes),
+                  transfer.unitBytes == Int64(item.bytes) else { throw LessonMediaError.unavailable }
+            let data = try Data(contentsOf: file)
+            guard lessonMediaHash(data) == item.sha256 else { throw LessonMediaError.verificationFailed }
+            let destination = previewURL(item)
+            try FileManager.default.createDirectory(at: destination.deletingLastPathComponent(), withIntermediateDirectories: true)
+            try data.write(to: destination, options: .atomic)
+        } else {
+            guard !previewOnly, transfer.end == pack.bytes - 1, transfer.unitBytes == pack.bytes,
+                  transfer.start == min(fileSize(partURL(pack)), pack.bytes) else { throw LessonMediaError.unavailable }
+            let partial = partURL(pack)
+            if transfer.start == 0 {
+                try? FileManager.default.removeItem(at: partial)
+                try FileManager.default.copyItem(at: file, to: partial)
+            } else {
+                let handle = try FileHandle(forWritingTo: partial)
+                defer { try? handle.close() }
+                try handle.seekToEnd(); try handle.write(contentsOf: Data(contentsOf: file))
+            }
+            try finish(partial, pack: pack)
+        }
+    }
+
     func missingPacks() -> [LessonMediaPack] {
         catalog.packs.filter { bundledURL($0) == nil && verifiedFullURL($0) == nil }
     }
@@ -356,6 +415,7 @@ actor LessonMediaRepository {
         verifiedPacks[pack.file] = (Int64(values?.fileSize ?? 0), values?.contentModificationDate)
         for item in catalog.itemByKey.values where item.pack == pack.file {
             try? FileManager.default.removeItem(at: cacheDirectory.appending(path: item.sha256))
+            try? FileManager.default.removeItem(at: previewURL(item))
         }
     }
 
@@ -387,28 +447,148 @@ actor LessonMediaRepository {
     }
 }
 
+struct OfflineDownloadPreferences {
+    let defaults: UserDefaults
+    var automaticFreeEnabled: Bool {
+        get { defaults.object(forKey: "automaticFreeOfflineDownload") as? Bool ?? true }
+        nonmutating set { defaults.set(newValue, forKey: "automaticFreeOfflineDownload") }
+    }
+    var premiumPromptHandled: Bool {
+        get { defaults.bool(forKey: "premiumOfflinePromptHandled") }
+        nonmutating set { defaults.set(newValue, forKey: "premiumOfflinePromptHandled") }
+    }
+    func shouldOfferPremium(premium: Bool, ready: Bool) -> Bool {
+        premium && !ready && !premiumPromptHandled
+    }
+}
+
 @MainActor
 @Observable
 final class LessonMedia {
     static let shared = LessonMedia()
-
     private(set) var status = LessonMediaStatus()
     private(set) var premiumAccess = false
     private(set) var isDownloading = false
+    private(set) var activePreviewOnly = true
+    private(set) var activeStatus = LessonMediaStatus()
     private(set) var message: String?
+    var showingPremiumDownloadPrompt = false
     @ObservationIgnored private var repository: LessonMediaRepository?
-    @ObservationIgnored private var downloadTask: Task<Void, Never>?
-    @ObservationIgnored private var downloadGeneration = 0
+    @ObservationIgnored private var manager: OfflineDownloadManager?
+    @ObservationIgnored private var updatesTask: Task<Void, Never>?
+    @ObservationIgnored private var commandTask: Task<Void, Never>?
+    @ObservationIgnored private var activationRevision = 0
+    @ObservationIgnored private var activated = false
+    @ObservationIgnored private var promptRequested = false
+    @ObservationIgnored private var purchaseSheetVisible = false
+    @ObservationIgnored private var purchasePresentation = 0
+    @ObservationIgnored private var commandPending = false
+    @ObservationIgnored private let preferences: OfflineDownloadPreferences
+    @ObservationIgnored private let automaticEnabled: Bool
 
-    init(bundle: Bundle = .main, baseURL: URL = hostedLessonMediaURL) {
-        do { repository = try LessonMediaRepository(bundle: bundle, baseURL: baseURL) }
-        catch { status = LessonMediaStatus(loading: false, error: error.localizedDescription) }
+    init(bundle: Bundle = .main, baseURL: URL = hostedLessonMediaURL, storageRoot: URL? = nil,
+         defaults: UserDefaults = .standard, automaticEnabled: Bool? = nil) {
+        let args = ProcessInfo.processInfo.arguments
+        var testing = false
+        var root = storageRoot
+        var preferenceStore = defaults
+        #if DEBUG
+        testing = args.contains("-ui-testing") || ProcessInfo.processInfo.environment["XCTestConfigurationFilePath"] != nil
+        if args.contains("-ui-testing"), storageRoot == nil {
+            let index = args.firstIndex(of: "-offline-test-id")
+            let name = index.flatMap { args.indices.contains($0 + 1) ? args[$0 + 1] : nil } ?? UUID().uuidString
+            let safeName = name.filter { $0.isLetter || $0.isNumber || $0 == "-" }
+            root = URL.applicationSupportDirectory.appending(path: "OfflineUITests/" + safeName)
+            preferenceStore = UserDefaults(suiteName: "offline-ui-" + safeName)!
+        }
+        #endif
+        preferences = OfflineDownloadPreferences(defaults: preferenceStore)
+        self.automaticEnabled = automaticEnabled ?? (!testing || args.contains("-test-download-onboarding"))
+        do {
+            let repository = try LessonMediaRepository(bundle: bundle, baseURL: baseURL, storageRoot: root)
+            self.repository = repository
+            let transferRoot = (root ?? URL.applicationSupportDirectory).appending(path: "OfflineTransfers")
+            manager = OfflineDownloadManager(repository: repository, root: transferRoot,
+                                             configuration: testing ? .ephemeral : nil)
+        } catch { status = LessonMediaStatus(loading: false, error: error.localizedDescription) }
     }
 
+    private func connect() async {
+        guard updatesTask == nil, let manager else { return }
+        let stream = await manager.updates()
+        updatesTask = Task { [weak self] in
+            for await snapshot in stream {
+                guard let self else { return }
+                self.apply(snapshot)
+            }
+        }
+    }
+
+    private func apply(_ snapshot: OfflineDownloadSnapshot) {
+        isDownloading = snapshot.downloading
+        activePreviewOnly = snapshot.plan?.previewOnly ?? true
+        activeStatus = snapshot.status
+        message = snapshot.message
+        if snapshot.plan?.previewOnly == !premiumAccess { status = snapshot.status }
+    }
+
+    func reconnectBackgroundDownloads() async { await connect() }
+
     func setPremium(_ value: Bool) async {
-        if value != premiumAccess { pauseDownload() }
+        let changed = value != premiumAccess
         premiumAccess = value
+        if changed && activated { await manager?.restore(premium: value) }
         await refresh()
+    }
+
+    func activateDownloads(premium: Bool, offerPrompt: Bool = false) async {
+        guard automaticEnabled else { return }
+        if offerPrompt { promptRequested = true }
+        activationRevision += 1
+        let revision = activationRevision
+        await connect()
+        premiumAccess = premium
+        await manager?.restore(premium: premium)
+        if let manager { apply(await manager.currentSnapshot()) }
+        await refresh()
+        guard revision == activationRevision else { return }
+        activated = true
+        if !premium { promptRequested = false }
+        if promptRequested && !purchaseSheetVisible && !status.loading && status.error == nil && preferences.shouldOfferPremium(premium: premium, ready: status.isReady) {
+            promptRequested = false
+            showingPremiumDownloadPrompt = true
+        } else if !premium && preferences.automaticFreeEnabled && !status.isReady && !isDownloading && !commandPending {
+            startFreeDownload()
+        }
+    }
+
+    func premiumOfferAppeared() {
+        purchasePresentation += 1
+        purchaseSheetVisible = true
+    }
+
+    func premiumOfferDisappeared() {
+        let presentation = purchasePresentation
+        Task { [weak self] in
+            try? await Task.sleep(for: .milliseconds(600))
+            guard let self, self.purchasePresentation == presentation else { return }
+            self.purchaseSheetVisible = false
+            if self.premiumAccess { await self.activateDownloads(premium: true, offerPrompt: true) }
+        }
+    }
+
+    func choosePremiumDownload(wifiOnly: Bool?) {
+        preferences.premiumPromptHandled = true
+        promptRequested = false
+        showingPremiumDownloadPrompt = false
+        if let wifiOnly {
+            preferences.defaults.set(wifiOnly, forKey: "offlineDownloadWiFiOnly")
+            startOfflineDownload(wifiOnly: wifiOnly)
+        } else if preferences.automaticFreeEnabled && !isDownloading { startFreeDownload() }
+    }
+
+    func dismissPremiumDownloadPrompt() {
+        if !preferences.premiumPromptHandled { choosePremiumDownload(wifiOnly: nil) }
     }
 
     func refresh() async {
@@ -418,64 +598,55 @@ final class LessonMedia {
 
     func data(for key: String) async throws -> Data {
         guard let repository else { throw LessonMediaError.missingManifest }
-        let data = try await repository.data(for: key)
-        status = await repository.status(previewOnly: !premiumAccess)
-        return data
+        return try await repository.data(for: key)
+    }
+
+    private func startFreeDownload() {
+        guard !isDownloading, !commandPending else { return }
+        commandPending = true
+        isDownloading = true; activePreviewOnly = true
+        let previous = commandTask
+        commandTask = Task {
+            await previous?.value
+            await connect()
+            await manager?.begin(previewOnly: true, wifiOnly: false)
+            commandPending = false
+        }
     }
 
     func startOfflineDownload(wifiOnly: Bool) {
-        guard !isDownloading, let repository else { return }
-        downloadGeneration += 1
-        let generation = downloadGeneration
-        message = nil; isDownloading = true
-        downloadTask = Task { [weak self] in
-            guard let self else { return }
-            do {
-                let current = await repository.status(previewOnly: !premiumAccess)
-                let capacity = await repository.availableCapacity()
-                if capacity > 0 && capacity < current.remainingBytes + 50_000_000 { throw LessonMediaError.insufficientStorage }
-                if premiumAccess {
-                    for pack in await repository.missingPacks() {
-                        try Task.checkCancellation()
-                        guard premiumAccess else { throw CancellationError() }
-                        try await repository.download(pack, allowsCellular: !wifiOnly)
-                        guard generation == downloadGeneration else { return }
-                        status = await repository.status(previewOnly: !premiumAccess)
-                    }
-                } else {
-                    for (index, key) in await repository.previewMissingKeys().enumerated() {
-                        try Task.checkCancellation()
-                        try await repository.downloadPreviewAsset(key, allowsCellular: !wifiOnly)
-                        guard generation == downloadGeneration else { return }
-                        if index % 20 == 0 { status = await repository.status(previewOnly: true) }
-                    }
-                }
-                guard generation == downloadGeneration else { return }
-                status = await repository.status(previewOnly: !premiumAccess)
-                message = "Offline lessons are ready."
-            } catch is CancellationError {
-                if generation == downloadGeneration { status = await repository.status(previewOnly: !premiumAccess) }
-            } catch {
-                guard generation == downloadGeneration else { return }
-                status = await repository.status(previewOnly: !premiumAccess)
-                message = error.localizedDescription
-            }
-            if generation == downloadGeneration { isDownloading = false; downloadTask = nil }
+        if premiumAccess { preferences.premiumPromptHandled = true }
+        else { preferences.automaticFreeEnabled = true }
+        isDownloading = true; activePreviewOnly = !premiumAccess
+        let previewOnly = !premiumAccess
+        let previous = commandTask
+        commandTask = Task {
+            await previous?.value
+            await connect()
+            await manager?.restore(premium: premiumAccess)
+            await manager?.begin(previewOnly: previewOnly, wifiOnly: wifiOnly)
         }
     }
 
     func pauseDownload() {
-        downloadGeneration += 1
-        downloadTask?.cancel(); downloadTask = nil; isDownloading = false
-        Task { await refresh() }
+        if activePreviewOnly { preferences.automaticFreeEnabled = false }
+        isDownloading = false
+        let previous = commandTask
+        commandTask = Task { await previous?.value; await manager?.pause() }
     }
 
     func removeDownloads() async {
-        pauseDownload()
+        preferences.automaticFreeEnabled = false
+        preferences.premiumPromptHandled = true
+        showingPremiumDownloadPrompt = false
+        await commandTask?.value
+        await manager?.cancel()
         guard let repository else { return }
         do {
             try await repository.removeDownloadedMedia()
+            isDownloading = false
             status = await repository.status(previewOnly: !premiumAccess)
+            activeStatus = status
             message = "Downloaded lessons were removed."
         } catch { message = error.localizedDescription }
     }

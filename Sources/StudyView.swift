@@ -4,6 +4,7 @@ import AVFoundation
 struct StudyView: View {
     @Environment(StudyStore.self) private var store
     @Environment(PremiumStore.self) private var premium
+    @Environment(LessonMedia.self) private var media
     @Environment(\.scenePhase) private var scenePhase
     @Environment(AppNavigation.self) private var navigation
     @AppStorage("englishFirst") private var englishFirst = true
@@ -22,6 +23,7 @@ struct StudyView: View {
     @State private var speech: SpeechPlayer?
     @State private var playback = AutoStudyPlayer()
     @State private var showingPlayback = false
+    @State private var showingOfflineDownload = false
     @State private var showingPremium = false
     @AppStorage("recallSeconds") private var recallSeconds = 3.0
     @AppStorage("answerSeconds") private var answerSeconds = 2.0
@@ -52,6 +54,9 @@ struct StudyView: View {
         NavigationStack {
             VStack(spacing: 12) {
                 controls
+                if media.isDownloading {
+                    DownloadStudyNotice { showingOfflineDownload = true }
+                }
                 if let word = current {
                     cardStack(word)
                         .frame(maxWidth: .infinity, maxHeight: .infinity)
@@ -88,6 +93,7 @@ struct StudyView: View {
             .onChange(of: premium.isPremium) { _, owns in
                 if !owns { playback.stop(); speech?.stop() }
             }
+            .sheet(isPresented: $showingOfflineDownload) { OfflineStudyView() }
             .sheet(isPresented: $showingPlayback) { AutoStudyOptions(start: startAutomatic, stop: playback.isActive ? stopAutomatic : nil) }
             .sheet(isPresented: $showingFilters) {
                 VocabularyFilterSheet(words: store.words, scope: navigation.scope,

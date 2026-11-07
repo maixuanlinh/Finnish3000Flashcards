@@ -99,6 +99,55 @@ final class PremiumFlowTests: XCTestCase {
         XCTAssertFalse(app.staticTexts["detail.sentence"].exists)
     }
 
+    func testPremiumOfflinePromptIsEnglishAndLaterDoesNotRepeat() async throws {
+        defer { purchases.clearTransactions() }
+        app.terminate()
+        _ = try await purchases.buyProduct(identifier: productID)
+        try await Task.sleep(for: .seconds(1))
+        app.launchArguments += ["-test-download-onboarding", "-offline-test-id", UUID().uuidString]
+        app.launch()
+        XCTAssertTrue(app.buttons["offlinePrompt.later"].waitForExistence(timeout: 25), app.debugDescription)
+        XCTAssertTrue(app.buttons["offlinePrompt.wifi"].exists)
+        XCTAssertTrue(app.buttons["offlinePrompt.now"].exists)
+        XCTAssertTrue(app.staticTexts["Learn anywhere, even offline"].exists)
+        capture("offline-premium-first-download-prompt")
+        app.buttons["offlinePrompt.later"].tap()
+        XCTAssertTrue(app.buttons["card.flip"].waitForExistence(timeout: 5))
+        let notice = app.buttons["study.downloadProgress"]
+        if notice.waitForExistence(timeout: 15) {
+            notice.tap()
+            if app.buttons["offline.pause"].waitForExistence(timeout: 5) { app.buttons["offline.pause"].tap() }
+            app.buttons["Done"].tap()
+        }
+        app.terminate(); app.launch()
+        XCTAssertTrue(app.buttons["card.flip"].waitForExistence(timeout: 30))
+        XCTAssertFalse(app.buttons["offlinePrompt.later"].waitForExistence(timeout: 3))
+    }
+
+    func testUpgradeOffersOfflineDownloadAfterPurchaseSheetCloses() async throws {
+        defer { purchases.clearTransactions() }
+        app.terminate()
+        app.launchArguments += ["-test-download-onboarding", "-offline-test-id", UUID().uuidString]
+        app.launch()
+        XCTAssertTrue(app.buttons["card.flip"].waitForExistence(timeout: 30))
+        openBook()
+        app.buttons["lesson.locked"].tap()
+        XCTAssertTrue(app.buttons["premium.buy"].waitForExistence(timeout: 15))
+        app.buttons["premium.buy"].tap()
+        XCTAssertTrue(app.staticTexts["premium.unlocked"].waitForExistence(timeout: 15), app.debugDescription)
+        XCTAssertFalse(app.buttons["offlinePrompt.later"].exists)
+        app.buttons["premium.done"].tap()
+        XCTAssertTrue(app.buttons["offlinePrompt.later"].waitForExistence(timeout: 10), app.debugDescription)
+        capture("offline-prompt-after-upgrade")
+        app.buttons["offlinePrompt.later"].tap()
+        if app.buttons["detail.done"].exists { app.buttons["detail.done"].tap() }
+        let notice = app.buttons["study.downloadProgress"]
+        if notice.waitForExistence(timeout: 3) {
+            notice.tap()
+            if app.buttons["offline.pause"].waitForExistence(timeout: 5) { app.buttons["offline.pause"].tap() }
+        }
+    }
+
     func testMixedAutoplayOffersFreeASetAndAPlaybackWorks() {
         app.buttons["study.autoplay"].tap()
         XCTAssertTrue(app.buttons["premium.buy"].waitForExistence(timeout: 15))

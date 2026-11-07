@@ -4,6 +4,62 @@ import UIKit
 @testable import SisuCards
 
 final class LessonMediaTests: XCTestCase {
+    func testDownloadDecisionsPersistWithoutRepeatingThePremiumPrompt() throws {
+        let name = "OfflinePolicy-" + UUID().uuidString
+        let defaults = try XCTUnwrap(UserDefaults(suiteName: name))
+        defer { defaults.removePersistentDomain(forName: name) }
+        let policy = OfflineDownloadPreferences(defaults: defaults)
+        XCTAssertTrue(policy.automaticFreeEnabled)
+        XCTAssertFalse(policy.shouldOfferPremium(premium: false, ready: false))
+        XCTAssertTrue(policy.shouldOfferPremium(premium: true, ready: false))
+        XCTAssertFalse(policy.shouldOfferPremium(premium: true, ready: true))
+        policy.premiumPromptHandled = true
+        policy.automaticFreeEnabled = false
+        let reopened = OfflineDownloadPreferences(defaults: try XCTUnwrap(UserDefaults(suiteName: name)))
+        XCTAssertFalse(reopened.automaticFreeEnabled)
+        XCTAssertFalse(reopened.shouldOfferPremium(premium: true, ready: false))
+    }
+
+    func testBackgroundFreePlanContainsOnlyExactAllowedRangesAndAllowsMobileData() async throws {
+        let root = URL.temporaryDirectory.appending(path: "OfflinePlan-" + UUID().uuidString)
+        defer { try? FileManager.default.removeItem(at: root) }
+        let repository = try LessonMediaRepository(bundle: .main, baseURL: URL(string: "https://example.invalid/")!, storageRoot: root)
+        let transfers = try await repository.offlineTransfers(previewOnly: true)
+        let catalog = await repository.catalog
+        let free = await repository.previewKeys
+        XCTAssertFalse(transfers.isEmpty)
+        XCTAssertEqual(Set(transfers.map(\.id)).count, transfers.count)
+        for transfer in transfers {
+            let key = try XCTUnwrap(transfer.previewKey)
+            let item = try XCTUnwrap(catalog.itemByKey[key])
+            XCTAssertTrue(free.contains(key))
+            XCTAssertEqual(transfer.start, item.offset)
+            XCTAssertEqual(transfer.bytes, Int64(item.bytes))
+            XCTAssertTrue(transfer.request(wifiOnly: false).allowsCellularAccess)
+            XCTAssertFalse(transfer.request(wifiOnly: true).allowsCellularAccess)
+            XCTAssertEqual(transfer.request(wifiOnly: false).value(forHTTPHeaderField: "Range"), "bytes=\(transfer.start)-\(transfer.end)")
+        }
+    }
+
+    func testFreeBackgroundReceiverRejectsAnEntireMixedPack() async throws {
+        let root = URL.temporaryDirectory.appending(path: "OfflineReceive-" + UUID().uuidString)
+        defer { try? FileManager.default.removeItem(at: root) }
+        let repository = try LessonMediaRepository(bundle: .main, baseURL: URL(string: "https://example.invalid/")!, storageRoot: root)
+        let full = try await repository.offlineTransfers(previewOnly: false)
+        let transfer = try XCTUnwrap(full.first)
+        let file = root.appending(path: "untrusted-download")
+        try Data(count: Int(transfer.bytes)).write(to: file)
+        let response = try XCTUnwrap(HTTPURLResponse(url: transfer.url, statusCode: 206, httpVersion: nil,
+            headerFields: ["Content-Range": "bytes \(transfer.start)-\(transfer.end)/\(transfer.packBytes)"]))
+        do {
+            try await repository.acceptOfflineTransfer(transfer, file: file, response: response, previewOnly: true)
+            XCTFail("A Free download must never accept a mixed Premium pack")
+        } catch LessonMediaError.unavailable { }
+        let state = await repository.status()
+        XCTAssertEqual(state.downloadedBytes, 0)
+    }
+
+
     @MainActor
     func testFreeOfflineAssetsCoverOnlyThe211ASetLessons() async throws {
         let root = URL.temporaryDirectory.appending(path: "PreviewAccess-" + UUID().uuidString)

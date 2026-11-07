@@ -1,4 +1,5 @@
 import XCTest
+import StoreKitTest
 
 @MainActor
 final class CommercialReleaseTests: XCTestCase {
@@ -29,7 +30,7 @@ final class CommercialReleaseTests: XCTestCase {
         app.buttons["Settings"].firstMatch.tap()
         app.buttons["settings.offlineStudy"].tap()
         XCTAssertTrue(app.buttons["offline.download"].waitForExistence(timeout: 5))
-        XCTAssertTrue(app.switches["offline.wifiOnly"].exists)
+        XCTAssertTrue(app.switches["offline.wifiOnly"].exists || app.staticTexts["Your Free lessons download automatically over Wi-Fi or mobile data. You can pause at any time."].exists)
         capture(app, "commercial-offline-study")
         app.buttons["Done"].tap()
         let privacy = app.descendants(matching: .any)["settings.privacy"].firstMatch
@@ -187,6 +188,29 @@ final class SettingsAndResumeFlowTests: XCTestCase {
         capture(app, "settings-inline-privacy")
     }
 
+    func testAutomaticFreeDownloadLeavesStudyUsableAndRemembersPause() throws {
+        let config = try XCTUnwrap(Bundle(for: Self.self).url(forResource: "SisuCards", withExtension: "storekit"))
+        let purchases = try SKTestSession(contentsOf: config)
+        purchases.resetToDefaultState(); purchases.clearTransactions()
+        defer { purchases.clearTransactions() }
+        let id = UUID().uuidString
+        let app = launch(["-ui-testing", "-test-download-onboarding", "-offline-test-id", id])
+        let notice = app.buttons["study.downloadProgress"]
+        XCTAssertTrue(notice.waitForExistence(timeout: 25), app.debugDescription)
+        XCTAssertFalse(app.buttons["offlinePrompt.later"].exists)
+        app.buttons["card.flip"].tap()
+        XCTAssertTrue(app.staticTexts["card.answer"].exists || app.staticTexts["card.finnish"].exists || app.staticTexts["card.sentence"].exists)
+        capture(app, "offline-auto-free-while-studying")
+        notice.tap()
+        XCTAssertTrue(app.buttons["offline.pause"].waitForExistence(timeout: 10))
+        capture(app, "offline-free-download-progress")
+        app.buttons["offline.pause"].tap()
+        app.buttons["Done"].tap()
+        app.terminate(); app.launch()
+        XCTAssertTrue(app.buttons["card.flip"].waitForExistence(timeout: 30))
+        XCTAssertFalse(notice.waitForExistence(timeout: 3))
+    }
+
     func testProgressAndSettingsAreSeparateAndSleepScheduleIsEditable() throws {
         let app = launch()
         openTab("Progress", in: app)
@@ -342,5 +366,37 @@ final class StudyToolbarPrototypeTests: XCTestCase {
         app.buttons["playback.stop"].tap()
         XCTAssertTrue(app.buttons["review.undo"].exists)
         XCTAssertFalse(app.buttons["playback.next"].exists)
+    }
+}
+
+// Run explicitly on the owner's phone. Uses real downloaded media but never rates a word
+// or resets the learning store. Other UI checks use isolated test data and sessions.
+@MainActor
+final class LiveOfflineDownloadTests: XCTestCase {
+    func testCustomerDownloadSurvivesLeavingTheApp() async throws {
+        continueAfterFailure = false
+        let app = XCUIApplication()
+        app.launchArguments = []
+        app.launch()
+        XCTAssertTrue(app.buttons["card.flip"].waitForExistence(timeout: 30))
+        let notice = app.buttons["study.downloadProgress"]
+        guard notice.waitForExistence(timeout: 20) else {
+            throw XCTSkip("No active automatic download: it may already be saved, paused by the owner, or awaiting a Premium choice.")
+        }
+        let before = notice.label
+        XCUIDevice.shared.press(.home)
+        try await Task.sleep(for: .seconds(12))
+        app.activate()
+        XCTAssertTrue(app.buttons["card.flip"].waitForExistence(timeout: 20))
+        let evidence = XCTAttachment(string: "Before leaving: \(before)\nAfter returning: \(notice.exists ? notice.label : "download finished")")
+        evidence.name = "live-background-transfer-progress"; evidence.lifetime = .keepAlways; add(evidence)
+        let screenshot = XCTAttachment(screenshot: app.screenshot())
+        screenshot.name = "offline-live-after-background"; screenshot.lifetime = .keepAlways; add(screenshot)
+        XCTAssertTrue(app.buttons["study.playbackSettings"].isHittable)
+        if notice.exists {
+            notice.tap()
+            XCTAssertTrue(app.buttons["offline.pause"].waitForExistence(timeout: 10))
+            app.buttons["Done"].tap()
+        }
     }
 }

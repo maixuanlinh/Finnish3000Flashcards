@@ -12,9 +12,9 @@ struct OfflineStudyView: View {
             ScrollView {
                 VStack(alignment: .leading, spacing: 20) {
                     VStack(alignment: .leading, spacing: 10) {
-                        Image(systemName: media.status.isReady ? "checkmark.circle.fill" : "arrow.down.circle.fill")
+                        Image(systemName: displayStatus.isReady ? "checkmark.circle.fill" : "arrow.down.circle.fill")
                             .font(.system(size: 42)).foregroundStyle(Palette.forest)
-                        Text(media.status.isReady ? "Ready for offline study" : "Download for offline study")
+                        Text(displayStatus.isReady ? "Ready for offline study" : "Download for offline study")
                             .font(.system(size: 28, weight: .semibold, design: .serif)).foregroundStyle(Palette.ink)
                         Text(premium.isPremium ? "Save the complete collection’s images and pronunciation for studying without internet. Downloaded media occupies storage on this device." : "Save images and pronunciation for the 211 free A-set lessons. Upgrade to Premium for the full 3,000-word offline collection.")
                             .font(.subheadline).foregroundStyle(Palette.muted)
@@ -25,20 +25,21 @@ struct OfflineStudyView: View {
                             Label(premium.isPremium ? "Complete collection" : "Free A-set lessons", systemImage: "photo.stack")
                                 .font(.headline).foregroundStyle(Palette.ink)
                             Spacer()
-                            Text(ByteCountFormatter.lessonMedia.string(fromByteCount: media.status.totalBytes))
+                            Text(ByteCountFormatter.lessonMedia.string(fromByteCount: displayStatus.totalBytes))
                                 .font(.subheadline.weight(.semibold)).foregroundStyle(Palette.forest)
                         }
-                        ProgressView(value: media.status.progress).tint(Palette.forest)
+                        ProgressView(value: displayStatus.progress).tint(Palette.forest)
                             .accessibilityIdentifier("offline.progress")
                         HStack {
                             Text(progressDescription).foregroundStyle(Palette.muted)
                             Spacer()
-                            Text("\(Int(media.status.progress * 100))%")
+                            Text("\(Int(displayStatus.progress * 100))%")
                                 .monospacedDigit().foregroundStyle(Palette.muted)
                         }.font(.caption)
                     }
                     .padding(19).background(.white, in: RoundedRectangle(cornerRadius: 23))
 
+                    if premium.isPremium {
                     Toggle(isOn: $wifiOnly) {
                         VStack(alignment: .leading, spacing: 4) {
                             Text("Download on Wi-Fi only").font(.headline).foregroundStyle(Palette.ink)
@@ -50,25 +51,33 @@ struct OfflineStudyView: View {
                     .background(.white, in: RoundedRectangle(cornerRadius: 23))
                     .disabled(media.isDownloading)
                     .accessibilityIdentifier("offline.wifiOnly")
+                    } else {
+                        Text("Your Free lessons download automatically over Wi-Fi or mobile data. You can pause at any time.")
+                            .font(.footnote).foregroundStyle(Palette.muted)
+                    }
+                    if premium.isPremium && media.isDownloading && media.activePreviewOnly {
+                        Text("Your Free lessons are downloading. Pause to switch to the complete collection.")
+                            .font(.footnote).foregroundStyle(Palette.forest)
+                    }
 
                     VStack(alignment: .leading, spacing: 8) {
                         Label("No download is required to begin", systemImage: "sparkles")
                             .font(.headline).foregroundStyle(Palette.forest)
                         Text(premium.isPremium ? "Starter lessons are included. Other images and recordings load as you reach them and are cached locally." : "Starter media is included. The free offline download saves only A-set images and recordings, including A lessons not bundled with the app.")
                             .font(.subheadline).foregroundStyle(Palette.muted)
-                        Text("Saved while studying: \(ByteCountFormatter.lessonMedia.string(fromByteCount: media.status.cachedBytes)). Temporary files may be cleared by iOS when storage is low. Use the offline download to keep your available lessons saved.")
+                        Text("Saved while studying: \(ByteCountFormatter.lessonMedia.string(fromByteCount: displayStatus.cachedBytes)). Temporary files may be cleared by iOS when storage is low. Use the offline download to keep your available lessons saved.")
                             .font(.caption).foregroundStyle(Palette.muted)
-                        Text("Keep the app open while downloading. You can study or move between tabs, then continue the download later if needed.")
+                        Text("Keep studying while your lessons download. Downloads can continue when you leave the app; iOS manages background timing.")
                             .font(.caption).foregroundStyle(Palette.muted)
                     }
                     .padding(18).background(Palette.sage.opacity(0.55), in: RoundedRectangle(cornerRadius: 23))
 
-                    if let message = media.message ?? media.status.error {
-                        Text(message).font(.subheadline).foregroundStyle(media.status.isReady ? Palette.forest : Palette.clay)
+                    if let message = media.message ?? displayStatus.error {
+                        Text(message).font(.subheadline).foregroundStyle(displayStatus.isReady ? Palette.forest : Palette.clay)
                             .accessibilityIdentifier("offline.message")
                     }
 
-                    if !media.isDownloading && media.status.storageUsedBytes > 0 {
+                    if !media.isDownloading && displayStatus.storageUsedBytes > 0 {
                         Button("Remove offline download", role: .destructive) { confirmRemoval = true }
                             .frame(maxWidth: .infinity).accessibilityIdentifier("offline.remove")
                     }
@@ -77,16 +86,16 @@ struct OfflineStudyView: View {
             }
             .background(Palette.background)
             .safeAreaInset(edge: .bottom) {
-                if !media.status.isReady {
+                if !displayStatus.isReady {
                     Button {
-                        media.isDownloading ? media.pauseDownload() : media.startOfflineDownload(wifiOnly: wifiOnly)
+                        media.isDownloading ? media.pauseDownload() : media.startOfflineDownload(wifiOnly: premium.isPremium ? wifiOnly : false)
                     } label: {
                         Label(media.isDownloading ? "Pause download" : hasOfflineProgress ? "Continue download" : premium.isPremium ? "Download complete collection" : "Download free A set",
                               systemImage: media.isDownloading ? "pause.fill" : "arrow.down.circle.fill")
                             .frame(maxWidth: .infinity)
                     }
                     .buttonStyle(FilledActionStyle()).padding(16).background(Palette.background)
-                    .disabled(media.status.loading || media.status.totalBytes == 0)
+                    .disabled(displayStatus.loading || displayStatus.totalBytes == 0)
                     .accessibilityIdentifier(media.isDownloading ? "offline.pause" : "offline.download")
                 }
             }
@@ -103,16 +112,23 @@ struct OfflineStudyView: View {
         }
     }
 
-    private var progressDescription: String {
-        if media.status.isReady { return premium.isPremium ? "Complete collection saved" : "Free A set saved" }
-        if media.status.partialBytes > 0 || media.status.downloadedBytes > 0 {
-            return "\(ByteCountFormatter.lessonMedia.string(fromByteCount: media.status.remainingBytes)) remaining"
+    private var displayStatus: LessonMediaStatus {
+        if media.isDownloading && media.activePreviewOnly == !premium.isPremium && !media.activeStatus.loading {
+            return media.activeStatus
         }
-        return "\(ByteCountFormatter.lessonMedia.string(fromByteCount: media.status.bundledBytes)) included with the app"
+        return media.status
+    }
+
+    private var progressDescription: String {
+        if displayStatus.isReady { return premium.isPremium ? "Complete collection saved" : "Free A set saved" }
+        if displayStatus.partialBytes > 0 || displayStatus.downloadedBytes > 0 {
+            return "\(ByteCountFormatter.lessonMedia.string(fromByteCount: displayStatus.remainingBytes)) remaining"
+        }
+        return "\(ByteCountFormatter.lessonMedia.string(fromByteCount: displayStatus.bundledBytes)) included with the app"
     }
 
     private var hasOfflineProgress: Bool {
-        media.status.partialBytes > 0 || media.status.downloadedBytes > 0
+        displayStatus.partialBytes > 0 || displayStatus.downloadedBytes > 0
     }
 }
 
@@ -128,7 +144,7 @@ struct OfflineStudyRow: View {
                     .font(.title3).frame(width: 44, height: 44).background(Palette.sage, in: Circle())
                 VStack(alignment: .leading, spacing: 4) {
                     Text("Download for offline study").font(.headline)
-                    Text(media.status.isReady ? "Your lessons are ready offline" : premium.isPremium ? "All 3,000 lessons · uses device storage" : "211 free A-set lessons · uses device storage")
+                    Text(media.isDownloading ? "Saving \(media.activePreviewOnly ? "Free lessons" : "all lessons") · \(Int(media.activeStatus.progress * 100))%" : media.status.isReady ? "Your lessons are ready offline" : premium.isPremium ? "All 3,000 lessons · uses device storage" : "211 free A-set lessons · uses device storage")
                         .font(.caption).foregroundStyle(Palette.muted)
                 }
                 Spacer(minLength: 0)
@@ -138,5 +154,55 @@ struct OfflineStudyRow: View {
             .background(.white, in: RoundedRectangle(cornerRadius: 23))
         }
         .buttonStyle(.plain).accessibilityIdentifier("settings.offlineStudy")
+    }
+}
+
+struct PremiumOfflineDownloadPrompt: View {
+    @Environment(LessonMedia.self) private var media
+
+    var body: some View {
+        ScrollView {
+            VStack(alignment: .leading, spacing: 22) {
+                Image(systemName: "arrow.down.circle.fill").font(.system(size: 44)).foregroundStyle(Palette.forest)
+                Text("Learn anywhere, even offline")
+                    .font(.system(size: 30, weight: .semibold, design: .serif)).foregroundStyle(Palette.ink)
+                Text("Save images and audio for all 3,000 lessons. You can keep studying while they download.")
+                    .foregroundStyle(Palette.muted)
+                Text("About \(ByteCountFormatter.lessonMedia.string(fromByteCount: media.status.remainingBytes)) to download · uses device storage")
+                    .font(.footnote).foregroundStyle(Palette.muted).accessibilityIdentifier("offlinePrompt.size")
+                Button { media.choosePremiumDownload(wifiOnly: true) } label: {
+                    Label("Download on Wi-Fi", systemImage: "wifi").frame(maxWidth: .infinity)
+                }.buttonStyle(FilledActionStyle()).accessibilityIdentifier("offlinePrompt.wifi")
+                Button { media.choosePremiumDownload(wifiOnly: false) } label: {
+                    Text("Download now").fontWeight(.semibold).frame(maxWidth: .infinity, minHeight: 48)
+                }.foregroundStyle(Palette.forest).background(Palette.sage, in: RoundedRectangle(cornerRadius: 16))
+                    .accessibilityIdentifier("offlinePrompt.now")
+                Text("Download now uses your current connection, including mobile data.")
+                    .font(.caption).foregroundStyle(Palette.muted)
+                Button("Later") { media.choosePremiumDownload(wifiOnly: nil) }
+                    .frame(maxWidth: .infinity, minHeight: 44).foregroundStyle(Palette.forest)
+                    .accessibilityIdentifier("offlinePrompt.later")
+                Text("You can manage downloads anytime in Settings.").font(.footnote).foregroundStyle(Palette.muted)
+            }.padding(28).frame(maxWidth: 520).frame(maxWidth: .infinity)
+        }.background(Palette.background).presentationDetents([.large])
+            .accessibilityIdentifier("offlinePrompt")
+    }
+}
+
+struct DownloadStudyNotice: View {
+    @Environment(LessonMedia.self) private var media
+    let open: () -> Void
+    var body: some View {
+        Button(action: open) {
+            HStack(spacing: 10) {
+                Image(systemName: "arrow.down.circle")
+                Text("Saving \(media.activePreviewOnly ? "Free lessons" : "all lessons") · keep studying")
+                    .font(.caption).lineLimit(2)
+                Spacer(minLength: 0)
+                Text("\(Int(media.activeStatus.progress * 100))%").font(.caption.monospacedDigit())
+                Image(systemName: "chevron.right").font(.caption2)
+            }.foregroundStyle(Palette.forest).padding(.horizontal, 12).frame(minHeight: 44)
+                .background(Palette.sage.opacity(0.65), in: RoundedRectangle(cornerRadius: 13))
+        }.buttonStyle(.plain).accessibilityIdentifier("study.downloadProgress")
     }
 }

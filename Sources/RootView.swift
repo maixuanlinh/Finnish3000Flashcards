@@ -98,6 +98,9 @@ struct RootView: View {
         }
         .environment(navigation)
         .tint(Palette.forest)
+        .sheet(isPresented: Binding(get: { media.showingPremiumDownloadPrompt }, set: { media.showingPremiumDownloadPrompt = $0 }), onDismiss: { media.dismissPremiumDownloadPrompt() }) {
+            PremiumOfflineDownloadPrompt()
+        }
         .sheet(isPresented: $showingReminders) { WordReminderSettingsView(settings: reminders.settings) }
         .task {
             consumeReminder()
@@ -105,12 +108,14 @@ struct RootView: View {
             await media.setPremium(premium.isPremium)
             await reminders.setPremium(premium.isPremium, store: store)
             await reminders.refresh(store: store)
+            await media.activateDownloads(premium: premium.isPremium, offerPrompt: true)
         }
         .onChange(of: inbox.pending) { _, _ in consumeReminder() }
         .onChange(of: scenePhase) { _, phase in
             if phase == .active { Task {
                 await premium.refreshAccess()
                 await media.setPremium(premium.isPremium)
+                await media.activateDownloads(premium: premium.isPremium)
                 await reminders.setPremium(premium.isPremium, store: store)
                 await reminders.refresh(store: store)
             } }
@@ -118,6 +123,7 @@ struct RootView: View {
         .onChange(of: premium.isPremium) { _, value in
             Task {
                 await media.setPremium(value)
+                await media.activateDownloads(premium: value, offerPrompt: true)
                 await reminders.setPremium(value, store: store)
             }
         }
