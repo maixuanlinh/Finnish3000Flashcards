@@ -42,12 +42,12 @@ android {
         manifestPlaceholders["appLabel"] = if (phonePreview) "3000 Finnish Words Preview" else "3000 Finnish Words"
         minSdk = 26
         targetSdk = 36
-        versionCode = if (playDistribution) providers.gradleProperty("releaseVersionCode").orElse("3").get().toInt() else 2
-        versionName = if (phonePreview) "1.1-media-preview" else if (playDistribution) providers.gradleProperty("releaseVersionName").orElse("1.0").get() else "1.1-media-test"
+        versionCode = if (playDistribution) providers.gradleProperty("releaseVersionCode").orElse("6").get().toInt() else 6
+        versionName = if (phonePreview) "1.1.0-preview" else if (playDistribution) providers.gradleProperty("releaseVersionName").orElse("1.1.0").get() else "1.1.0-dev"
         buildConfigField("String", "PLAY_PRODUCT_ID", "\"$playProductId\"")
         buildConfigField("String", "PLAY_LICENSE_KEY", "\"$playLicenseKey\"")
         buildConfigField("String", "MEDIA_BASE_URL", "\"$mediaBaseUrl\"")
-        testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
+        testInstrumentationRunner = "com.linapps.ykiflashcards.ParityTestRunner"
     }
     sourceSets["main"].assets.srcDir(prepareContent.map { it.destinationDir })
     signingConfigs {

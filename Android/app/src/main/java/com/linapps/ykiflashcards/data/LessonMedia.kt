@@ -83,6 +83,43 @@ class LessonMedia internal constructor(private val context: Context,
     private val verified=ConcurrentHashMap<String,Pair<Long,Long>>()
     private val state=MutableStateFlow(MediaStatus())
     val status=state.asStateFlow()
+    private val previewState=MutableStateFlow(MediaStatus())
+    val previewStatus=previewState.asStateFlow()
+    var previewKeys: Set<String> = emptySet(); private set
+    private val previewDirectory=File(directory,"preview").apply { mkdirs() }
+    private val verifiedPreviews=ConcurrentHashMap<String,Pair<Long,Long>>()
+    suspend fun configurePreview(words: List<Word>) {
+        val free=words.filter { it.initial=="A" }
+        require(free.isNotEmpty() && (words.size!=3000 || free.size==211))
+        previewKeys=free.flatMap { listOf("image/${it.image}","image/${it.thumbnail}",recordingKey("en-US",it.english),recordingKey("fi-FI",it.finnish),recordingKey("fi-FI",it.sentence)) }.toSet()
+        require(previewKeys.all { it in catalog.items })
+        refresh()
+    }
+    private fun previewFile(item: MediaItem): File? {
+        val file=File(previewDirectory,item.sha256)
+        if(!file.isFile || file.length()!=item.bytes.toLong()) return null
+        val signature=file.length() to file.lastModified()
+        if(verifiedPreviews[item.sha256]!=signature) {
+            if(mediaHash(file.readBytes())!=item.sha256) { file.delete();return null }
+            verifiedPreviews[item.sha256]=signature
+        }
+        return file
+    }
+    suspend fun downloadPreview(key: String) = withContext(Dispatchers.IO) {
+        require(key in previewKeys) { "Only A-set lessons are available for Free offline study." }
+        val item=catalog.items.getValue(key)
+        locks.getOrPut("preview:${item.sha256}") { Mutex() }.withLock {
+            val pack=catalog.packs.getValue(item.pack)
+            if(installed(pack) || saved(pack)!=null || previewFile(item)!=null) return@withLock
+            val data=load(key)
+            coroutineContext.ensureActive()
+            val temporary=File(previewDirectory,item.sha256+".tmp")
+            FileOutputStream(temporary).use { it.write(data);it.fd.sync() }
+            coroutineContext.ensureActive()
+            check(temporary.renameTo(File(previewDirectory,item.sha256)))
+            refresh()
+        }
+    }
     private val bundled by lazy { context.assets.list("").orEmpty().toSet() }
     private fun installed(pack: MediaPack) = pack.file in bundled
     private fun saved(pack: MediaPack): File? {
@@ -104,8 +141,15 @@ class LessonMedia internal constructor(private val context: Context,
             state.value=MediaStatus(false,p.sumOf { it.bytes },p.filter { !installed(it) && saved(it)!=null }.sumOf { it.bytes },
                 p.filter(::installed).sumOf { it.bytes },p.count { installed(it) || saved(it)!=null },p.size,
                 partialBytes=p.filter { !installed(it) && saved(it)==null }.sumOf { File(directory,it.file+".part").length().coerceAtMost(it.bytes) })
+            if(previewKeys.isNotEmpty()) {
+                val assets=previewKeys.map { catalog.items.getValue(it) }
+                val included=assets.filter { installed(catalog.packs.getValue(it.pack)) }
+                val downloaded=assets.filter { !installed(catalog.packs.getValue(it.pack)) && (saved(catalog.packs.getValue(it.pack))!=null || previewFile(it)!=null) }
+                previewState.value=MediaStatus(false,assets.sumOf { it.bytes.toLong() },downloaded.sumOf { it.bytes.toLong() },included.sumOf { it.bytes.toLong() },included.size+downloaded.size,assets.size)
+            }
         } catch(e: Exception) {
             if(e is CancellationException) throw e
+            previewState.value=MediaStatus(loading=false,error="Lesson downloads could not be loaded. Please try again.")
             state.value=MediaStatus(loading=false,error="Lesson downloads could not be loaded. Please try again.")
         }
     }
@@ -126,7 +170,7 @@ class LessonMedia internal constructor(private val context: Context,
             when {
                 installed(pack) -> context.assets.open(pack.file).use { readRange(it,item) }
                 local!=null -> local.inputStream().use { readRange(it,item) }
-                else -> File(cache,item.sha256).takeIf { it.isFile }?.readBytes()?.takeIf { mediaHash(it)==item.sha256 }
+                else -> (previewFile(item) ?: File(cache,item.sha256).takeIf { it.isFile })?.readBytes()?.takeIf { mediaHash(it)==item.sha256 }
             }
         }.onFailure { if(local!=null) { local.delete();verified.remove(pack.file) } }.getOrNull()
     }
@@ -205,10 +249,13 @@ class LessonMedia internal constructor(private val context: Context,
                 if(file.exists()) check(file.delete())
             }
         }
-        verified.clear()
+        previewDirectory.listFiles().orEmpty().forEach { file ->
+            locks.getOrPut("preview:${file.name.removeSuffix(".tmp")}") { Mutex() }.withLock { if(file.exists()) check(file.delete()) }
+        }
+        verified.clear();verifiedPreviews.clear()
         refresh()
     }
-    fun checkSpace() { check(StatFs(directory.path).availableBytes>status.value.remainingBytes+16_000_000) { "There isn’t enough free storage for all lessons. Free some space and try again." } }
+    fun checkSpace(previewOnly: Boolean=false) { check(StatFs(directory.path).availableBytes>(if(previewOnly) previewState.value else status.value).remainingBytes+16_000_000) { "There isn’t enough free storage for all lessons. Free some space and try again." } }
     private fun trimCache() {
         val files=cache.listFiles().orEmpty().filter { it.name.matches(Regex("[0-9a-f]{64}")) }.sortedBy { it.lastModified() }
         var bytes=files.sumOf { it.length() }

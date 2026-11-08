@@ -40,9 +40,9 @@ class NotificationParityTest {
         }
         try {
             val settings=ReminderSettings(enabled=true,letter="A",prompt=ReminderPrompt.ENGLISH)
-            assertTrue(runBlocking { app.reminders.save(settings,Entitlement.FREE) })
+            assertTrue(runBlocking { app.reminders.save(settings,Entitlement.COMPLETE) })
             assertNotNull(app.reminders.nextDate)
-            runBlocking { app.reminders.sample(settings,Entitlement.FREE) }
+            runBlocking { app.reminders.sample(settings,Entitlement.COMPLETE) }
             val manager=app.getSystemService(NotificationManager::class.java)
             val sample=manager.activeNotifications.single { it.id==1000 }
             assertEquals("Can you say it in Finnish?",sample.notification.extras.getString(android.app.Notification.EXTRA_TITLE))
@@ -65,7 +65,7 @@ class NotificationParityTest {
                 assertEquals(englishFirst,state.showsEnglishFirst);assertEquals(0,state.tab)
             }
             awaitCard(true)
-            runBlocking { app.reminders.sample(settings.copy(prompt=ReminderPrompt.FINNISH),Entitlement.FREE) }
+            runBlocking { app.reminders.sample(settings.copy(prompt=ReminderPrompt.FINNISH),Entitlement.COMPLETE) }
             tap(manager.activeNotifications.single { it.id==1000 }.notification)
             awaitCard(false)
             instrumentation.runOnMainSync {
@@ -74,7 +74,7 @@ class NotificationParityTest {
             assertEquals(events,runBlocking { app.repository.events() })
             assertEquals(direction,app.preferences.englishFirst)
         } finally {
-            runBlocking { app.reminders.save(original,Entitlement.FREE) }
+            runBlocking { app.reminders.save(original,Entitlement.COMPLETE) }
             instrumentation.runOnMainSync { opened?.finish() }
         }
     }

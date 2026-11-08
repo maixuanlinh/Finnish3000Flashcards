@@ -1,30 +1,33 @@
 Build your Finnish vocabulary, one memorable word at a time.
 
-3000 Finnish Words combines English–Finnish flashcards with illustrations, memory hooks and example sentences. Practise at your own pace and keep track of the words you know.
+3000 Finnish Words combines English–Finnish flashcards with illustrations, memory cues and bilingual example sentences. Study by topic and return to your saved learning list whenever you are ready.
 
 START FREE
-• Study all 3,000 basic English–Finnish word pairs.
-• Hear Finnish word pronunciation with an installed offline voice.
-• Try 211 complete A-set lessons, including illustrations, memory hooks, Finnish examples, English translations and automatic study.
-• Mark words as New, Learning or Known, and follow your progress.
-• Set optional local word reminders for any letter.
+• Study all 3,000 basic English–Finnish word pairs and hear recorded word pronunciation.
+• Get 211 complete A-set lessons, including illustrations, memory hooks, examples, English translations and automatic study.
+• Browse nine everyday topics and seven focused word groups, including common verbs, adjectives and adverbs.
+• Swipe to mark words as Learning or Known, undo a rating and track shared progress across topics.
+• Your current study list is saved for next time and is available in Progress.
 
-REMEMBER WITH THE FULL PICTURE
-An optional one-time Premium purchase unlocks complete lessons across all 3,000 words. Explore illustrated memory cues, examples with English translations, sentence pronunciation and automatic playback for any letter or selection. No subscription or advertising.
+UNLOCK PREMIUM
+An optional one-time Premium purchase unlocks complete illustrated lessons across all 3,000 words, sentence pronunciation, automatic study for any selection, the full offline collection and word reminders. No subscription and no advertising.
 
 MAKE PRACTICE YOUR OWN
 • Switch between English-first and Finnish-first cards.
-• Search the collection and filter by learning status, English starting letter or topic.
-• Swipe or use the rating buttons, undo a rating and shuffle the remaining cards.
-• Adjust automatic-study pauses, audio options and voice speed.
-• Add your own artwork to accessible complete lessons and keep earlier images and prompts in history.
+• Search the collection and combine learning status, topic and English starting-letter filters on one page.
+• Shuffle the remaining cards and use playback controls below the flashcard.
+• Adjust recall pauses, reading options and playback speed.
+• Add personal artwork to accessible complete lessons and keep earlier image and prompt revisions.
 
-AVAILABLE OFFLINE
-Vocabulary and illustrations are delivered with installation. Pronunciation requires suitable offline speech voices installed on your device. Google Play is needed to purchase or restore Premium. Android may delay reminders according to battery and notification settings.
+DOWNLOAD FOR OFFLINE STUDY
+Your 211 Free A-set lessons download automatically over Wi-Fi or mobile data. Premium can download the complete collection, choose Wi-Fi only, pause, continue or remove downloads. Downloads run in the background while you keep studying. Media occupies storage on your device. Recorded Finnish and English pronunciation needs no installed speech voice.
 
-Your learning progress and imported artwork stay in this app on your device. Restoring a purchase restores lesson access, not your learning history. Apple and Android purchases are separate.
+PREMIUM WORD REMINDERS
+Choose reminders every 30 minutes, hourly or at another interval, use daily presets or choose custom times. Set sleep hours to pause scheduled reminders overnight. Notifications require permission and Android may delay alerts according to battery and notification settings. Opening a reminder does not mark a word as Known.
 
-Designed for independent Finnish vocabulary learning and YKI preparation. This app is not affiliated with the YKI exam organiser, and the collection is not an official YKI syllabus or a verified Finnish frequency ranking.
+Learning progress and personal artwork stay on your device. No app account is required. Google Play is needed to purchase or restore Premium. Restoring a purchase restores access, not learning history. Apple and Android purchases are separate.
+
+Designed for independent Finnish vocabulary learning and YKI preparation. Not affiliated with the YKI exam organiser. The collection is not an official syllabus or a verified Finnish frequency ranking.
 
 Support: support@essaykingapp.com
 Privacy: https://maixuanlinh.github.io/yki-flashcards-pages/privacy.html

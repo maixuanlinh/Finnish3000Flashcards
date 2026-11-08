@@ -1,0 +1,58 @@
+{
+  "versionName": "1.1.0",
+  "versionCode": 6,
+  "sha256": "a32ee24fc049f6f0f1862cf05c12b7aad7c96ff5ed63ee6a0da658dd961c9e58",
+  "bytes": 20673005,
+  "sameUploadCertificateAsPreviousRelease": true,
+  "uploadCertificateSHA256": "FF:B8:D3:88:2D:86:89:70:6B:21:73:2F:BA:12:DC:FA:E4:C5:B2:91:BC:E6:2A:BC:58:41:15:A9:03:ED:39:46",
+  "resourceHashesMatchIOS": {
+    "catalog3000.json": true,
+    "examples3000.json": true,
+    "starter100.json": true,
+    "artworkBriefs.json": true,
+    "BundledArtwork/manifest.json": true
+  },
+  "testFixturesAbsentFromShippedDex": true,
+  "appName": "3000 Finnish Words",
+  "packageName": "com.linapps.ykiflashcards",
+  "productId": "complete",
+  "bundletoolVersion": "1.18.1",
+  "bundleValidation": "passed",
+  "optimizedProductionPayloadSmoke": "passed with independent SDK UI harness; APK re-signed locally with debug key solely for emulator installation",
+  "existingUploadCertificatePreserved": true,
+  "screenshots": 8,
+  "screenshotSize": "1080x1920 JPEG",
+  "sourceGitHeadBeforeLocalReleaseChanges": "30959c5d890d443438dd6a4634c02266996563ec",
+  "publishingStatus": "SUBMITTED: Play Console shows Changes in review; automated quick checks running before review",
+  "productionSubmissionAuthorizedByUser": true,
+  "googlePlayProductionPage": "https://play.google.com/console/u/0/developers/8850863360061339505/app/4973686116837165298/tracks/production",
+  "submissionVerifiedAtUTC": "2026-11-08T11:32:44.101667+00:00",
+  "rolloutPercentage": 100,
+  "allExistingTargetCountries": true,
+  "managedPublishing": false,
+  "automaticPublicationAfterApproval": true,
+  "googlePlayPublishingPage": "https://play.google.com/console/u/0/developers/8850863360061339505/app/4973686116837165298/publishing",
+  "submittedChanges": [
+    "Production full rollout",
+    "English en-US short description",
+    "English en-US full description",
+    "English en-US phone screenshots"
+  ],
+  "screenshotOrder": [
+    "04-word-groups.jpg",
+    "07-offline-free-lessons.jpg",
+    "06-settings.jpg",
+    "03-inline-topic-filters.jpg",
+    "01-study-answer.jpg",
+    "08-premium-reminders.jpg",
+    "02-topic-library.jpg",
+    "05-progress-learning.jpg"
+  ],
+  "aiLabeledAssets": [
+    "feature-graphic.png",
+    "01-study-answer.jpg"
+  ],
+  "validationBlockingErrors": 0,
+  "validationWarning": "Optional native debug symbols not uploaded",
+  "liveReleaseVerified": false
+}

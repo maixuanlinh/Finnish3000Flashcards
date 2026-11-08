@@ -50,8 +50,8 @@ class ParityScreenTest {
     }
     @Test fun librarySearchDoesNotReplaceStudySessionAndPractiseUsesSelection() {
         aSet();compose.onNodeWithTag("tab.Words").performClick()
-        compose.onNodeWithTag("words.search").performTextInput("omena")
-        compose.onNodeWithTag("words.filteredCount").assertTextEquals("1 shown");screenshot("05-library-search")
+        compose.onNodeWithTag("words.search").performScrollTo().performTextInput("Omena on punainen.")
+        compose.onNodeWithTag("words.filteredCount").performScrollTo().assertTextEquals("1 shown");screenshot("05-library-search")
         compose.onNodeWithTag("words.practice").performClick()
         compose.onNodeWithTag("card.prompt",useUnmergedTree=true).assertTextEquals("apple")
         compose.onNodeWithTag("card.reveal").performClick();compose.onNodeWithTag("card.answer").assertTextEquals("omena")
@@ -77,12 +77,10 @@ class ParityScreenTest {
     }
     @Test fun progressRemindersHelpAndArtworkEditorAreReachable() {
         aSet();compose.onNodeWithTag("tab.Progress").performClick();screenshot("06-progress")
-        compose.onNodeWithTag("progress.reminders").performScrollTo().performClick()
-        compose.onNodeWithText("WORD SELECTION").performScrollTo().assertExists();screenshot("07-reminder-settings")
-        compose.onAllNodesWithText("Done").onLast().performClick()
-        compose.onNodeWithTag("progress.support").performScrollTo().performClick()
-        compose.onNodeWithText("Privacy policy").assertExists();screenshot("08-help")
-        compose.onAllNodesWithText("Done").onLast().performClick()
+        compose.onNodeWithTag("tab.Settings").performClick()
+        compose.onNodeWithTag("settings.reminders").performScrollTo().performClick()
+        compose.onNodeWithText("Done").performClick()
+        compose.onNodeWithTag("settings.privacy").performScrollTo().assertExists();screenshot("08-help")
         compose.onNodeWithTag("tab.Study").performClick();compose.onNodeWithTag("card.reveal").performClick();compose.onNodeWithTag("card.detail").performClick()
         compose.onNodeWithText("Artwork",useUnmergedTree=true).performClick()
         compose.onNodeWithTag("artwork.prompt").assertExists();screenshot("09-artwork-editor")
@@ -93,18 +91,15 @@ class ParityScreenTest {
         val preferences=app.preferences.playback
         val before=runBlocking { app.repository.events() }
         try {
-            compose.onNodeWithTag("tab.Words").performClick();compose.onNodeWithTag("words.search").performTextInput("omena");compose.onNodeWithTag("words.practice").performClick()
-            compose.onNodeWithTag("study.options").performClick()
-            compose.onNodeWithText("Study options").assertExists();compose.onNodeWithText("For this session").assertExists()
-            compose.onNodeWithTag("study.option.playback").performClick()
-            repeat(2) { compose.onNodeWithTag("Recall pause.minus").performScrollTo().performClick() }
-            compose.onNodeWithTag("Pause after audio.minus").performScrollTo().performClick()
-            listOf("Read the prompt","Read the answer","Read the Finnish sentence").forEach { label -> compose.onNodeWithTag("toggle.$label").performScrollTo().performClick() }
-            compose.onNodeWithText("Start automatic study").performClick()
-            compose.waitUntil(15000) { compose.onAllNodesWithContentDescription("Replay automatic study").fetchSemanticsNodes().isNotEmpty() }
+            compose.onNodeWithTag("tab.Words").performClick();compose.onNodeWithTag("words.search").performScrollTo().performTextInput("Omena on punainen.");compose.onNodeWithTag("words.practice").performClick()
+            lateinit var vm: com.linapps.ykiflashcards.ui.StudyViewModel
+            compose.activityRule.scenario.onActivity { vm=androidx.lifecycle.ViewModelProvider(it)[com.linapps.ykiflashcards.ui.StudyViewModel::class.java];vm.settings(PlaybackSettings(recallSeconds=1,answerSeconds=1,readPrompt=false,readAnswer=false,readSentence=false)) }
+            compose.onNodeWithTag("study.autoplay").performClick()
+            compose.waitUntil(15000) {vm.uiState.value.playback==com.linapps.ykiflashcards.ui.PlaybackState.FINISHED}
             screenshot("10-playback-complete")
             assertEquals(before,runBlocking { app.repository.events() })
-            compose.onNodeWithContentDescription("Return to manual study").performClick()
+            compose.onNodeWithTag("study.playbackSettings").performClick()
+            compose.onNodeWithTag("playback.stop").performClick()
             compose.onNodeWithTag("card.prompt",useUnmergedTree=true).assertTextEquals("apple")
             compose.activity.requestedOrientation=android.content.pm.ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE
             compose.waitForIdle();compose.onNodeWithTag("card.prompt",useUnmergedTree=true).assertTextEquals("apple");screenshot("11-landscape")

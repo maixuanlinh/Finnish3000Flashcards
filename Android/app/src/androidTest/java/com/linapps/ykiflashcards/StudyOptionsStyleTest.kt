@@ -25,14 +25,13 @@ class StudyOptionsStyleTest {
         compose.waitUntil(30_000) { !vm.uiState.value.loading && vm.uiState.value.access!=Entitlement.UNKNOWN }
 
         compose.onNodeWithTag("study.options").performClick()
-        compose.onNodeWithText("Study options").assertExists()
-        compose.onNodeWithText("Shape this study session").assertExists()
-        compose.onNodeWithText("For this session").assertExists()
+        compose.onNodeWithTag("study.option.direction").assertExists()
+        compose.onNodeWithTag("study.option.shuffle").assertExists()
+        compose.onNodeWithTag("study.option.playback").assertDoesNotExist()
         capture("study-options.png")
-
-        compose.onNodeWithText("Done").performClick()
-        compose.onNodeWithTag("tab.Progress").performClick()
-        compose.onNodeWithTag("progress.goPremium").performScrollTo().assertExists()
+        compose.onNodeWithTag("study.option.shuffle").performClick()
+        compose.onNodeWithTag("tab.Settings").performClick()
+        compose.onNodeWithTag("settings.goPremium").performScrollTo().assertExists()
         capture("go-premium.png")
     }
 

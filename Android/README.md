@@ -1,5 +1,23 @@
 # 3000 Finnish Words for Android
 
+## Production submission — 8 November 2026
+
+Version **1.1.0 (6)** and the updated en-US listing were submitted together. Play Console confirmed **Changes in review**, with automated quick checks running. Managed publishing is off; the release targets a full rollout in the existing countries after approval. Eight current 1080×1920 phone screenshots replace the previous captures. Signing identity and existing Premium product IDs are preserved. See [release record](docs/PLAY-1.1.0-RELEASE.json) for bundle hashes and verification. Actual Play purchase/restore transactions were not repeated.
+
+## Current checkpoint — 8 November 2026
+
+Native Android **1.1.0-dev (3)** now follows **Finnish iOS 1.1.0 (38)**. Study has the bottom playback toolbar, visible English translations and Topic-first filters. Words has nine topic cards and seven smaller core word groups, with shared progress by stable word ID. The exact current list resumes after reopening. Progress contains learning history and resume; Settings contains downloads, Premium reminders and inline website/support/privacy links.
+
+Free automatically downloads only the 211 complete A-set lessons over any connection. Premium gets a remembered English download choice, Wi-Fi control and reminders every 30 minutes/hour/two hours or custom times, with sleep hours and recurring delivery. WorkManager downloads run off the UI thread and can be paused. Each language keeps its own package, billing configuration, database, reviewed content, hosting and visual theme.
+
+See [iOS 1.1.0 parity and verification](docs/IOS-1.1.0-PARITY.md). The older notes below are retained as history; their Progress/settings navigation and version numbers describe earlier builds. **Version 1.1.0 (6) was submitted to Google Play production review on 8 November 2026. It is not yet verified live.**
+
+Follow-up [UI and functional parity audit](docs/IOS-1.1.0-PARITY-AUDIT.md): inline filter cards, direct More menu, complete reminder choices, topic progress/search recovery and remembered offline preferences.
+
+Read-only topic membership check: `python3 tools/verify_ios_topics.py`.
+
+---
+
 The working source now uses **prerecorded Finnish/English audio and downloadable lesson media**. No Android speech engine or voice installation is needed. Generate the media before building; see [media generation and Bluehost delivery](../MediaDelivery/README.md). This change has not yet been published to Google Play. The build-29 parity notes below describe the preceding release.
 
 Progress → **Download for offline study** offers an optional download with its actual size, Wi-Fi-only control, pause/continue and removal. Its subtitle explains that downloaded images and audio occupy storage. The same screen is linked from Playback settings. Starter lessons are included; other media loads online unless downloaded. Normal Android Studio and Gradle builds now use the verified Bluehost directory `https://essaykingapp.com/finnish3000/v1` by default. No special build flags are needed. An explicit `-PmediaBaseUrl=` bundles the complete collection for offline development testing.

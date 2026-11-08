@@ -18,7 +18,8 @@ class DomainTest {
         assertTrue(filter.matches(word(),LearningStatus.NEW))
         assertFalse(filter.matches(word(),LearningStatus.KNOWN))
         assertFalse(filter.copy(letter="B").matches(word(),LearningStatus.NEW))
-        assertTrue(filter.copy(query="the apple is red").matches(word(),LearningStatus.NEW))
+        assertFalse(filter.copy(query="the apple is red").matches(word(),LearningStatus.NEW))
+        assertTrue(filter.copy(query="punainen").matches(word(),LearningStatus.NEW))
         assertFalse(filter.copy(topic="Travel").matches(word(),LearningStatus.NEW))
     }
     @Test fun accessDefaultsToFreeWithoutBlockingBasicVocabulary() {
